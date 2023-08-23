@@ -19,7 +19,7 @@ FORMS += \
     mainwindow.ui
 
 TRANSLATIONS += \
-    QT-myChat-client_zh_CN.ts
+    QT-myChat-Client_zh_CN.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 
