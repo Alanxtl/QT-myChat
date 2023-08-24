@@ -1,5 +1,6 @@
 #include "serverworker.h"
 #include <QJsonParseError>
+#include <QJsonObject>
 
 ServerWorker::ServerWorker(QObject *parent)
     : QObject(parent)
@@ -68,6 +69,20 @@ void ServerWorker::receiveJson()
         }
     }
 }
+
+void ServerWorker::sendJson(const QJsonObject &json)
+{
+    // we crate a temporary QJsonDocument forom the object and then convert it
+    // to its UTF-8 encoded version. We use QJsonDocument::Compact to save bandwidth
+    const QByteArray jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
+    // we notify the central server we are about to send the message
+    emit logMessage("Sending to " + getUserName() + " - " + QString::fromUtf8(jsonData));
+    // we send the message to the socket in the exact same way we did in the client
+    QDataStream socketStream(m_serverSocket);
+    socketStream.setVersion(QDataStream::Qt_5_15);
+    socketStream << jsonData;
+}
+
 
 
 
