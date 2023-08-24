@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <QDataStream>
 
 class ServerWorker : public QObject
 {
@@ -13,7 +14,7 @@ class ServerWorker : public QObject
 public:
     explicit ServerWorker(QObject *parent = nullptr);
     virtual bool setSocketDescriptor(qintptr socketDescriptor);
-    QString userName() const;
+    QString getUserName() const;
     void setUserName(const QString &userName);
     void sendJson(const QJsonObject &jsonData);
 signals:
@@ -28,8 +29,8 @@ private slots:
 private:
     QTcpSocket *m_serverSocket;
     QString m_userName;
-
-
+    int connectedNum;    //
+    QList<QString> connectedClients;
 };
 
 #endif // SERVERWORKER_H
