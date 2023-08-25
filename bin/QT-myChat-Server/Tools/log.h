@@ -5,6 +5,7 @@
 #include <QTime>
 
 /*
+ *
  * 工具类log
  * 使用单例模式
  *

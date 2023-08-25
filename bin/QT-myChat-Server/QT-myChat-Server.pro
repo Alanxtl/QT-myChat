@@ -12,18 +12,17 @@ SOURCES += \
     Thread/chatbusiness.cpp \
     Thread/chatthread.cpp \
     Tools/log.cpp \
+    Tools/mymsg.cpp \
     main.cpp \
     mainwindow.cpp \
-    mymsg.cpp
-
 
 
 HEADERS += \
     Thread/chatbusiness.h \
     Thread/chatthread.h \
     Tools/log.h \
+    Tools/mymsg.h \
     mainwindow.h \
-    mymsg.h
 
 
 
