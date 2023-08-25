@@ -58,7 +58,7 @@ MyMsg* MyMsg::setMsg(quint8 type, quint8 slice, quint32 sliceTotal, quint32 slic
 MyMsg* MyMsg::arrayToMsg(const QByteArray &full_received)
 {
     QDataStream in(full_received);
-    in.setVersion(QDataStream::Qt_5_15);
+    in.setVersion(QDataStream::Qt_5_9);
     MyMsg * res = new MyMsg();
 
     //将数据从type_and_content中拿出来
@@ -115,7 +115,7 @@ QByteArray MyMsg::msgToArray()
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_15);
+    out.setVersion(QDataStream::Qt_5_9);
 
     out << quint32(0);
     out << quint8(type);

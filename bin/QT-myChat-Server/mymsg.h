@@ -8,11 +8,13 @@
 /*
  * 标准QByteArray信息格式|32header|?body|
  *
+ *
+ *
  * header总共32字节包括以下内容:
  *          dataSize    : 占 4 个字节, quint32, 用于验证是否完整接收到了数据包
  *          identify    : 占 4 个字节, quint32, 用于验证是不是该程序的数据包，是一个默认的常量
  *          type        : 占 1 个字节, quint8, 用于标识数据包类型
- *                 数据包类型及代码如下：0-注册信息 1-登录信息 2-普通信息 3-图片信息 4-文件信息 6-错误
+ *                 数据包类型及代码如下：0-注册信息 1-登录信息 2-普通信息 3-图片信息 4-文件信息 6-解析错误
  *  不一定做 slice       : 占 1 个字节，quint8，用以指示该信息是否为切片信息，若非切片信息以下两条数据应为0
  *  不一定做 sliceTotal  : 占 4 个字节, quint32, 用以指示切片信息切片总数
  *  不一定做 sliceCount  : 占 4 个字节, quint32, 用以指示该切片信息是第几个切片
@@ -52,7 +54,6 @@ public:
     quint32 receiverID;
     quint32 time;
     QByteArray content;
-    //QByteArray header;
 
     explicit MyMsg(QObject *parent = nullptr);
     ~MyMsg(){
@@ -80,7 +81,6 @@ public:
     QByteArray & getContent();
 
 signals:
-
 
 
 };

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTime>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,6 +15,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    quint32 clientCount;
+
+public slots:
+    void showLog(QString);
+    void autoScroll();
+    void updateClinetMonitor();
 
 private:
     Ui::MainWindow *ui;
