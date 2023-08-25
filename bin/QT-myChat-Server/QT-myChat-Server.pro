@@ -10,7 +10,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Database/DBHelper.cpp \
+    #Database/DBHelper.cpp \
     Thread/chatbusiness.cpp \
     Thread/chatthread.cpp \
     Tools/log.cpp \
@@ -20,7 +20,7 @@ SOURCES += \
 
 
 HEADERS += \
-    Database/DBHelper.h \
+    #Database/DBHelper.h \
     Thread/chatbusiness.h \
     Thread/chatthread.h \
     Tools/log.h \
