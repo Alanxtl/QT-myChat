@@ -34,6 +34,12 @@ public:
     QString getUsernameById(int userId);
     QString getUserAvatarById(int userId);
 
+    bool registerUser(const QString &username, const QString &password);
+    bool checkUserLogin(const QString &username, const QString &password);
+    bool storeMessage(int senderId, int receiverId, int groupId, const QString &messageContent);
+    QList<QString> checkOfflineMessages(int userId);
+
+
 
 private:
     QSqlDatabase m_db;

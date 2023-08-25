@@ -142,3 +142,58 @@ QString DBHelper::getUserAvatarById(int userId)
     }
     return avatar;
 }
+
+// 用户注册
+bool DBHelper::registerUser(const QString &username, const QString &password)
+{
+    // 检查用户名是否已存在
+    QString checkQuery = QString("SELECT id FROM User WHERE username = '%1';").arg(username);
+    QSqlQuery sqlQuery(checkQuery);
+    if (sqlQuery.next())
+    {
+        qDebug() << "Username already exists.";
+        return false;
+    }
+
+    // 执行插入操作，注册新用户
+    QString insertQuery = QString("INSERT INTO User (username, password) VALUES ('%1', '%2');").arg(username).arg(password);
+    return executeQuery(insertQuery);
+}
+
+// 用户登录检查
+bool DBHelper::checkUserLogin(const QString &username, const QString &password)
+{
+    QString query = QString("SELECT id FROM User WHERE username = '%1' AND password = '%2';").arg(username).arg(password);
+    QSqlQuery sqlQuery(query);
+    return sqlQuery.next();
+}
+
+// 信息存储
+bool DBHelper::storeMessage(int senderId, int receiverId, int groupId, const QString &messageContent)
+{
+    QString query = QString("INSERT INTO Message (sender_id, receiver_id, group_id, message_content) "
+                            "VALUES (%1, %2, %3, '%4');")
+                    .arg(senderId).arg(receiverId).arg(groupId).arg(messageContent);
+    return executeQuery(query);
+}
+
+// 检查是否有离线信息
+QList<QString> DBHelper::checkOfflineMessages(int userId)
+{
+    QList<QString> offlineMessages;
+
+    // 查询离线消息
+    QString query = QString("SELECT message_content FROM Message WHERE receiver_id = %1;").arg(userId);
+    QSqlQuery sqlQuery(query);
+    while (sqlQuery.next())
+    {
+        QString messageContent = sqlQuery.value(0).toString();
+        offlineMessages.append(messageContent);
+    }
+
+    // 删除已读的离线消息
+    QString deleteQuery = QString("DELETE FROM Message WHERE receiver_id = %1;").arg(userId);
+    executeQuery(deleteQuery);
+
+    return offlineMessages;
+}
