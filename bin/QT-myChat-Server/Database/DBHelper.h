@@ -5,6 +5,8 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QDateTime>
+#include <qdebug.h>
+#include <QSqlError>
 
 class DBHelper : public QObject
 {
