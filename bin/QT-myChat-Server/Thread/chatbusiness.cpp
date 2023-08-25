@@ -7,7 +7,10 @@ ChatBusiness::ChatBusiness(QObject *parent) : QObject{parent}
 
 void ChatBusiness::mainBusiness()
 {
-    //调用TCP业务
+    for ( int i = 0; i < 100; ++i ) {
+        Log::getLogObj()->writeLog(QString::number(i));
+    }
+
 }
 
 /*
@@ -37,6 +40,4 @@ void ChatBusiness::mainBusiness()
  *      QTcpSocket *tcpSocket = new QTcpSocket(this);
  *      tcpSocket->setSocketDescriptor(handle);
  *  }
- *
- *
  */

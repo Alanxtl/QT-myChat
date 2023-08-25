@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
     //链接日志类
     connect(Log::getLogObj(), &Log::readyShowLog, this, &MainWindow::showLog);
     //日志自动滚动

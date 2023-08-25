@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QThread>
 #include <QTcpSocket>
+#include <Tools/log.h>
+#include <qdebug.h>
 
 class ChatBusiness : public QObject
 {

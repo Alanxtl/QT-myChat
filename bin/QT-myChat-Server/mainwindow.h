@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include <QTime>
 #include <Tools/log.h>
+#include <Thread/chatbusiness.h>
+#include <Thread/chatthread.h>
+#include <QCoreApplication>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
