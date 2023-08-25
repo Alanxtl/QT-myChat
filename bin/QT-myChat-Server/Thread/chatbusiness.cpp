@@ -30,14 +30,11 @@ void ChatBusiness::mainBusiness()
  ×     ChatBusiness *chatBusiness = new ChatBusiness();
  ×     chatBusiness->moveToThread(thread);
  ×     //def handle of start
- ×     connect(chatBusiness, &ChatBusiness::start, chatBusiness, &ChatBusiness::mainBusiness);
+ ×     connect(chatBusiness, &ChatBusiness::startSignal, chatBusiness, &ChatBusiness::mainBusiness);
  ×     thread->start();
  ×     //send the SocketDescriptor
- ×     emit chatBusiness->start(handle);
+ ×     emit chatBusiness->startSignal();
  ×  }
- *  void ChatBusiness::mainBusiness(qintptr handle)
- *  {
- *      QTcpSocket *tcpSocket = new QTcpSocket(this);
- *      tcpSocket->setSocketDescriptor(handle);
- *  }
+ *
+ *
  */
