@@ -12,10 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(Log::getLogObj(), &Log::readyShowLog, this, &MainWindow::showLog);
     //日志自动滚动
     connect(ui->logBrowser, SIGNAL(cursorPositionChanged()), this, SLOT(autoScroll()));
-
     //todo用户端登录监听
     //connect(, , this, updateClinetMonitor);
-
     //todo 数据库交互
     //DataDB::GetInstance();
 
@@ -41,8 +39,8 @@ void MainWindow::updateClinetMonitor()
 {
 
 
-
     ui->clientCountLabel->setText(QString::number(clientCount));
     //ui->clientBrowser->append()
-
 }
+
+
