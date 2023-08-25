@@ -7,17 +7,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //获得日志并写入 todo 日志类
-    //connect(Log::GetLogObj(), &Log::readyShowLog, this, &Widget::showLog);
-    //自动滚动日志区域
+    //链接日志类
+    connect(Log::getLogObj(), &Log::readyShowLog, this, &MainWindow::showLog);
+    //日志自动滚动
     connect(ui->logBrowser, SIGNAL(cursorPositionChanged()), this, SLOT(autoScroll()));
-    this->showLog("服务端初始化成功");
 
-    //用户端登录监听
+    //todo用户端登录监听
     //connect(, , this, updateClinetMonitor);
 
     //todo 数据库交互
     //DataDB::GetInstance();
+
+    Log::getLogObj()->writeLog("服务端初始化成功");
 }
 
 MainWindow::~MainWindow()
@@ -26,7 +27,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::showLog(QString str){
-    ui->logBrowser->append(QTime::currentTime().toString() + " " + str);
+    ui->logBrowser->append(str);
 }
 
 void MainWindow::autoScroll() {

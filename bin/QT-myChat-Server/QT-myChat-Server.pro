@@ -11,16 +11,20 @@ CONFIG += c++11
 SOURCES += \
     Thread/chatbusiness.cpp \
     Thread/chatthread.cpp \
+    Tools/log.cpp \
     main.cpp \
     mainwindow.cpp \
     mymsg.cpp
 
 
+
 HEADERS += \
     Thread/chatbusiness.h \
     Thread/chatthread.h \
+    Tools/log.h \
     mainwindow.h \
     mymsg.h
+
 
 
 FORMS += \

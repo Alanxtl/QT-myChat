@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTime>
+#include <Tools/log.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,7 +19,7 @@ public:
     quint32 clientCount;
 
 public slots:
-    void showLog(QString);
+    void showLog(QString str);
     void autoScroll();
     void updateClinetMonitor();
 
