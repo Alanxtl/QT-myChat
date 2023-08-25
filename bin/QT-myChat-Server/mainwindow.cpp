@@ -41,5 +41,6 @@ void MainWindow::updateClinetMonitor()
 
 
     ui->clientCountLabel->setText(QString::number(clientCount));
-    ui->clientCountLabel->setText(QString::number(clientCount));
+    //ui->clientBrowser->append()
+
 }
