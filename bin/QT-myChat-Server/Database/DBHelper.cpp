@@ -73,6 +73,14 @@ DBHelper::DBHelper(){
           "UserPermission INTEGER NOT NULL,"
           "FOREIGN KEY (UserID) REFERENCES UserInfo(Id),"
           "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))");
+
+    //在线用户表
+    query.exec("CREATE TABLE OnlineUser("
+        "Id INTEGER PRIMARY KEY, "
+        "Username VARCHAR(40) NOT NULL, "
+        "Pwd VARCHAR(40) NOT NULL, "
+        "Ip VARCHAR(40), "
+        "Avatar VARCHAR(512) )");
 	//建表完成
 }//构造函数
 
@@ -237,6 +245,7 @@ QList<ChatMessage> DBHelper::getOfflineMsg(quint32 ID){
     return msg;
 }
 
+//删除离线消息
 void DBHelper::dropOfflineMsg(quint32 ID){
     QSqlQuery query;
     query.prepare("delete from OfflineMsg where Reciever = :ID");
@@ -244,6 +253,7 @@ void DBHelper::dropOfflineMsg(quint32 ID){
     query.exec();
 }
 
+//查找最大群聊Id
 quint32 DBHelper::selectMaxGroupId() {//群聊7位数
     QSqlQuery query;
     query.exec("select MAX(Id) as Id from GroupInfo");
@@ -256,6 +266,7 @@ quint32 DBHelper::selectMaxGroupId() {//群聊7位数
     else return quint32(1000000);
 }
 
+//修改用户姓名
 void DBHelper::updUsername(quint32 ID, QString Username){
     QSqlQuery query;
     query.prepare("UPDATE UserInfo SET Username = :Username WHERE ID = :ID");
@@ -264,6 +275,7 @@ void DBHelper::updUsername(quint32 ID, QString Username){
     query.exec();
 }
 
+//修改用户头像
 void DBHelper::updAvatar(quint32 ID, QString Avatar){
     QSqlQuery query;
     query.prepare("UPDATE UserInfo SET Avatar = :Avatar WHERE ID = :ID");
@@ -272,6 +284,7 @@ void DBHelper::updAvatar(quint32 ID, QString Avatar){
     query.exec();
 }
 
+//根据Id查找群聊
 GroupInfo DBHelper::selectGroupInfoByID(quint32 ID){
     QSqlQuery query;
     query.prepare("select * from GroupInfo where ID = :ID");
@@ -287,6 +300,8 @@ GroupInfo DBHelper::selectGroupInfoByID(quint32 ID){
     }
     return tmp;
 }
+
+//查找朋友关系是否存在
 bool DBHelper::friendshipExist(quint32 Id1,quint32 Id2){
     QSqlQuery query;
     //向数据库发送一个预编译语句
@@ -297,6 +312,8 @@ bool DBHelper::friendshipExist(quint32 Id1,quint32 Id2){
     bool flag = query.next();
     return flag;
 }
+
+//查找群聊关系是否存在
 bool DBHelper::groupshipExist(quint32 Id1, quint32 Id2){
     QSqlQuery query;
     //向数据库发送一个预编译语句
@@ -307,6 +324,8 @@ bool DBHelper::groupshipExist(quint32 Id1, quint32 Id2){
     bool flag = query.next();
     return flag;
 }
+
+//查找全部的群聊信息
 QList<QByteArray> DBHelper::selectAllGroupInfo(quint32 ID){
     QSqlQuery query;
     query.prepare("select Id,GroupName,GroupAvatar from GroupInfo where Id in (select GroupID from Groupship where UserId =:UserId)");
@@ -319,6 +338,8 @@ QList<QByteArray> DBHelper::selectAllGroupInfo(quint32 ID){
     }
     return ListGroupInfo;
 }
+
+//查找全部的群成员
 QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
     QSqlQuery query;
     query.prepare("select UserId from Groupship where GroupID = :ID");
@@ -331,5 +352,27 @@ QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
     }
 
     return ListGroupMember;
+}
+
+//增加在线用户信息
+void DBHelper::addOnlineUserInfo(const UserInfo& user){
+    QSqlQuery query;
+    query.prepare("insert into OnlineUser values(:Id,:Username,:Ip)");
+    query.bindValue(":Id", user.getID());
+    query.bindValue(":Username", user.getName());
+    query.bindValue(":Ip", user.getIp());
+    query.exec();
+}
+
+//显示全部在线用户
+QList<QByteArray> DBHelper::showAllOnlineUserInfo(){
+    QSqlQuery query;
+    query.exec("select Id, Username, Ip from OnlineUser");
+    QList<QByteArray> ListUserInfo;
+    ListUserInfo.clear();
+    while (query.next()){
+        ListUserInfo.append(UserInfo(query.value("Id").toInt(), query.value("Username").toString(),"","", query.value("Ip").toString()).toQByteArray());
+    }
+    return ListUserInfo;
 }
 //end对外功能接口

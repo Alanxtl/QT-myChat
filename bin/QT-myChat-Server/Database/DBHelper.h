@@ -57,6 +57,9 @@ public:
     void updUsername(quint32 ID,QString Username);
     void updAvatar(quint32 ID,QString Avatar);
 
+    void addOnlineUserInfo(const UserInfo& user);
+    QList<QByteArray> showAllOnlineUserInfo();
+
 private:
     QSqlDatabase sqldb;
     static DBHelper* db;
