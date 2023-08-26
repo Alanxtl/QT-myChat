@@ -33,7 +33,6 @@ public:
     quint32 selectMaxId();
     //单例设计模式--应对数据库的对象的内存使用
     static DataDB* GetInstance();
-    //邱睿桥给我她的struct之后，我写一个QList返回她需要的结构列表
 
     //处理离线消息
     //添加离线消息
