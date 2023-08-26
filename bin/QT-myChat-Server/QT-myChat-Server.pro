@@ -17,6 +17,7 @@ SOURCES += \
     Tools/mymsg.cpp \
     main.cpp \
     mainwindow.cpp \
+    Service/tcpservice.cpp
 
 
 HEADERS += \
@@ -26,6 +27,7 @@ HEADERS += \
     Tools/log.h \
     Tools/mymsg.h \
     mainwindow.h \
+    Service/tcpservice.h
 
 
 
