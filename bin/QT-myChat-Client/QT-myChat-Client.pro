@@ -29,3 +29,41 @@ CONFIG += embed_translations
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    images/a (1).jpg \
+    images/a (1).jpg \
+    images/a (1).png \
+    images/a (1).png \
+    images/a (10).jpg \
+    images/a (10).jpg \
+    images/a (11).jpeg \
+    images/a (11).jpeg \
+    images/a (12).jpeg \
+    images/a (12).jpeg \
+    images/a (13).jpg \
+    images/a (13).jpg \
+    images/a (14).jpe \
+    images/a (14).jpe \
+    images/a (15).jpe \
+    images/a (15).jpe \
+    images/a (16).jpeg \
+    images/a (16).jpeg \
+    images/a (17).jpg \
+    images/a (17).jpg \
+    images/a (2).jpg \
+    images/a (2).jpg \
+    images/a (3).jpg \
+    images/a (3).jpg \
+    images/a (4).jpg \
+    images/a (4).jpg \
+    images/a (5).jpg \
+    images/a (5).jpg \
+    images/a (6).jpg \
+    images/a (6).jpg \
+    images/a (7).jpg \
+    images/a (7).jpg \
+    images/a (8).jpg \
+    images/a (8).jpg \
+    images/a (9).jpg \
+    images/a (9).jpg

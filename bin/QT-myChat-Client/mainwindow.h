@@ -1,7 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QWidget>
 #include <QMainWindow>
+#include "mylist.h"
+#include "ui_mylist.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
