@@ -21,6 +21,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     resize(600, 800);
+    ui->tableWidget->setColumnCount(3);
+        ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Nickname" << "ID" << "IP");
+        ui->tableWidget->setRowCount(5);
+
+        QStringList nameList;
+        nameList << "张三" << "李四" << "王五" << "赵六" << "孙七";
+        QStringList sexList;
+        sexList << "男" << "女" << "男" << "女" << "男";
+        QStringList ageList;
+        ageList << "22" << "30" << "12" << "55" << "90";
+        for (int i=0;i<5;i++)
+        {
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sexList[i]));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem(ageList[i]));
+        }
 }
 
 MainWindow::~MainWindow()
@@ -76,7 +92,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::dealMessage(QNChatMessage *messageW, QListWidgetItem *item, QString text, QString time,  QNChatMessage::User_Type type)
 {
-    messageW->setFixedWidth(this->width());
+    messageW->setFixedWidth(this->width()-200);
     QSize size = messageW->fontRect(text);
     item->setSizeHint(size);
     messageW->setText(text, time, size, type);
@@ -101,7 +117,7 @@ void MainWindow::dealMessageTime(QString curMsgTime)//计算消息时间差决�
         QNChatMessage* messageTime = new QNChatMessage(ui->listWidget->parentWidget());
         QListWidgetItem* itemTime = new QListWidgetItem(ui->listWidget);
 
-        QSize size = QSize(this->width(), 40);
+        QSize size = QSize(this->width()-200, 40);
         messageTime->resize(size);
         itemTime->setSizeHint(size);
         messageTime->setText(curMsgTime, curMsgTime, size, QNChatMessage::User_Time);
@@ -114,11 +130,11 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
 
 
-    ui->textEdit->resize(this->width() - 20, ui->widget->height() - 20);
+    ui->textEdit->resize(this->width() - 220, ui->widget->height() - 20);
     ui->textEdit->move(10, 10);
 
-    ui->pushButton->move(ui->textEdit->width()+ui->textEdit->x() - ui->pushButton->width() - 10,
-                         ui->textEdit->height()+ui->textEdit->y() - ui->pushButton->height() - 10);
+//    ui->pushButton->move(ui->textEdit->width()+ui->textEdit->x() - ui->pushButton->width() - 10,
+//                         ui->textEdit->height()+ui->textEdit->y() - ui->pushButton->height() - 10);
 
 
     for(int i = 0; i < ui->listWidget->count(); i++) {
