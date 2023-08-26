@@ -7,6 +7,7 @@
 #include <Thread/chatbusiness.h>
 #include <Thread/chatthread.h>
 #include <Service/tcpservice.h>
+#include <QHostAddress>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

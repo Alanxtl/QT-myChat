@@ -9,13 +9,8 @@ ChatBusiness::ChatBusiness(qintptr handle, QObject *parent) : QObject{parent}
 void ChatBusiness::mainBusiness()
 {
     QTcpSocket socket;
-    if (socket.setSocketDescriptor(socketDescriptor)){
-        QDebug << "Connected successful!";
-    }
-    else {
-        QDebug << "Failed to connect!";
-    }
-
+    socket.setSocketDescriptor(socketDescriptor);
+    Log::getLogObj()->writeLog("一个用户已连接至服务端");
 
     //调用TCP业务
 }
