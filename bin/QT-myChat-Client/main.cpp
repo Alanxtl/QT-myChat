@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "mylist.h"
+
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>

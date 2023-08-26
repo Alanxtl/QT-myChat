@@ -3,8 +3,7 @@
 
 #include <QWidget>
 #include <QMainWindow>
-#include "mylist.h"
-#include "ui_mylist.h"
+
 
 
 QT_BEGIN_NAMESPACE

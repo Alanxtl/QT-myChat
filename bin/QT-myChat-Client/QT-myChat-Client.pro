@@ -67,3 +67,6 @@ DISTFILES += \
     images/a (8).jpg \
     images/a (9).jpg \
     images/a (9).jpg
+
+RESOURCES += \
+    res.qrc
