@@ -16,14 +16,14 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_test_clicked()
 {
     QTcpSocket socket;
-    QString ip = ui->label_IP->text();
-    long int port = ui->label_Port->text().toLong();
-    socket.connectToHost(ip, port);
+    QString ip = ui->lineEdit_IP->text();
+    quint16 port = ui->lineEdit_Port->text().toUShort();
+    socket.connectToHost(QHostAddress(ip), port);
     if (socket.waitForConnected(3000)) {
         qDebug() << "Connected to the Host!";
     }
     else {
-        qDebug() << "Failed to connect";
+        qDebug() << "Failed to connect ip=" << ip << "   port=" << port;
     }
 }
 
