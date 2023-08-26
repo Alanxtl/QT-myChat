@@ -1,6 +1,13 @@
 #ifndef DATADB_H
 #define DATADB_H
 #include <QSqlDatabase>
+#include <QObject>
+#include <QMessageBox>
+#include <QSqlQuery>
+#include <QVariant>
+#include <QtDebug>
+#include <QObject>
+#include <QtNetwork>
 
 #include "ChatMessage.h"
 #include "GroupInfo.h"
@@ -8,8 +15,10 @@
 #include "Tools/mymsg.h"
 #include "Tools/log.h"
 
-class DBHelper
+
+class DBHelper : public QObject
 {
+    Q_OBJECT
 public:
     explicit DBHelper();
     ~DBHelper();
@@ -57,8 +66,8 @@ public:
     void updUsername(quint32 ID,QString Username);
     void updAvatar(quint32 ID,QString Avatar);
 
+signals:
     void addOnlineUserInfo(const UserInfo& user);
-    QList<QByteArray> showAllOnlineUserInfo();
 
 private:
     QSqlDatabase sqldb;

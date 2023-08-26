@@ -8,6 +8,7 @@
 #include <Thread/chatthread.h>
 #include <Service/tcpservice.h>
 #include <QHostAddress>
+#include <Database/DBHelper.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,6 +29,7 @@ public slots:
     void showLog(QString str);
     void autoScroll();
     void updateClinetMonitor();
+    void showAllOnlineUserInfo(const UserInfo& user);
 
 private:
     Ui::MainWindow *ui;

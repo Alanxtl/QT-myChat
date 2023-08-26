@@ -1,15 +1,4 @@
-#include <QMessageBox>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QVariant>
-#include <QtDebug>
-#include <QObject>
-#include <QtNetwork>
-
 #include "DBHelper.h"
-#include "UserInfo.h"
-#include "GroupInfo.h"
-#include "Tools/log.h"
 
 //静态成员变量的类外初始化
 DBHelper* DBHelper::db = NULL;
@@ -362,17 +351,5 @@ void DBHelper::addOnlineUserInfo(const UserInfo& user){
     query.bindValue(":Username", user.getName());
     query.bindValue(":Ip", user.getIp());
     query.exec();
-}
-
-//显示全部在线用户
-QList<QByteArray> DBHelper::showAllOnlineUserInfo(){
-    QSqlQuery query;
-    query.exec("select Id, Username, Ip from OnlineUser");
-    QList<QByteArray> ListUserInfo;
-    ListUserInfo.clear();
-    while (query.next()){
-        ListUserInfo.append(UserInfo(query.value("Id").toInt(), query.value("Username").toString(),"","", query.value("Ip").toString()).toQByteArray());
-    }
-    return ListUserInfo;
 }
 //end对外功能接口
