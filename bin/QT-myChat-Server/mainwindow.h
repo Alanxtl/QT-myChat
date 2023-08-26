@@ -6,6 +6,7 @@
 #include <Tools/log.h>
 #include <Thread/chatbusiness.h>
 #include <Thread/chatthread.h>
+#include <Service/tcpservice.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +20,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     quint32 clientCount;
+    TcpService tcpservice;
+
 
 public slots:
     void showLog(QString str);

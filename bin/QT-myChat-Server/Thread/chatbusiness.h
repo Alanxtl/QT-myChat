@@ -6,6 +6,7 @@
 #include <QTcpSocket>
 #include <Tools/log.h>
 #include <qdebug.h>
+#include <QDebug>
 
 class ChatBusiness : public QObject
 {
