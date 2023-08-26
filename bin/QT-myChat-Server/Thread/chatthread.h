@@ -10,6 +10,7 @@ class ChatThread : public QThread
 public:
     explicit ChatThread(QThread *parent = nullptr);
     void run() override;
+    qintptr socketDescriptor;
 
 signals:
     void showSignal();

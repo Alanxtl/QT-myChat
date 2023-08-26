@@ -1,16 +1,23 @@
 #include "chatbusiness.h"
 
-ChatBusiness::ChatBusiness(QObject *parent) : QObject{parent}
+ChatBusiness::ChatBusiness(qintptr handle, QObject *parent) : QObject{parent}
 {
     connect(this, &ChatBusiness::startSignal, this, &ChatBusiness::mainBusiness);
+    socketDescriptor = handle;
 }
 
 void ChatBusiness::mainBusiness()
 {
-    for ( int i = 0; i < 100; ++i ) {
-        Log::getLogObj()->writeLog(QString::number(i));
+    QTcpSocket socket;
+    if (socket.setSocketDescriptor(socketDescriptor)){
+        QDebug << "Connected successful!";
+    }
+    else {
+        QDebug << "Failed to connect!";
     }
 
+
+    //调用TCP业务
 }
 
 /*
