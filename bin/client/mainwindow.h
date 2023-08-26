@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QString>
+#include <QHostAddress>
+#include <QDebug>
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +21,10 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+
+    void on_pushButton_test_clicked();
+
+    void on_pushButton_Send_clicked();
 
 private:
     Ui::MainWindow *ui;

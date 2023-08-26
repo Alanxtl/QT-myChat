@@ -3,6 +3,7 @@
 
 #include <QTcpServer>
 #include <QDebug>
+#include <Tools/log.h>
 
 class TcpService : public QTcpServer
 {

@@ -10,29 +10,27 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    #Database/DBHelper.cpp \
+    Service/tcpservice.cpp \
     Thread/chatbusiness.cpp \
     Thread/chatthread.cpp \
     Tools/log.cpp \
     Tools/mymsg.cpp \
     main.cpp \
-    mainwindow.cpp \
-    Service/tcpservice.cpp
+    mainwindow.cpp
 
 
 HEADERS += \
-    #Database/DBHelper.h \
+    Service/tcpservice.h \
     Thread/chatbusiness.h \
     Thread/chatthread.h \
     Tools/log.h \
     Tools/mymsg.h \
-    mainwindow.h \
-    Service/tcpservice.h
+    mainwindow.h
 
 
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
 
 TRANSLATIONS += \
     QT-myChat-Server_zh_CN.ts
@@ -43,3 +41,9 @@ CONFIG += embed_translations
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+SUBDIRS += \
+    QT-myChat-Server.pro
+
+DISTFILES += \
+    QT-myChat-Server_zh_CN.ts

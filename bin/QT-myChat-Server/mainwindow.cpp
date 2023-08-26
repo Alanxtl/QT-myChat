@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(, , this, updateClinetMonitor);
     //todo 数据库交互
     //DataDB::GetInstance();
-
+    tcpservice.listen(QHostAddress::Any, 6666);
     Log::getLogObj()->writeLog("服务端初始化成功");
 }
 

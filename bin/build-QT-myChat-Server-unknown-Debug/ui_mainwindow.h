@@ -32,8 +32,8 @@ public:
     QLabel *clientLabel;
     QTextBrowser *clientBrowser;
     QLabel *clientCountLabel;
-    QMenuBar *menubar;
     QStatusBar *statusbar;
+    QMenuBar *menubar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -44,27 +44,27 @@ public:
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         logLabel = new QLabel(centralwidget);
         logLabel->setObjectName(QStringLiteral("logLabel"));
-        logLabel->setGeometry(QRect(530, 20, 131, 17));
+        logLabel->setGeometry(QRect(500, 20, 131, 17));
         logBrowser = new QTextBrowser(centralwidget);
         logBrowser->setObjectName(QStringLiteral("logBrowser"));
-        logBrowser->setGeometry(QRect(530, 50, 256, 192));
+        logBrowser->setGeometry(QRect(500, 50, 256, 481));
         clientLabel = new QLabel(centralwidget);
         clientLabel->setObjectName(QStringLiteral("clientLabel"));
         clientLabel->setGeometry(QRect(20, 20, 101, 17));
         clientBrowser = new QTextBrowser(centralwidget);
         clientBrowser->setObjectName(QStringLiteral("clientBrowser"));
-        clientBrowser->setGeometry(QRect(20, 50, 411, 192));
+        clientBrowser->setGeometry(QRect(20, 50, 461, 192));
         clientCountLabel = new QLabel(centralwidget);
         clientCountLabel->setObjectName(QStringLiteral("clientCountLabel"));
         clientCountLabel->setGeometry(QRect(120, 20, 67, 17));
         MainWindow->setCentralWidget(centralwidget);
+        statusbar = new QStatusBar(MainWindow);
+        statusbar->setObjectName(QStringLiteral("statusbar"));
+        MainWindow->setStatusBar(statusbar);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 28));
         MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName(QStringLiteral("statusbar"));
-        MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
 

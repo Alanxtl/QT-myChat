@@ -50,32 +50,33 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../QT-myChat-Server/Database/DBHelper.cpp \
+SOURCES       = ../QT-myChat-Server/Service/tcpservice.cpp \
 		../QT-myChat-Server/Thread/chatbusiness.cpp \
 		../QT-myChat-Server/Thread/chatthread.cpp \
 		../QT-myChat-Server/Tools/log.cpp \
 		../QT-myChat-Server/Tools/mymsg.cpp \
 		../QT-myChat-Server/main.cpp \
-		../QT-myChat-Server/mainwindow.cpp moc_DBHelper.cpp \
+		../QT-myChat-Server/mainwindow.cpp moc_tcpservice.cpp \
 		moc_chatbusiness.cpp \
 		moc_chatthread.cpp \
 		moc_log.cpp \
 		moc_mymsg.cpp \
 		moc_mainwindow.cpp
-OBJECTS       = DBHelper.o \
+OBJECTS       = tcpservice.o \
 		chatbusiness.o \
 		chatthread.o \
 		log.o \
 		mymsg.o \
 		main.o \
 		mainwindow.o \
-		moc_DBHelper.o \
+		moc_tcpservice.o \
 		moc_chatbusiness.o \
 		moc_chatthread.o \
 		moc_log.o \
 		moc_mymsg.o \
 		moc_mainwindow.o
-DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
+DIST          = ../QT-myChat-Server/QT-myChat-Server_zh_CN.ts \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/sanitize.conf \
@@ -129,6 +130,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../QT-myChat-Server/.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -148,12 +150,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../QT-myChat-Server/QT-myChat-Server.pro ../QT-myChat-Server/Database/DBHelper.h \
+		../QT-myChat-Server/QT-myChat-Server.pro ../QT-myChat-Server/Service/tcpservice.h \
 		../QT-myChat-Server/Thread/chatbusiness.h \
 		../QT-myChat-Server/Thread/chatthread.h \
 		../QT-myChat-Server/Tools/log.h \
 		../QT-myChat-Server/Tools/mymsg.h \
-		../QT-myChat-Server/mainwindow.h ../QT-myChat-Server/Database/DBHelper.cpp \
+		../QT-myChat-Server/mainwindow.h ../QT-myChat-Server/Service/tcpservice.cpp \
 		../QT-myChat-Server/Thread/chatbusiness.cpp \
 		../QT-myChat-Server/Thread/chatthread.cpp \
 		../QT-myChat-Server/Tools/log.cpp \
@@ -225,6 +227,7 @@ Makefile: ../QT-myChat-Server/QT-myChat-Server.pro /usr/lib/x86_64-linux-gnu/qt5
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -305,6 +308,7 @@ Makefile: ../QT-myChat-Server/QT-myChat-Server.pro /usr/lib/x86_64-linux-gnu/qt5
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -345,8 +349,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QT-myChat-Server/Database/DBHelper.h ../QT-myChat-Server/Thread/chatbusiness.h ../QT-myChat-Server/Thread/chatthread.h ../QT-myChat-Server/Tools/log.h ../QT-myChat-Server/Tools/mymsg.h ../QT-myChat-Server/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QT-myChat-Server/Database/DBHelper.cpp ../QT-myChat-Server/Thread/chatbusiness.cpp ../QT-myChat-Server/Thread/chatthread.cpp ../QT-myChat-Server/Tools/log.cpp ../QT-myChat-Server/Tools/mymsg.cpp ../QT-myChat-Server/main.cpp ../QT-myChat-Server/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QT-myChat-Server/Service/tcpservice.h ../QT-myChat-Server/Thread/chatbusiness.h ../QT-myChat-Server/Thread/chatthread.h ../QT-myChat-Server/Tools/log.h ../QT-myChat-Server/Tools/mymsg.h ../QT-myChat-Server/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QT-myChat-Server/Service/tcpservice.cpp ../QT-myChat-Server/Thread/chatbusiness.cpp ../QT-myChat-Server/Thread/chatthread.cpp ../QT-myChat-Server/Tools/log.cpp ../QT-myChat-Server/Tools/mymsg.cpp ../QT-myChat-Server/main.cpp ../QT-myChat-Server/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../QT-myChat-Server/mainwindow.ui $(DISTDIR)/
 	$(COPY_FILE) --parents QT-myChat-Server_zh_CN.ts $(DISTDIR)/
 
@@ -380,15 +384,17 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_DBHelper.cpp moc_chatbusiness.cpp moc_chatthread.cpp moc_log.cpp moc_mymsg.cpp moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_tcpservice.cpp moc_chatbusiness.cpp moc_chatthread.cpp moc_log.cpp moc_mymsg.cpp moc_mainwindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_DBHelper.cpp moc_chatbusiness.cpp moc_chatthread.cpp moc_log.cpp moc_mymsg.cpp moc_mainwindow.cpp
-moc_DBHelper.cpp: ../QT-myChat-Server/Database/DBHelper.h \
+	-$(DEL_FILE) moc_tcpservice.cpp moc_chatbusiness.cpp moc_chatthread.cpp moc_log.cpp moc_mymsg.cpp moc_mainwindow.cpp
+moc_tcpservice.cpp: ../QT-myChat-Server/Tools/log.h \
+		../QT-myChat-Server/Service/tcpservice.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/txtntl/learngit/QT-myChat/bin/QT-myChat-Server -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-myChat-Server/Database/DBHelper.h -o moc_DBHelper.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/txtntl/learngit/QT-myChat/bin/QT-myChat-Server -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-myChat-Server/Service/tcpservice.h -o moc_tcpservice.cpp
 
-moc_chatbusiness.cpp: ../QT-myChat-Server/Thread/chatbusiness.h \
+moc_chatbusiness.cpp: ../QT-myChat-Server/Tools/log.h \
+		../QT-myChat-Server/Thread/chatbusiness.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/txtntl/learngit/QT-myChat/bin/QT-myChat-Server -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-myChat-Server/Thread/chatbusiness.h -o moc_chatbusiness.cpp
@@ -409,6 +415,9 @@ moc_mymsg.cpp: ../QT-myChat-Server/Tools/mymsg.h \
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/txtntl/learngit/QT-myChat/bin/QT-myChat-Server -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-myChat-Server/Tools/mymsg.h -o moc_mymsg.cpp
 
 moc_mainwindow.cpp: ../QT-myChat-Server/Tools/log.h \
+		../QT-myChat-Server/Thread/chatbusiness.h \
+		../QT-myChat-Server/Thread/chatthread.h \
+		../QT-myChat-Server/Service/tcpservice.h \
 		../QT-myChat-Server/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -433,10 +442,14 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-DBHelper.o: ../QT-myChat-Server/Database/DBHelper.cpp ../QT-myChat-Server/Database/DBHelper.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DBHelper.o ../QT-myChat-Server/Database/DBHelper.cpp
+tcpservice.o: ../QT-myChat-Server/Service/tcpservice.cpp ../QT-myChat-Server/Service/tcpservice.h \
+		../QT-myChat-Server/Tools/log.h \
+		../QT-myChat-Server/Thread/chatbusiness.h \
+		../QT-myChat-Server/Thread/chatthread.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tcpservice.o ../QT-myChat-Server/Service/tcpservice.cpp
 
-chatbusiness.o: ../QT-myChat-Server/Thread/chatbusiness.cpp ../QT-myChat-Server/Thread/chatbusiness.h
+chatbusiness.o: ../QT-myChat-Server/Thread/chatbusiness.cpp ../QT-myChat-Server/Thread/chatbusiness.h \
+		../QT-myChat-Server/Tools/log.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o chatbusiness.o ../QT-myChat-Server/Thread/chatbusiness.cpp
 
 chatthread.o: ../QT-myChat-Server/Thread/chatthread.cpp ../QT-myChat-Server/Thread/chatthread.h
@@ -449,16 +462,22 @@ mymsg.o: ../QT-myChat-Server/Tools/mymsg.cpp ../QT-myChat-Server/Tools/mymsg.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mymsg.o ../QT-myChat-Server/Tools/mymsg.cpp
 
 main.o: ../QT-myChat-Server/main.cpp ../QT-myChat-Server/mainwindow.h \
-		../QT-myChat-Server/Tools/log.h
+		../QT-myChat-Server/Tools/log.h \
+		../QT-myChat-Server/Thread/chatbusiness.h \
+		../QT-myChat-Server/Thread/chatthread.h \
+		../QT-myChat-Server/Service/tcpservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../QT-myChat-Server/main.cpp
 
 mainwindow.o: ../QT-myChat-Server/mainwindow.cpp ../QT-myChat-Server/mainwindow.h \
 		../QT-myChat-Server/Tools/log.h \
+		../QT-myChat-Server/Thread/chatbusiness.h \
+		../QT-myChat-Server/Thread/chatthread.h \
+		../QT-myChat-Server/Service/tcpservice.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../QT-myChat-Server/mainwindow.cpp
 
-moc_DBHelper.o: moc_DBHelper.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_DBHelper.o moc_DBHelper.cpp
+moc_tcpservice.o: moc_tcpservice.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_tcpservice.o moc_tcpservice.cpp
 
 moc_chatbusiness.o: moc_chatbusiness.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_chatbusiness.o moc_chatbusiness.cpp
