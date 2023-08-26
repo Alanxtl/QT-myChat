@@ -184,7 +184,7 @@ quint32 DBHelper::selectMaxId() {
 	while (query.next()) {
         maxId = query.value("Id").toUInt();
 	}
-    Log::GetLogObj()->writeLog("[CurrentMaxID]" + QString::number(maxId));
+    Log::getLogObj()->writeLog("[CurrentMaxID]" + QString::number(maxId));
     if(maxId>=quint32(100000)) return maxId;
     else return quint32(100000);
 }
@@ -231,7 +231,7 @@ QList<ChatMessage> DBHelper::getOfflineMsg(quint32 ID){
     while (query.next()) {
         ChatMessage nowmsg(query.value("Sender").toUInt(),query.value("Reciever").toUInt()
                            ,query.value("Msg").toString());
-        nowmsg._time_stamp = query.value("DT").toString();
+        nowmsg.getTimeStamp() = query.value("DT").toString();
         msg.append(nowmsg);
     }
     return msg;
@@ -251,7 +251,7 @@ quint32 DBHelper::selectMaxGroupId() {//群聊7位数
     while (query.next()) {
         maxId = query.value("Id").toUInt();
     }
-    Log::GetLogObj()->writeLog("[CurrentMaxID]" + QString::number(maxId));
+    Log::getLogObj()->writeLog("[CurrentMaxID]" + QString::number(maxId));
     if(maxId>=quint32(1000000)) return maxId;
     else return quint32(1000000);
 }
