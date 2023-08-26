@@ -346,10 +346,9 @@ QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
 //增加在线用户信息
 void DBHelper::addOnlineUserInfo(const UserInfo& user){
     QSqlQuery query;
-    query.prepare("insert into OnlineUser values(:Id,:Username,:Ip)");
+    query.prepare("insert into OnlineUser values(:Id,:Username)");
     query.bindValue(":Id", user.getID());
     query.bindValue(":Username", user.getName());
-    query.bindValue(":Ip", user.getIp());
     query.exec();
 }
 //end对外功能接口
