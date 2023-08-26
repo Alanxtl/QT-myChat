@@ -1,4 +1,4 @@
-#include "chatmessage.h"
+#include "ChatMessage.h"
 #include "standarddatetimeutilities.h"
 
 #include <QtNetwork>

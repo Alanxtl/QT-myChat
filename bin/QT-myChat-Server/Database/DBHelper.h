@@ -32,7 +32,7 @@ public:
     //获取最大的Id值
     quint32 selectMaxId();
     //单例设计模式--应对数据库的对象的内存使用
-    static DataDB* GetInstance();
+    static DBHelper* GetInstance();
 
     //处理离线消息
     //添加离线消息
