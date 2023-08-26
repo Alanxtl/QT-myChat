@@ -1,14 +1,19 @@
 #ifndef DATADB_H
 #define DATADB_H
 #include <QSqlDatabase>
-#include "DataModel/chatmessage.h"
-#include "DataModel/datamodel.h"
 
-class DataDB
+#include "ChatMessage.h"
+#include "GroupInfo.h"
+#include "UserInfo.h"
+#include "Tools/mymsg.h"
+#include "Tools/log.h"
+
+class DBHelper
 {
 public:
-    explicit DataDB();
-    ~DataDB();
+    explicit DBHelper();
+    ~DBHelper();
+    
     //登录功能数据库
     bool selectUserByIdAndPwd(const quint32 id, const QString pwd);//存在返回true，不存在返回false
     UserInfo selectUserInfoById(const quint32 id);//存在返回true，不存在返回false
@@ -52,9 +57,10 @@ public:
     //修改用户名和头像
     void updUsername(quint32 ID,QString Username);
     void updAvatar(quint32 ID,QString Avatar);
+
 private:
     QSqlDatabase sqldb;
-    static DataDB* db;
+    static DBHelper* db;
 };
 
-#endif // DATADB_H
+#endif // DBHELPER_H

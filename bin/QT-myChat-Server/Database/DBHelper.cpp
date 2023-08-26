@@ -1,15 +1,23 @@
 #include <QMessageBox>
+#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVariant>
 #include <QtDebug>
 #include <QObject>
+#include <QtNetwork>
 
 #include "DBHelper.h"
+#include "UserInfo.h"
+#include "GroupInfo.h"
+#include "Tools/log.h"
 
 //静态成员变量的类外初始化
 DBHelper* DBHelper::db = NULL;
-DBHelper::DBHelper() {
-	sqldb = QSqlDatabase::addDatabase("QSQLITE");
+
+//构造函数
+DBHelper::DBHelper(){
+    //连接数据库操作
+    sqldb = QSqlDatabase::addDatabase("QSQLITE");
     sqldb.setDatabaseName("server.db");
 	if (!sqldb.open()) {
         QMessageBox::warning(NULL, "错误", "打开数据库时出现错误!", QMessageBox::Yes);
@@ -17,8 +25,7 @@ DBHelper::DBHelper() {
 
 	//初始化建表
 	QSqlQuery query;
-
-    //用户信息表（添加Ip）
+    //用户信息表（添加Ip）(Id设置为3位)
 	query.exec("CREATE TABLE UserInfo ("
 		"Id INTEGER PRIMARY KEY, "
 		"Username VARCHAR(40) NOT NULL, "
@@ -53,7 +60,7 @@ DBHelper::DBHelper() {
 		"FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
 		"FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))");
 
-    //群聊信息表
+    //群聊信息表（Id设置为4位）
     query.exec("CREATE TABLE GroupInfo ("
           "ID INTEGER PRIMARY KEY,"
           "GroupName VARCHAR(40),"
@@ -67,37 +74,42 @@ DBHelper::DBHelper() {
           "FOREIGN KEY (UserID) REFERENCES UserInfo(Id),"
           "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))");
 	//建表完成
-}
+}//构造函数
 
-DataDB::~DataDB() {
+//析构函数
+DBHelper::~DBHelper(){
 	if (db != NULL) {
 		delete db;
 	}
 }
 
-DataDB* DataDB::GetInstance() {
+//单例模式
+DBHelper* DBHelper::GetInstance(){
 	if (db == NULL) {
-		db = new DataDB;
+		db = new DBHelper;
 	}
 	return db;
 }
 
-//查询所有好友的信息，返回一个包含User Info的QList
-QList<QByteArray> DataDB::selectAllFriendsUserInfo(quint32 UserId) {
+
+
+//下面是该数据库对外提供的功能接口
+//查询好友列表（返回一个包含User Info的QList）
+QList<QByteArray> DBHelper::selectAllFriendsUserInfo(quint32 UserId){
 	QSqlQuery query;
-    query.prepare("select Id,Username,Avatar from UserInfo where Id in (select FriendId from Friendship where MyId =:UserId)");
+    query.prepare("select Id, Username, Avatar from UserInfo where Id in (select FriendId from Friendship where MyId =:UserId)");
 	query.bindValue(":UserId", QVariant(UserId));
 	query.exec();
 	QList<QByteArray> ListUserInfo;
 	ListUserInfo.clear();
-	while (query.next()) {
+	while (query.next()){
         ListUserInfo.append(UserInfo(query.value("Id").toInt(), query.value("Username").toString(),"",query.value("Avatar").toString()).toQByteArray());
 	}
 	return ListUserInfo;
 }
 
-//注册信息
-void DataDB::registerUserInfo(const UserInfo& user) {
+//注册信息(没有实现验证功能，如果重复数据库会报错)
+void DBHelper::registerUserInfo(const UserInfo& user){
 	QSqlQuery query;
     query.prepare("insert into UserInfo values(:Id,:Username,:pwd,:avatar)");
 	query.bindValue(":Id", user.getID());
@@ -107,10 +119,9 @@ void DataDB::registerUserInfo(const UserInfo& user) {
 	query.exec();
 }
 
-//登录验证
-bool DataDB::selectUserByIdAndPwd(const quint32 Id, const QString pwd) {
+//登录验证(返回true/false)
+bool DBHelper::selectUserByIdAndPwd(const quint32 Id, const QString pwd){
 	QSqlQuery query;
-	//向数据库发送一个预编译语句
 	query.prepare("select * from UserInfo where Id =:Id and pwd =:pwd");
 	query.bindValue(":Id", QVariant(Id));
 	query.bindValue(":pwd", QVariant(pwd));
@@ -119,10 +130,9 @@ bool DataDB::selectUserByIdAndPwd(const quint32 Id, const QString pwd) {
 	return flag;
 }
 
-//获得不含密码的基本信息
-UserInfo DataDB::selectUserInfoById(const quint32 id){
+//获得不含密码的基本信息（返回UserInfo类型）
+UserInfo DBHelper::selectUserInfoById(const quint32 id){
     QSqlQuery query;
-    //向数据库发送一个预编译语句
     query.prepare("select * from UserInfo where Id =:Id");
     query.bindValue(":Id", QVariant(id));
     query.exec();
@@ -137,23 +147,26 @@ UserInfo DataDB::selectUserInfoById(const quint32 id){
     return tmp;
 }
 
-//添加好友 添加双向
-void DataDB::addFriendship(quint32 Id1, quint32 Id2) {
+//添加好友
+void DBHelper::addFriendship(quint32 Id1, quint32 Id2){
 	QSqlQuery query;
 	query.prepare("insert into Friendship values(:Id1,:Id2)");
 	query.bindValue(":Id1", QVariant(Id1));
 	query.bindValue(":Id2", QVariant(Id2));
 	query.exec();
 }
-//删除好友 双向删除
-void DataDB::deleteFriendship(quint32 Id1, quint32 Id2) {
+
+//删除好友
+void DBHelper::deleteFriendship(quint32 Id1, quint32 Id2){
 	QSqlQuery query;
 	query.prepare("delete from Friendship where MyId =:Id1 and FriendId =:Id2");
 	query.bindValue(":Id1", QVariant(Id1));
 	query.bindValue(":Id2", QVariant(Id2));
 	query.exec();
 }
-void DataDB::addMsg(quint32 Id1, quint32 Id2, QString Msg, QString Date) {
+
+//添加消息
+void DBHelper::addMsg(quint32 Id1, quint32 Id2, QString Msg, QString Date) {
 	QSqlQuery query;
 	query.prepare("insert into Msg values(:Id1,:Id2,:Msg,:Date)");
 	query.bindValue(":Id1", QVariant(Id1));
@@ -163,7 +176,8 @@ void DataDB::addMsg(quint32 Id1, quint32 Id2, QString Msg, QString Date) {
 	query.exec();
 }
 
-quint32 DataDB::selectMaxId() {
+//搜索最大Id并调用log输出
+quint32 DBHelper::selectMaxId() {
 	QSqlQuery query;
 	query.exec("select MAX(Id) as Id from UserInfo");
     quint32 maxId = quint32(100000);
@@ -175,7 +189,8 @@ quint32 DataDB::selectMaxId() {
     else return quint32(100000);
 }
 
-void DataDB::addGroupship(quint32 UserID,quint32 GroupID,quint32 UserPermission){
+//添加群聊列表
+void DBHelper::addGroupship(quint32 UserID,quint32 GroupID,quint32 UserPermission){
     QSqlQuery query;
     query.prepare("insert into Groupship values(:UserID,:GroupID,:UserPermission)");
     query.bindValue(":UserID", QVariant(UserID));
@@ -184,7 +199,8 @@ void DataDB::addGroupship(quint32 UserID,quint32 GroupID,quint32 UserPermission)
     query.exec();
 }
 
-void DataDB::registerGroupInfo(const GroupInfo& GroupInfo){
+//新建群聊
+void DBHelper::registerGroupInfo(const GroupInfo& GroupInfo){
     QSqlQuery query;
     query.prepare("insert into GroupInfo values(:Id,:Username,:avatar)");
     query.bindValue(":Id", QVariant(GroupInfo.getID()));
@@ -193,7 +209,8 @@ void DataDB::registerGroupInfo(const GroupInfo& GroupInfo){
     query.exec();
 }
 
-void DataDB::addOfflineMsg(ChatMessage &msg){
+//添加离线消息
+void DBHelper::addOfflineMsg(ChatMessage &msg){
     QSqlQuery query;
     query.prepare("insert into OfflineMsg values(:Sender,:Reciever,:Msg,:DT)");
     query.bindValue(":Sender",QVariant(msg.getSender()));
@@ -203,7 +220,8 @@ void DataDB::addOfflineMsg(ChatMessage &msg){
     query.exec();
 }
 
-QList<ChatMessage> DataDB::getOfflineMsg(quint32 ID){
+//获取离线消息
+QList<ChatMessage> DBHelper::getOfflineMsg(quint32 ID){
     QList<ChatMessage> msg;
     msg.clear();
     QSqlQuery query;
@@ -219,14 +237,14 @@ QList<ChatMessage> DataDB::getOfflineMsg(quint32 ID){
     return msg;
 }
 
-void DataDB::dropOfflineMsg(quint32 ID){
+void DBHelper::dropOfflineMsg(quint32 ID){
     QSqlQuery query;
     query.prepare("delete from OfflineMsg where Reciever = :ID");
     query.bindValue(":ID",QVariant(ID));
     query.exec();
 }
 
-quint32 DataDB::selectMaxGroupId() {//群聊7位数
+quint32 DBHelper::selectMaxGroupId() {//群聊7位数
     QSqlQuery query;
     query.exec("select MAX(Id) as Id from GroupInfo");
     quint32 maxId = quint32(1000000);
@@ -238,7 +256,7 @@ quint32 DataDB::selectMaxGroupId() {//群聊7位数
     else return quint32(1000000);
 }
 
-void DataDB::updUsername(quint32 ID, QString Username){
+void DBHelper::updUsername(quint32 ID, QString Username){
     QSqlQuery query;
     query.prepare("UPDATE UserInfo SET Username = :Username WHERE ID = :ID");
     query.bindValue(":ID",QVariant(ID));
@@ -246,7 +264,7 @@ void DataDB::updUsername(quint32 ID, QString Username){
     query.exec();
 }
 
-void DataDB::updAvatar(quint32 ID, QString Avatar){
+void DBHelper::updAvatar(quint32 ID, QString Avatar){
     QSqlQuery query;
     query.prepare("UPDATE UserInfo SET Avatar = :Avatar WHERE ID = :ID");
     query.bindValue(":ID",QVariant(ID));
@@ -254,7 +272,7 @@ void DataDB::updAvatar(quint32 ID, QString Avatar){
     query.exec();
 }
 
-GroupInfo DataDB::selectGroupInfoByID(quint32 ID){
+GroupInfo DBHelper::selectGroupInfoByID(quint32 ID){
     QSqlQuery query;
     query.prepare("select * from GroupInfo where ID = :ID");
     query.bindValue(":ID",QVariant(ID));
@@ -269,7 +287,7 @@ GroupInfo DataDB::selectGroupInfoByID(quint32 ID){
     }
     return tmp;
 }
-bool DataDB::friendshipExist(quint32 Id1,quint32 Id2){
+bool DBHelper::friendshipExist(quint32 Id1,quint32 Id2){
     QSqlQuery query;
     //向数据库发送一个预编译语句
     query.prepare("select * from Friendship where MyId =:Id1 and FriendId =:Id2");
@@ -279,7 +297,7 @@ bool DataDB::friendshipExist(quint32 Id1,quint32 Id2){
     bool flag = query.next();
     return flag;
 }
-bool DataDB::groupshipExist(quint32 Id1, quint32 Id2){
+bool DBHelper::groupshipExist(quint32 Id1, quint32 Id2){
     QSqlQuery query;
     //向数据库发送一个预编译语句
     query.prepare("select * from Groupship where UserId =:Id1 and GroupId =:Id2");
@@ -289,7 +307,7 @@ bool DataDB::groupshipExist(quint32 Id1, quint32 Id2){
     bool flag = query.next();
     return flag;
 }
-QList<QByteArray> DataDB::selectAllGroupInfo(quint32 ID){
+QList<QByteArray> DBHelper::selectAllGroupInfo(quint32 ID){
     QSqlQuery query;
     query.prepare("select Id,GroupName,GroupAvatar from GroupInfo where Id in (select GroupID from Groupship where UserId =:UserId)");
     query.bindValue(":UserId", QVariant(ID));
@@ -301,7 +319,7 @@ QList<QByteArray> DataDB::selectAllGroupInfo(quint32 ID){
     }
     return ListGroupInfo;
 }
-QList<quint32> DataDB::selectAllGroupMember(quint32 ID){
+QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
     QSqlQuery query;
     query.prepare("select UserId from Groupship where GroupID = :ID");
     query.bindValue(":ID",QVariant(ID));
@@ -314,3 +332,4 @@ QList<quint32> DataDB::selectAllGroupMember(quint32 ID){
 
     return ListGroupMember;
 }
+//end对外功能接口
