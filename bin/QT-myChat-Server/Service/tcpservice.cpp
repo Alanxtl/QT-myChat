@@ -1,7 +1,7 @@
 #include "tcpservice.h"
 
 TcpService::TcpService(QObject *parent) : QTcpServer(parent){
-    connect()
+    //connect()
 }
 
 void TcpService::incomingConnection(qintptr socketDescriptor){
@@ -12,7 +12,7 @@ void TcpService::incomingConnection(qintptr socketDescriptor){
     thread->start();
     //send the SocketDescriptor
     emit chatBusiness->startSignal();
-    business.append(chatBusiness);
+    //business.append(chatBusiness);
 }
 
 void TcpService::sendMessage() {

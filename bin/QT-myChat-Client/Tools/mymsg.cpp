@@ -66,7 +66,6 @@ MyMsg* MyMsg::arrayToMsg(const QByteArray &full_received)
     in >> dataSize;
     //假如数据不完整, 停止读取
     if(full_received.size() - sizeof(quint32) < dataSize){
-
         return res->setMsg( 6, 0, 0, 0, 0, 0, QTime::currentTime(), QByteArray() );
     }
 
@@ -131,10 +130,6 @@ QByteArray MyMsg::msgToArray()
 
     out.device()->seek(0);
     out << (quint32)(block.size()-sizeof(quint32));
-
-
-
-
 
     return block;
 }

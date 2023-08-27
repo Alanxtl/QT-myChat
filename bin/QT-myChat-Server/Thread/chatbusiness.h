@@ -7,6 +7,7 @@
 #include <Tools/log.h>
 #include <QHostAddress>
 #include <Tools/mymsg.h>
+#include <Database/DBHelper.h>
 
 class ChatBusiness : public QObject
 {

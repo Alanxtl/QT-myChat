@@ -11,11 +11,22 @@ void ChatBusiness::mainBusiness()
     socket.setSocketDescriptor(socketDescriptor);
     QString peerAddress = socket.peerAddress().toString();
     Log::getLogObj()->writeLog("IP地址为"+peerAddress+"的用户已连接至服务端");
+
+
+
     QObject::connect(&socket, &QTcpSocket::readyRead, [&](){
         QByteArray originMessage = socket.readAll();
-        QString textMessage = QString::fromUtf8(originMessage);
-        Log::getLogObj()->writeLog("一个用户发来信息:"+textMessage);
+        QString textMessage = QString::fromUtf8(MyMsg::arrayToMsg(originMessage)->content);
+        UserInfo user(MyMsg::arrayToMsg(originMessage)->senderID,socket.peerAddress().toString(),"1","1");
+        DBHelper::GetInstance()->addOnlineUserInfo(user);
+        Log::getLogObj()->writeLog(QString::number(MyMsg::arrayToMsg(originMessage)->senderID) + "发给" +
+                                   QString::number(MyMsg::arrayToMsg(originMessage)->receiverID)+ "信息: "+textMessage);
+
     });
+
+
+
+
     //QObject::connect(socket, &QTcpSocket::readyRead, this, &ChatBusiness::handleMessage);
     //调用TCP业务
 }

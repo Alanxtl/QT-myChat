@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTime>
 #include <Tools/log.h>
+#include <Tools/mymsg.h>
 #include <Thread/chatbusiness.h>
 #include <Thread/chatthread.h>
 #include <Service/tcpservice.h>
@@ -29,7 +30,7 @@ public slots:
     void showLog(QString str);
     void autoScroll();
     void updateClinetMonitor();
-    void showAllOnlineUserInfo(const UserInfo& user);
+    void showAllOnlineUserInfo(const UserInfo&);
 
 private:
     Ui::MainWindow *ui;

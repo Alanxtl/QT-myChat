@@ -16,10 +16,14 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_test_clicked()
 {
     QString ip = ui->lineEdit_IP->text();
-    quint16 port = "6666".toUShort();
+    quint16 port = 6666;
     socket.connectToHost(QHostAddress(ip), port);
     if (socket.waitForConnected(3000)) {
         qDebug() << "Connected to the Host!";
+        MyMsg *msg = MyMsg::defaultMsg(ui->lineEdit_SelfID->text().toInt(), ui->lineEdit_TargetIP->text().toInt(), "");
+        QByteArray data = msg->msgToArray();
+        socket.write(data);
+
         if_connect = 1;
     }
     else {
@@ -35,7 +39,8 @@ void MainWindow::on_pushButton_Send_clicked()
         QMessageBox::about(this, "提示", "请先进行测试连接");
     }
     else {
-        MyMsg *msg = MyMsg::defaultMsg(message);
+        QString message = ui->textEdit_Message->toPlainText();
+        MyMsg *msg = MyMsg::defaultMsg(ui->lineEdit_SelfID->text().toInt(), ui->lineEdit_TargetIP->text().toInt(), message);
         QByteArray data = msg->msgToArray();
         if (socket.waitForConnected(2000)){
             socket.write(data);

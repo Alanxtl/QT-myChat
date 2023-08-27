@@ -4,7 +4,9 @@
 DBHelper* DBHelper::db = NULL;
 
 //构造函数
-DBHelper::DBHelper(){
+DBHelper::DBHelper(QObject *parent)
+    : QObject{parent}
+{
     //连接数据库操作
     sqldb = QSqlDatabase::addDatabase("QSQLITE");
     sqldb.setDatabaseName("server.db");
@@ -64,21 +66,18 @@ DBHelper::DBHelper(){
           "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))");
 
     //在线用户表
-    query.exec("CREATE TABLE OnlineUser("
-        "Id INTEGER PRIMARY KEY, "
-        "Username VARCHAR(40) NOT NULL, "
-        "Pwd VARCHAR(40) NOT NULL, "
-        "Ip VARCHAR(40), "
-        "Avatar VARCHAR(512) )");
+
+    query.exec("drop TABLE OnlineUser");
+
+    if(!query.exec("CREATE TABLE if not exists OnlineUser("
+        "Id int PRIMARY KEY, "
+        "Username varchar NOT NULL) ")) {
+        qDebug()<<query.lastError();
+    }
 	//建表完成
 }//构造函数
 
-//析构函数
-DBHelper::~DBHelper(){
-	if (db != NULL) {
-		delete db;
-	}
-}
+
 
 //单例模式
 DBHelper* DBHelper::GetInstance(){
@@ -344,11 +343,5 @@ QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
 }
 
 //增加在线用户信息
-void DBHelper::addOnlineUserInfo(const UserInfo& user){
-    QSqlQuery query;
-    query.prepare("insert into OnlineUser values(:Id,:Username)");
-    query.bindValue(":Id", user.getID());
-    query.bindValue(":Username", user.getName());
-    query.exec();
-}
+
 //end对外功能接口

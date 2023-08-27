@@ -13,9 +13,9 @@ class TcpService : public QTcpServer
         Q_OBJECT
 
 public:
-    explicit TcpService(QObject *parent);
+    explicit TcpService(QObject *parent = nullptr);
     void sendMessage();
-    TcpService(QObject *parent = nullptr);
+
     QList <ChatBusiness> business;
 
 protected:

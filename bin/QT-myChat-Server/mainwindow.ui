@@ -72,6 +72,9 @@
       <height>261</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

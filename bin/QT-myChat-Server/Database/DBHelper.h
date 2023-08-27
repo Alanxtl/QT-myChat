@@ -1,13 +1,14 @@
-#ifndef DATADB_H
-#define DATADB_H
-#include <QSqlDatabase>
+#ifndef DBHELPER_H
+#define DBHELPER_H
+
 #include <QObject>
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QVariant>
 #include <QtDebug>
-#include <QObject>
 #include <QtNetwork>
+#include <QSqlDatabase>
+#include <QSqlError>
 
 #include "ChatMessage.h"
 #include "GroupInfo.h"
@@ -20,9 +21,8 @@ class DBHelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit DBHelper();
-    ~DBHelper();
-    
+    explicit DBHelper(QObject *parent = nullptr);
+
     //登录功能数据库
     bool selectUserByIdAndPwd(const quint32 id, const QString pwd);//存在返回true，不存在返回false
     UserInfo selectUserInfoById(const quint32 id);//存在返回true，不存在返回false
@@ -66,12 +66,14 @@ public:
     void updUsername(quint32 ID,QString Username);
     void updAvatar(quint32 ID,QString Avatar);
 
-signals:
-    void addOnlineUserInfo(const UserInfo& user);
-
 private:
     QSqlDatabase sqldb;
     static DBHelper* db;
+
+signals:
+    void addOnlineUserInfo(const UserInfo&);
+
+
 };
 
 #endif // DBHELPER_H

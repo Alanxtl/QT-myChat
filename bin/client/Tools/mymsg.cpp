@@ -139,11 +139,11 @@ QByteArray MyMsg::msgToArray()
     return block;
 }
 
-MyMsg* MyMsg::defaultMsg(QString str)
+MyMsg* MyMsg::defaultMsg(quint32 fromID, quint32 toID, QString str)
 {
     MyMsg * res = new MyMsg();
     QByteArray bytes = str.toUtf8();
-    res->setMsg(1,0,0,0,1,2,QTime::currentTime(),bytes);
+    res->setMsg(1,0,0,0,fromID,toID,QTime::currentTime(),bytes);
     return res;
 }
 

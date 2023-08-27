@@ -77,7 +77,7 @@ public:
     QByteArray msgToArray();   //msg转array
     //example: clientConnection->write( myMsg(type, content).msgToArray() );
 
-    static MyMsg* defaultMsg(QString str);
+    static MyMsg* defaultMsg(quint32 from, quint32 to, QString str);
 
 
     quint32 getDataSize();

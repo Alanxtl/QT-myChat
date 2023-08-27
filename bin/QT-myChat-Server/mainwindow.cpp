@@ -22,12 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
     //DataDB::GetInstance();
     tcpservice.listen(QHostAddress::Any, 6666);
     Log::getLogObj()->writeLog("服务端初始化成功");
+
+
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::showLog(QString str){
     ui->logBrowser->append(str);
@@ -48,21 +52,47 @@ void MainWindow::updateClinetMonitor()
 
 //显示全部在线用户
 void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
-    QStringList header;
-    header<<"id"<<"username"<<"ip";
 
-    ui->tableWidget->setHorizontalHeaderLabels(header);
+    Log::getLogObj()->writeLog("用户连接成功 ID: " + QString::number(user.getID()) + " NAME: " + user.getName());
 
     QSqlQuery query;
-    query.exec("select Id, Username, Ip from OnlineUser");
+
+    query.prepare("insert into OnlineUser values(:Id, :Username)");
+    query.bindValue(":Id", user.getID());
+    query.bindValue(":Username", user.getName());
+
+    if(!query.exec())
+    {
+        qDebug()<<query.lastError();
+        //Log::getLogObj()->writeLog(query.lastError());
+    }
+
+
+    QStringList horizontalHeaders;
+    horizontalHeaders << QStringLiteral("id") << QStringLiteral("username");
+    ui->tableWidget->setHorizontalHeaderLabels(horizontalHeaders);
+    ui->tableWidget->setColumnCount(2);
 
     int i=0;
 
-    while(query.next()){
-        ui->tableWidget->setRowCount(i+1);//设置表格行数
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(query.value(0).toString()));
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(query.value(1).toString()));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(query.value(2).toString()));
-        i++;
+    query.exec("select Id, Username from OnlineUser");
+
+    if(!query.exec())
+    {
+        qDebug()<<query.lastError();
+    } else {
+        while(query.next()){
+           ui->tableWidget->setRowCount(i+1);//设置表格行数
+           ui->tableWidget->setItem(i,0,new QTableWidgetItem(query.value(0).toString()));
+           ui->tableWidget->setItem(i,1,new QTableWidgetItem(query.value(1).toString()));
+           ui->tableWidget->setItem(i,2,new QTableWidgetItem(query.value(2).toString()));
+           i++;
+       }
     }
+
+    ui->clientCountLabel->setText(QString::number(i));
+
+    ui->tableWidget->show();
+
+    ui->tableWidget->resizeColumnsToContents();
 }
