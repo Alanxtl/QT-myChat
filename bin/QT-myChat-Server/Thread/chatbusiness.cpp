@@ -8,12 +8,18 @@ ChatBusiness::ChatBusiness(qintptr handle, QObject *parent) : QObject{parent}
 
 void ChatBusiness::mainBusiness()
 {
-    QTcpSocket socket;
     socket.setSocketDescriptor(socketDescriptor);
-    Log::getLogObj()->writeLog("一个用户已连接至服务端");
-
+    QString peerAddress = socket.peerAddress().toString();
+    Log::getLogObj()->writeLog("IP地址为"+peerAddress+"的用户已连接至服务端");
+    QObject::connect(&socket, &QTcpSocket::readyRead, [&](){
+        QByteArray originMessage = socket.readAll();
+        QString textMessage = QString::fromUtf8(originMessage);
+        Log::getLogObj()->writeLog("一个用户发来信息:"+textMessage);
+    });
+    //QObject::connect(socket, &QTcpSocket::readyRead, this, &ChatBusiness::handleMessage);
     //调用TCP业务
 }
+
 
 /*
  *  创建该线程基本示例：

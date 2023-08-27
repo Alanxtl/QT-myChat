@@ -5,15 +5,20 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <Tools/log.h>
-#include <QDebug>
+#include <QHostAddress>
+#include <Tools/mymsg.h>
 
 class ChatBusiness : public QObject
 {
     Q_OBJECT
+
+
 public:
     explicit ChatBusiness(qintptr handle, QObject *parent = nullptr);
     void mainBusiness();
     qintptr socketDescriptor;
+    QTcpSocket socket;
+
 signals:
     void startSignal();
 };

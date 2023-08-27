@@ -41,8 +41,6 @@ void MainWindow::autoScroll() {
 
 void MainWindow::updateClinetMonitor()
 {
-
-
     ui->clientCountLabel->setText(QString::number(clientCount));
     //ui->clientBrowser->append()
 }
