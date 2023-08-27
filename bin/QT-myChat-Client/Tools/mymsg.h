@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QDataStream>
 #include <QTime>
-#include "log.h"
+#include "Tools/log.h"
 #define IDENTIFY 0xAA112233
 
 /*
