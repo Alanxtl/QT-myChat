@@ -24,7 +24,7 @@ public:
     ~MainWindow();
     quint32 clientCount;
     TcpService tcpservice;
-
+    QMap<quint32, QString> onlineUserMap;
 
 public slots:
     void showLog(QString str);

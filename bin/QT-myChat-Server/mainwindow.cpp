@@ -53,6 +53,11 @@ void MainWindow::updateClinetMonitor()
 //显示全部在线用户
 void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
 
+    if(onlineUserMap.contains(user.getID())) {
+        Log::getLogObj()->writeLog("用户" + QString::number(user.getID()) + "已链接过");
+        return;
+    }
+
     Log::getLogObj()->writeLog("用户连接成功 ID: " + QString::number(user.getID()) + " NAME: " + user.getName());
 
     QSqlQuery query;
@@ -60,6 +65,7 @@ void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
     query.prepare("insert into OnlineUser values(:Id, :Username)");
     query.bindValue(":Id", user.getID());
     query.bindValue(":Username", user.getName());
+    onlineUserMap[user.getID()] = user.getName();
 
     if(!query.exec())
     {

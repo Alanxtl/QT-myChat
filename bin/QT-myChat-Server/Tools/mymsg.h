@@ -8,7 +8,7 @@
 #define IDENTIFY 0xAA112233
 
 /*
- * 标准QByteArray信息格式|32header|?body|
+ *
  *
  * 生成简易QBypteArray：
  * MyMsg::defaultMsg("内容")->msgToArray();
@@ -17,7 +17,7 @@
  * MyMsg::defaultMsg("内容");
  *
  *
- *
+ * 标准QByteArray信息格式|32header|?body|
  * header总共32字节包括以下内容:
  *          dataSize    : 占 4 个字节, quint32, 用于验证是否完整接收到了数据包
  *          identify    : 占 4 个字节, quint32, 用于验证是不是该程序的数据包，是一个默认的常量
