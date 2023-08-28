@@ -29,13 +29,18 @@ public:
 
     //查询当前全部用户的数据库操作--静态sql
     QList<QByteArray> selectAllFriendsUserInfo(quint32 UserId);
-    
+    //注册
+    bool registerUserInfo(const UserInfo& user);//
     //添加好友
     bool addFriendship(quint32 Id1,quint32 Id2);//两个好友的Id
     //删除好友
     bool deleteFriendship(quint32 Id1,quint32 Id2);//两个好友的Id
     //判断好友关系是否存在
     bool friendshipExist(quint32 Id1,quint32 Id2);
+    //添加聊天信息
+    bool addMsg(quint32 Id1,quint32 Id2,QString Msg,QString Date);//发送者的Id，接收者的Id，聊天信息，标准日期xxxx-xx-xx xx:xx:xx使用库获取日期
+    //获取最大的Id值
+    quint32 selectMaxId();
 
     //单例设计模式--应对数据库的对象的内存使用
     static DBHelper* GetInstance();
