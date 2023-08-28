@@ -21,6 +21,7 @@ public:
     void groupMsgHandler(MyMsg *msg);
 signals:
     void loginHandler();
+    void getLogMsg(MyMsg* msg);
 private:
     static Handler* globeHandler;
 

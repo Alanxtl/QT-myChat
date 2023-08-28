@@ -14,14 +14,16 @@
  *  不一定做 sliceCount  : 占 4 个字节, quint32, 用以指示该切片信息是第几个切片
  *          senderID    : 占 4 个字节, quint32, 用于表示发送者的id
  *          receiverID  : 占 4 个字节, quint32, 用于表示接收者的id
- *          time        : 占 4 个字节, quint32, 用于表示发送的时间
+ *          time        : 占 4 个字节, QTime, 用于表示发送的时间
  *
  *
  *
  * 接下来是正文部分：所占空间未定，由dataSize来指示
  *      但是根据type的不同定义有所不同
  *
- *      注册信息的body定义： todo
+ *      注册信息的body定义：
+ *      id          : 占 4 个字节, quint32, 用于表示发送者的id
+ *      password    : 占 4 个字节, quint32, 用于表示发送者的密码
  *
  *      登录信息的body定义： todo
  *
@@ -40,7 +42,7 @@ MyMsg::MyMsg(QObject *parent)
 
 }
 
-MyMsg* MyMsg::setMsg(quint8 type, quint8 slice, quint32 sliceTotal, quint32 sliceCount, quint32 senderID, quint32 receiverID, quint32 time, const QByteArray &content)
+MyMsg* MyMsg::setMsg(quint8 type, quint8 slice, quint32 sliceTotal, quint32 sliceCount, quint32 senderID, quint32 receiverID, QTime time, const QByteArray &content)
 {
     this->type = type;
     this->slice = slice;
@@ -66,14 +68,15 @@ MyMsg* MyMsg::arrayToMsg(const QByteArray &full_received)
     in >> dataSize;
     //假如数据不完整, 停止读取
     if(full_received.size() - sizeof(quint32) < dataSize){
-        return res->setMsg( 6, 0, 0, 0, 0, 0, 0, QByteArray() );
+
+        return res->setMsg( 6, 0, 0, 0, 0, 0, QTime::currentTime(), QByteArray() );
     }
 
     //如果不是该程序的数据,也停止读取
     quint32 head;
     in >> head;
     if(head != IDENTIFY){
-        return res->setMsg( 6, 0, 0, 0, 0, 0, 0, QByteArray() );
+        return res->setMsg( 6, 0, 0, 0, 0, 0, QTime::currentTime(), QByteArray() );
     }
 
     //读取类型
@@ -101,7 +104,7 @@ MyMsg* MyMsg::arrayToMsg(const QByteArray &full_received)
     in >> tmp_receiver;
 
     //读取时间
-    quint32 tmp_time;
+    QTime tmp_time;
     in >> tmp_time;
 
     //读取正文
@@ -118,19 +121,40 @@ QByteArray MyMsg::msgToArray()
     out.setVersion(QDataStream::Qt_5_9);
 
     out << quint32(0);
+    out << quint32(IDENTIFY);
     out << quint8(type);
     out << quint8(slice);
     out << quint32(sliceTotal);
     out << quint32(sliceCount);
     out << quint32(senderID);
     out << quint32(receiverID);
-    out << quint32(time);
-    QByteArray content;
+    out << QTime(time);
+    out << content;
 
     out.device()->seek(0);
     out << (quint32)(block.size()-sizeof(quint32));
 
+
+
+
+
     return block;
+}
+
+MyMsg* MyMsg::defaultMsg(quint32 fromID, quint32 toID, QString str)
+{
+    MyMsg * res = new MyMsg();
+    QByteArray bytes = str.toUtf8();
+    res->setMsg(1,0,0,0,fromID,toID,QTime::currentTime(),bytes);
+    return res;
+}
+
+MyMsg* MyMsg::logMsg(quint32 fromID, quint32 toID, QString str)
+{
+    MyMsg * res = new MyMsg();
+    QByteArray bytes = str.toUtf8();
+    res->setMsg(7,0,0,0,fromID,toID,QTime::currentTime(),bytes);
+    return res;
 }
 
 quint32 MyMsg::getDataSize()
@@ -168,7 +192,7 @@ quint32 MyMsg::getReceiverID()
     return this->receiverID;
 }
 
-quint32 MyMsg::getTime()
+QTime MyMsg::getTime()
 {
     return this->time;
 }
