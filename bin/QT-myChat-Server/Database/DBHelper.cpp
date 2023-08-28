@@ -16,68 +16,81 @@ DBHelper::DBHelper(QObject *parent)
 
 	//初始化建表
 	QSqlQuery query;
-    //用户信息表（添加Ip）(Id设置为3位)
-	query.exec("CREATE TABLE UserInfo ("
-		"Id INTEGER PRIMARY KEY, "
-		"Username VARCHAR(40) NOT NULL, "
-        "Pwd VARCHAR(40) NOT NULL, "
-        "Ip VARCHAR(40), "
-        "Avatar VARCHAR(512) )");
+    //用户信息表(Id设置为5位)
+    if(!query.exec("CREATE TABLE IF NOT EXISTS UserInfo ("
+                  "Id INTEGER PRIMARY KEY, "
+                  "Username VARCHAR(40) NOT NULL, "
+                  "Pwd VARCHAR(40) NOT NULL, "
+                  "Avatar VARCHAR(512) )")){
+        qDebug()<<query.lastError();
+    }
 
 	//好友关系表
-	query.exec("CREATE TABLE Friendship ("
-		"MyId INTEGER, "
-		"FriendId INTEGER, "
-		"FOREIGN KEY (MyId) REFERENCES UserInfo(Id),"
-		"FOREIGN KEY (FriendId) REFERENCES UserInfo(Id))");
+    if(!query.exec("CREATE TABLE IF NOT EXISTS Friendship ("
+                  "MyId INTEGER, "
+                  "FriendId INTEGER, "
+                  "FOREIGN KEY (MyId) REFERENCES UserInfo(Id),"
+                  "FOREIGN KEY (FriendId) REFERENCES UserInfo(Id))")){
+        qDebug()<<query.lastError();
+    }
 
 	//离线消息列表（添加Group）
-	query.exec("CREATE TABLE OfflineMsg ("
-		"Sender INTEGER, "
-		"Reciever INTEGER, "
-        "Group INTEGER, "
-		"Msg VARCHAR(512),"
-		"DT datetime NOT NULL,"
-		"FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
-		"FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))");
-    
-    //消息表（添加Group）
-	query.exec("CREATE TABLE Msg ("
-		"Sender INTEGER,"
-		"Reciever INTEGER,"
-        "Group INTEGER, "
-		"Msg VARCHAR(512),"
-		"DT datetime NOT NULL,"
-		"FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
-		"FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))");
+    if(!query.exec("CREATE TABLE IF NOT EXISTS OfflineMsg ("
+                  "Sender INTEGER, "
+                  "Reciever INTEGER, "
+                  "Group INTEGER, "
+                  "Msg VARCHAR(512),"
+                  "DT datetime NOT NULL,"
+                  "FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
+                  "FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))")){
+        qDebug()<<query.lastError();
+    }
 
-    //群聊信息表（Id设置为4位）
-    query.exec("CREATE TABLE GroupInfo ("
-          "ID INTEGER PRIMARY KEY,"
-          "GroupName VARCHAR(40),"
-          "GroupAvatar VARCHAR(512))");
+    //消息表（添加Group）
+    if(!query.exec("CREATE TABLE IF NOT EXISTS Msg ("
+                  "Sender INTEGER,"
+                  "Reciever INTEGER,"
+                  "Group INTEGER, "
+                  "Msg VARCHAR(512),"
+                  "DT datetime NOT NULL,"
+                  "FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
+                  "FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))")){
+        qDebug()<<query.lastError();
+    }
+
+    //群聊信息表（Id设置为7位）
+    if(!query.exec("CREATE TABLE IF NOT EXISTS GroupInfo ("
+                  "ID INTEGER PRIMARY KEY,"
+                  "GroupName VARCHAR(40),"
+                  "GroupAvatar VARCHAR(512))")){
+        qDebug()<<query.lastError();
+    }
 
     //群聊成员表，包含用户权限：0代表普通群员，1代表管理员，2代表群主
-    query.exec("CREATE TABLE Groupship("
-          "UserID INTEGER,"
-          "GroupID INTEGER,"
-          "UserPermission INTEGER NOT NULL,"
-          "FOREIGN KEY (UserID) REFERENCES UserInfo(Id),"
-          "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))");
+    if(!query.exec("CREATE TABLE IF NOT EXISTS Groupship("
+                  "UserID INTEGER,"
+                  "GroupID INTEGER,"
+                  "UserPermission INTEGER NOT NULL,"
+                  "FOREIGN KEY (UserID) REFERENCES UserInfo(Id),"
+                  "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))")){
+        qDebug()<<query.lastError();
+    }
 
     //在线用户表
-
-    query.exec("drop TABLE OnlineUser");
-
-    if(!query.exec("CREATE TABLE if not exists OnlineUser("
+    if(!query.exec("CREATE TABLE IF NOT EXISTS OnlineUser("
         "Id int PRIMARY KEY, "
-        "Username varchar NOT NULL) ")) {
+        "Username varchar NOT NULL) ")){
         qDebug()<<query.lastError();
     }
 	//建表完成
 }//构造函数
 
-
+//析构函数
+DBHelper::~DBHelper() {
+    if (db != NULL) {
+        delete db;
+    }
+}
 
 //单例模式
 DBHelper* DBHelper::GetInstance(){
@@ -105,13 +118,14 @@ QList<QByteArray> DBHelper::selectAllFriendsUserInfo(quint32 UserId){
 }
 
 //注册信息（注册检验）
-void DBHelper::registerUserInfo(const UserInfo& user){
+bool DBHelper::registerUserInfo(const UserInfo& user){
     QSqlQuery query;
     query.prepare("select Username from UserInfo where username = :Username");
     query.bindValue(":Username", user.getName());
     query.exec();
     if(query.next()){
         QMessageBox::warning(NULL, "错误", "该用户名已存在", QMessageBox::Yes);
+        return false;
     }else{
         query.clear();
         query.prepare("insert into UserInfo values(:Id,:Username,:pwd,:avatar)");
@@ -119,7 +133,11 @@ void DBHelper::registerUserInfo(const UserInfo& user){
         query.bindValue(":Username", user.getName());
         query.bindValue(":pwd", user.getPwd());
         query.bindValue(":avatar", user.getAvatarName());
-        query.exec();
+        if(query.exec()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 
@@ -152,76 +170,100 @@ UserInfo DBHelper::selectUserInfoById(const quint32 id){
 }
 
 //添加好友
-void DBHelper::addFriendship(quint32 Id1, quint32 Id2){
+bool DBHelper::addFriendship(quint32 Id1, quint32 Id2){
 	QSqlQuery query;
 	query.prepare("insert into Friendship values(:Id1,:Id2)");
 	query.bindValue(":Id1", QVariant(Id1));
 	query.bindValue(":Id2", QVariant(Id2));
-	query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //删除好友
-void DBHelper::deleteFriendship(quint32 Id1, quint32 Id2){
+bool DBHelper::deleteFriendship(quint32 Id1, quint32 Id2){
 	QSqlQuery query;
 	query.prepare("delete from Friendship where MyId =:Id1 and FriendId =:Id2");
 	query.bindValue(":Id1", QVariant(Id1));
 	query.bindValue(":Id2", QVariant(Id2));
-	query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //添加消息
-void DBHelper::addMsg(quint32 Id1, quint32 Id2, QString Msg, QString Date) {
+bool DBHelper::addMsg(quint32 Id1, quint32 Id2, QString Msg, QString Date){
 	QSqlQuery query;
 	query.prepare("insert into Msg values(:Id1,:Id2,:Msg,:Date)");
 	query.bindValue(":Id1", QVariant(Id1));
 	query.bindValue(":Id2", QVariant(Id2));
 	query.bindValue(":Msg", Msg);
 	query.bindValue(":Date", Date);
-	query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //搜索最大Id并调用log输出
 quint32 DBHelper::selectMaxId() {
 	QSqlQuery query;
 	query.exec("select MAX(Id) as Id from UserInfo");
-    quint32 maxId = quint32(100000);
+    quint32 maxId = quint32(10000);
 	while (query.next()) {
         maxId = query.value("Id").toUInt();
 	}
     Log::getLogObj()->writeLog("[CurrentMaxID]" + QString::number(maxId));
-    if(maxId>=quint32(100000)) return maxId;
-    else return quint32(100000);
+    if(maxId>=quint32(10000)) return maxId;
+    else return quint32(10000);
 }
 
 //添加群聊列表
-void DBHelper::addGroupship(quint32 UserID,quint32 GroupID,quint32 UserPermission){
+bool DBHelper::addGroupship(quint32 UserID,quint32 GroupID,quint32 UserPermission){
     QSqlQuery query;
     query.prepare("insert into Groupship values(:UserID,:GroupID,:UserPermission)");
     query.bindValue(":UserID", QVariant(UserID));
     query.bindValue(":GroupID", QVariant(GroupID));
     query.bindValue(":UserPermission",QVariant(UserPermission));
-    query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //新建群聊
-void DBHelper::registerGroupInfo(const GroupInfo& GroupInfo){
+bool DBHelper::registerGroupInfo(const GroupInfo& GroupInfo){
     QSqlQuery query;
     query.prepare("insert into GroupInfo values(:Id,:Username,:avatar)");
     query.bindValue(":Id", QVariant(GroupInfo.getID()));
     query.bindValue(":Username", QVariant(GroupInfo.getName()));
     query.bindValue(":avatar", QVariant(GroupInfo.getAvatarName()));
-    query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //添加离线消息
-void DBHelper::addOfflineMsg(ChatMessage &msg){
+bool DBHelper::addOfflineMsg(ChatMessage &msg){
     QSqlQuery query;
     query.prepare("insert into OfflineMsg values(:Sender,:Reciever,:Msg,:DT)");
     query.bindValue(":Sender",QVariant(msg.getSender()));
     query.bindValue(":Reciever",QVariant(msg.getReceiver()));
     query.bindValue(":Msg",QVariant(msg.getContent()));
     query.bindValue(":DT",QVariant(msg.getTimeStamp()));
-    query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //获取离线消息
@@ -242,11 +284,15 @@ QList<ChatMessage> DBHelper::getOfflineMsg(quint32 ID){
 }
 
 //删除离线消息
-void DBHelper::dropOfflineMsg(quint32 ID){
+bool DBHelper::dropOfflineMsg(quint32 ID){
     QSqlQuery query;
     query.prepare("delete from OfflineMsg where Reciever = :ID");
     query.bindValue(":ID",QVariant(ID));
-    query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //查找最大群聊Id
@@ -263,21 +309,29 @@ quint32 DBHelper::selectMaxGroupId() {//群聊7位数
 }
 
 //修改用户姓名
-void DBHelper::updUsername(quint32 ID, QString Username){
+bool DBHelper::updUsername(quint32 ID, QString Username){
     QSqlQuery query;
     query.prepare("UPDATE UserInfo SET Username = :Username WHERE ID = :ID");
     query.bindValue(":ID",QVariant(ID));
     query.bindValue(":Username",QVariant(Username));
-    query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //修改用户头像
-void DBHelper::updAvatar(quint32 ID, QString Avatar){
+bool DBHelper::updAvatar(quint32 ID, QString Avatar){
     QSqlQuery query;
     query.prepare("UPDATE UserInfo SET Avatar = :Avatar WHERE ID = :ID");
     query.bindValue(":ID",QVariant(ID));
     query.bindValue(":Avatar",QVariant(Avatar));
-    query.exec();
+    if(query.exec()){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //根据Id查找群聊
@@ -349,7 +403,4 @@ QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
 
     return ListGroupMember;
 }
-
-//增加在线用户信息
-
 //end对外功能接口
