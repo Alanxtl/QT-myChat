@@ -24,7 +24,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     qnchatmessage.cpp \
-    regis.cpp
+    regis.cpp \
+    Tools/socket.cpp
 
 
 HEADERS += \
@@ -41,7 +42,8 @@ HEADERS += \
     login.h \
     mainwindow.h \
     qnchatmessage.h \
-    regis.h
+    regis.h \
+    Tools/socket.h
 
 
 FORMS += \

@@ -2,6 +2,7 @@
 #define LOGIN_H
 
 #include <QMainWindow>
+#include <Tools/mymsg.h>
 
 namespace Ui {
 class login;
@@ -20,11 +21,8 @@ private slots:
     void login_success();
 
     void on_regbtn_clicked();
-
     void on_exitbtn_clicked();
-
     //void on_checkBox_clicked();
-
     void on_checkBox_clicked(bool checked);
 
 private:

@@ -5,6 +5,11 @@
 #include <QTranslator>
 #include "regis.h"
 #include "chapage.h"
+#include <QTcpSocket>
+#include <QTcpServer>
+#include <QHostAddress>
+#include <QMessageBox>
+#include <Tools/socket.h>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -18,6 +23,9 @@ int main(int argc, char *argv[])
             break;
         }
     }
+    QString ip = "192.168.34.129";
+    quint16 port = 6666;
+    Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
 //    MainWindow w;
 //   w.show();
     login log;

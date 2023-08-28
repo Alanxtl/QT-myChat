@@ -32,7 +32,7 @@ QString UserInfo::getAvatarName() const{
 UserInfo UserInfo::fromQByteArray(QByteArray chat_msg){
 
     QDataStream in(chat_msg);
-    in.setVersion(QDataStream::Qt_5_12);
+    in.setVersion(QDataStream::Qt_5_9);
 
     UserInfo tmp;
     //write id
@@ -70,7 +70,7 @@ QByteArray UserInfo::toQByteArray(){
     QByteArray block;
 
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_12);
+    out.setVersion(QDataStream::Qt_5_9);
 
     //输出id
     out << quint32(id);
