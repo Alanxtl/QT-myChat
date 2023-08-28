@@ -104,15 +104,22 @@ QList<QByteArray> DBHelper::selectAllFriendsUserInfo(quint32 UserId){
 	return ListUserInfo;
 }
 
-//注册信息(没有实现验证功能，如果重复数据库会报错)
+//注册信息（注册检验）
 void DBHelper::registerUserInfo(const UserInfo& user){
-	QSqlQuery query;
-    query.prepare("insert into UserInfo values(:Id,:Username,:pwd,:avatar)");
-	query.bindValue(":Id", user.getID());
-	query.bindValue(":Username", user.getName());
-    query.bindValue(":pwd", user.getPwd());
-    query.bindValue(":avatar", user.getAvatarName());
-	query.exec();
+    QSqlQuery query;
+    query.prepare("select Username from UserInfo where username = :Username");
+    query.bindValue(":Username", user.getName());
+    if(query.next()){
+        QMessageBox::warning(NULL, "错误", "该用户名已存在", QMessageBox::Yes);
+    }else{
+        query.clear();
+        query.prepare("insert into UserInfo values(:Id,:Username,:pwd,:avatar)");
+        query.bindValue(":Id", user.getID());
+        query.bindValue(":Username", user.getName());
+        query.bindValue(":pwd", user.getPwd());
+        query.bindValue(":avatar", user.getAvatarName());
+        query.exec();
+    }
 }
 
 //登录验证(返回true/false)
