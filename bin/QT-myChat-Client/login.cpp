@@ -24,11 +24,17 @@ login::~login()
 void login::on_loginbth_clicked()
 {
     QString str=ui->pwdtxt->text();
-    if(str.length()<1)
+    QString str2=ui->nametxt->text();
+    if(str2.length()<1){
+        QMessageBox::about(this,"警告","请输入用户名");
+        return;
+    }
+    else if(str.length()<1)
     {
         QMessageBox::about(this,"警告","请输入密码");
         return;
     }
+
     MainWindow *m=new MainWindow();
     m->show();
     this->hide();

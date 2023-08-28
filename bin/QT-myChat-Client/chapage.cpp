@@ -48,8 +48,15 @@ void chapage::on_sendbtn_clicked()
         if(isSending) {
             dealMessageTime(time);
 
+            //显示群聊信息的用户名（右侧）
+            QListWidgetItem *iditem = new QListWidgetItem;
+            iditem->setText("YourID");
+            iditem->setTextAlignment(Qt::AlignRight);
+            ui->listWidget->addItem(iditem);
+
             QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+
             dealMessage(messageW, item, msg, time, QNChatMessage::User_Me);
         } else {
             bool isOver = true;
@@ -63,6 +70,12 @@ void chapage::on_sendbtn_clicked()
             if(isOver) {
                 dealMessageTime(time);
 
+                //显示群聊信息的用户名（右侧）
+                QListWidgetItem *iditem = new QListWidgetItem;
+                iditem->setText("YourID");
+                iditem->setTextAlignment(Qt::AlignRight);
+                ui->listWidget->addItem(iditem);
+
                 QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
                 QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
                 dealMessage(messageW, item, msg, time, QNChatMessage::User_Me);
@@ -73,9 +86,15 @@ void chapage::on_sendbtn_clicked()
         if(msg != "") {
             dealMessageTime(time);
 
+            //显示群聊信息的用户名(左侧)
+            QListWidgetItem *iditem = new QListWidgetItem;
+            iditem->setText("OthersID");
+            iditem->setTextAlignment(Qt::AlignLeft);
+            ui->listWidget->addItem(iditem);
+
             QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-            dealMessage(messageW, item, msg, time, QNChatMessage::User_Me);
+            dealMessage(messageW, item, msg, time, QNChatMessage::User_She);
         }
     }
     ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
