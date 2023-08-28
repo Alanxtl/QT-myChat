@@ -8,6 +8,7 @@
 #include <Tools/socket.h>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QMessageBox>
 
 chapage::chapage(QWidget *parent) :
     QMainWindow(parent),
@@ -31,6 +32,24 @@ chapage::chapage(QWidget *parent) :
             ui->tableWidget->setItem(i,1,new QTableWidgetItem(sexList[i]));
             ui->tableWidget->setItem(i,2,new QTableWidgetItem(ageList[i]));
         }
+        QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
+            QString time = QString::number(QDateTime::currentDateTime().toTime_t());
+            dealMessageTime(time);
+            QByteArray originMessage = Socket::getObj()->socket.readAll();
+            MyMsg* msg = MyMsg::arrayToMsg(originMessage);
+            quint32 id = msg->getSenderID();
+//            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
+
+            QListWidgetItem *iditem = new QListWidgetItem;
+            iditem->setText(QString::number(id));
+            iditem->setTextAlignment(Qt::AlignLeft);
+            ui->listWidget->addItem(iditem);//显示ID
+
+            QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
+            QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+            dealMessage(messageW, item, QString::fromUtf8(msg->getContent()), time, QNChatMessage::User_She);
+            ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+        });
 
 
 }
@@ -105,7 +124,7 @@ void chapage::on_sendbtn_clicked()
 
             QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-            dealMessage(messageW, item, msg, time, QNChatMessage::User_She);
+            dealMessage(messageW, item, msg, time, QNChatMessage::User_Me);
         }
     }
     ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
