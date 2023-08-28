@@ -35,10 +35,18 @@ void login::on_loginbth_clicked()
         return;
     }
 
+
+
+
+}
+
+void login::login_success()
+{
     MainWindow *m=new MainWindow();
     m->show();
     this->hide();
 }
+
 //go to gegister
 void login::on_regbtn_clicked()
 {

@@ -5,23 +5,25 @@
 #include <Tools/mymsg.h>
 #include <Database/DBHelper.h>
 #include <Database/UserInfo.h>
+#include <login.h>
 
 class Handler : public QObject
 {
     Q_OBJECT
 public:
     explicit Handler(QObject *parent = nullptr);
-    bool loginHandler();
+
     void check(MyMsg* msg);
     static Handler* getObj(); //单例模式
     void registerHandler(MyMsg *msg);
-    void loginHandler(MyMsg *msg);
+
     void defaultMsgHandler(MyMsg *msg);
     void groupMsgHandler(MyMsg *msg);
 signals:
-
+    void loginHandler();
 private:
     static Handler* globeHandler;
+
 
 };
 
