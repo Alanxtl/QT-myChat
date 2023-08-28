@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "chapage.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -39,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
        ui->vlayout->addWidget(btn);
        vector.push_back(btn);
     }
+
     for(int i=0;i<list.size();i++){
         connect(vector[i],&QToolButton::clicked,[=](){
             chapage *chatp=new chapage();

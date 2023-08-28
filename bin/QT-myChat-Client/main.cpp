@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    MainWindow w;
-   w.show();
+//    MainWindow w;
+//   w.show();
     login log;
     log.show();
- chapage chat;
- chat.show();
+// chapage chat;
+// chat.show();
     return a.exec();
 }
