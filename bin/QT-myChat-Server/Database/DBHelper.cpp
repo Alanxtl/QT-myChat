@@ -109,6 +109,7 @@ void DBHelper::registerUserInfo(const UserInfo& user){
     QSqlQuery query;
     query.prepare("select Username from UserInfo where username = :Username");
     query.bindValue(":Username", user.getName());
+    query.exec();
     if(query.next()){
         QMessageBox::warning(NULL, "错误", "该用户名已存在", QMessageBox::Yes);
     }else{
