@@ -34,7 +34,6 @@ void Handler::registerHandler(MyMsg* msg)
 }
 
 
-
 void Handler::defaultMsgHandler(MyMsg *msg)
 {
 
