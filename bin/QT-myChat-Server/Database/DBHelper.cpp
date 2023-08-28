@@ -124,10 +124,10 @@ void DBHelper::registerUserInfo(const UserInfo& user){
 }
 
 //登录验证(返回true/false)
-bool DBHelper::selectUserByIdAndPwd(const quint32 Id, const QString pwd){
+bool DBHelper::selectUserByIdAndPwd(const QString username, const QString pwd){
 	QSqlQuery query;
-	query.prepare("select * from UserInfo where Id =:Id and pwd =:pwd");
-	query.bindValue(":Id", QVariant(Id));
+    query.prepare("select * from UserInfo where Username =:Username and pwd =:pwd");
+    query.bindValue(":Username", QVariant(username));
 	query.bindValue(":pwd", QVariant(pwd));
 	query.exec();
 	bool flag = query.next();

@@ -24,7 +24,7 @@ public:
     explicit DBHelper(QObject *parent = nullptr);
 
     //登录功能数据库
-    bool selectUserByIdAndPwd(const quint32 id, const QString pwd);//存在返回true，不存在返回false
+    bool selectUserByIdAndPwd(const QString username, const QString pwd);//存在返回true，不存在返回false
     UserInfo selectUserInfoById(const quint32 id);//存在返回true，不存在返回false
     //查询当前全部用户的数据库操作--静态sql
     QList<QByteArray> selectAllFriendsUserInfo(quint32 UserId);
