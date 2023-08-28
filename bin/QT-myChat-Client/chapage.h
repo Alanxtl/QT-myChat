@@ -24,6 +24,8 @@ protected:
 private slots:
     void on_pushButton_clicked();
 
+    void on_sendbtn_clicked();
+
 private:
     Ui::chapage *ui;
 };

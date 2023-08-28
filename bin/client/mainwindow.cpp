@@ -8,7 +8,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(Handler::getObj(), &Handler::getLogMsg, this, &MainWindow::logHandler);
     connect(Handler::getObj(), &Handler::loginMsg, this, &MainWindow::loginHandler);
+    QObject::connect(&socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
+        QByteArray originMessage = socket.readAll();
+        MyMsg* msg = MyMsg::arrayToMsg(originMessage);
+        QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
 
+    });
 }
 
 MainWindow::~MainWindow()
@@ -18,20 +23,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_test_clicked()
 {
-    QString ip = ui->lineEdit_IP->text();
+    QString ip = "192.168.34.129";
     quint16 port = 6666;
     socket.connectToHost(QHostAddress(ip), port);
     if (socket.waitForConnected(3000)) {
-        qDebug() << "Connected to the Host!";
-        MyMsg *msg = MyMsg::defaultMsg(ui->lineEdit_SelfID->text().toInt(), ui->lineEdit_TargetIP->text().toInt(), "");
-        QByteArray data = msg->msgToArray();
-        socket.write(data);
-
+        QMessageBox::about(this,"提示","连接成功!");
+//        在连接时传递id，暂不决定用不用
+//        QString selfID = ui->lineEdit_SelfID->text();
+//        QByteArray data = selfID.toUtf8();
+//        socket.write(data);
         if_connect = 1;
     }
     else {
-        qDebug() << "Failed to connect ip=" << ip << "   port=" << port;
-
+        QMessageBox::about(this,"提示","连接失败!");
     }
 }
 
@@ -44,7 +48,7 @@ void MainWindow::on_pushButton_Send_clicked()
     }
     else {
         QString message = ui->textEdit_Message->toPlainText();
-        MyMsg *msg = MyMsg::defaultMsg(ui->lineEdit_SelfID->text().toInt(), ui->lineEdit_TargetIP->text().toInt(), message);
+        MyMsg *msg = MyMsg::defaultMsg(ui->lineEdit_SelfID->text().toUInt(), ui->lineEdit_TargetIP->text().toUInt(), message);
         QByteArray data = msg->msgToArray();
         if (socket.waitForConnected(2000)){
             socket.write(data);

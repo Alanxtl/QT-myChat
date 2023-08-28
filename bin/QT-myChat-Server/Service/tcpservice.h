@@ -7,6 +7,7 @@
 #include "Thread/chatbusiness.h"
 #include "Thread/chatthread.h"
 #include <QList>
+#include <Tools/mymsg.h>
 
 class TcpService : public QTcpServer
 {
@@ -14,9 +15,12 @@ class TcpService : public QTcpServer
 
 public:
     explicit TcpService(QObject *parent = nullptr);
-    void sendMessage();
+    QList <ChatBusiness*> business;
+    QMap<quint32, QString> onlineUserMap;
+    void updateMap(quint32 id, QString ip);
+    QString searchOnMap(quint32 id);
+    void sendMessage(MyMsg *msg) ;
 
-    QList <ChatBusiness> business;
 
 protected:
     void incomingConnection(qintptr socketDescriptor) override;
