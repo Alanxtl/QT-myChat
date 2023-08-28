@@ -7,6 +7,7 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 #include <Tools/handler.h>
+#include <qdebug.h>
 
 login::login(QWidget *parent) :
     QMainWindow(parent),
@@ -25,6 +26,24 @@ login::login(QWidget *parent) :
     //    }
     connect(Handler::getObj(), &Handler::loginHandler, this, &login::login_success);
     connect(Handler::getObj(), &Handler::getLogMsg, this, &login::logHandler);
+
+
+    QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
+        QString time = QString::number(QDateTime::currentDateTime().toTime_t());
+        QByteArray originMessage = Socket::getObj()->socket.readAll();
+        MyMsg* msg = MyMsg::arrayToMsg(originMessage);
+
+        if (msg->type == 0) {
+            qDebug() << "return 0";
+            login_success();
+        } else if (msg->type == 8) {
+            qDebug() << "return 8";
+            logHandler(msg);
+        }
+    });
+
+
+
 }
 
 login::~login()
@@ -70,10 +89,9 @@ void login::on_loginbth_clicked()
     QByteArray data = msge->msgToArray();
     Socket::getObj()->socket.write(data);
 
-
-    MainWindow *m=new MainWindow();
-    m->show();
-    this->hide();
+//    MainWindow *m=new MainWindow();
+//    m->show();
+//    this->hide();
 }
 
 void login::login_success()
@@ -86,6 +104,17 @@ void login::login_success()
 //go to gegister
 void login::on_regbtn_clicked()
 {
+    QString ip = ui->iptxt->text();
+    quint16 port = 6666;
+    Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
+    if (Socket::getObj()->socket.waitForConnected(3000)) {
+
+    }
+    else {
+        QMessageBox::about(this,"警告","服务器连接失败");
+        return;
+    }
+
     regis *re=new regis();
     re->show();
     this->hide();
@@ -94,6 +123,11 @@ void login::on_regbtn_clicked()
 void login::on_exitbtn_clicked()
 {
     this->close();
+}
+
+void login::on_jump_clicked()
+{
+    login_success();
 }
 
 void login::on_checkBox_clicked(bool checked)

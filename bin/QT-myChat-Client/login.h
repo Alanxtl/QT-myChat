@@ -24,6 +24,7 @@ private slots:
     void login_success();
     void on_regbtn_clicked();
     void on_exitbtn_clicked();
+    void on_jump_clicked();
     //void on_checkBox_clicked();
     void on_checkBox_clicked(bool checked);
 

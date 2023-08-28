@@ -9,11 +9,37 @@ regis::regis(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("用户注册");
+
+    QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
+        QByteArray originMessage = Socket::getObj()->socket.readAll();
+        MyMsg* msg = MyMsg::arrayToMsg(originMessage);
+
+        if (msg->type == 0) {
+            register_success();
+        } else if (msg->type == 8) {
+            logHandler(msg);
+        }
+    });
+
+
 }
 
 regis::~regis()
 {
     delete ui;
+}
+
+void regis::register_success()
+{
+    QMessageBox::about(this,"成功","注册成功已自动登录");
+    login *log=new login();
+    log->show();
+    this->hide();
+}
+
+void regis::logHandler(MyMsg *msg)
+{
+    QMessageBox::about(this, "注意", QString::fromUtf8(msg->content));
 }
 
 
@@ -31,9 +57,7 @@ void regis::on_regbtn_clicked()
     QByteArray data = msge->msgToArray();
     Socket::getObj()->socket.write(data);
 
-    login *log=new login();
-    log->show();
-    this->hide();
+
 }
 
 //close

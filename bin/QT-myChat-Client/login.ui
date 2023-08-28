@@ -124,12 +124,16 @@ background-image: url(:/images/cat.jpg);</string>
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>服务器ip</string>
+            <string>服务器IP</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="iptxt"/>
+          <widget class="QLineEdit" name="iptxt">
+           <property name="text">
+            <string>172.20.10.9</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -168,6 +172,19 @@ background-image: url(:/images/cat.jpg);</string>
       </layout>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="jump">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>0</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
