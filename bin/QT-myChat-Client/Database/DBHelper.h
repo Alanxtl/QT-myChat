@@ -38,11 +38,6 @@ public:
 private:
     QSqlDatabase sqldb;
     static DBHelper* db;
-
-signals:
-    void addOnlineUserInfo(const UserInfo& username);
-
-
 };
 
 #endif // DBHELPER_H
