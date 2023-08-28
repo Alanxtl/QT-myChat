@@ -4,6 +4,8 @@
 #include "mainwindow.h"
 #include <QString>
 #include <QMessageBox>
+#include <QTcpSocket>
+#include <QHostAddress>
 
 login::login(QWidget *parent) :
     QMainWindow(parent),
@@ -12,6 +14,14 @@ login::login(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("用户登录");
     ui->pwdtxt->setEchoMode(QLineEdit::Password);
+
+    QTcpSocket socket;
+    QString ip = "192.168.34.129";
+    quint16 port = 6666;
+    socket.connectToHost(QHostAddress(ip), port);
+    if (socket.waitForConnected(5000)) {
+        QMessageBox::about(this, "警告", "网络连接不成功");
+    }
 }
 
 login::~login()
@@ -35,10 +45,18 @@ void login::on_loginbth_clicked()
         return;
     }
 
+
+
+
+}
+
+void login::login_success()
+{
     MainWindow *m=new MainWindow();
     m->show();
     this->hide();
 }
+
 //go to gegister
 void login::on_regbtn_clicked()
 {
