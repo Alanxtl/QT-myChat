@@ -22,21 +22,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     resize(600, 800);
     ui->tableWidget->setColumnCount(3);
-        ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Nickname" << "ID" << "IP");
-        ui->tableWidget->setRowCount(5);
+    ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Nickname" << "ID" << "IP");
+    ui->tableWidget->setRowCount(5);
 
-        QStringList nameList;
-        nameList << "张三" << "李四" << "王五" << "赵六" << "孙七";
-        QStringList sexList;
-        sexList << "zhangsan123" << "lisi123" << "wangwu123" << "zhaoliu123" << "sunqi123";
-        QStringList ageList;
-        ageList << "22" << "30" << "12" << "55" << "90";
-        for (int i=0;i<5;i++)
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sexList[i]));
-            ui->tableWidget->setItem(i,2,new QTableWidgetItem(ageList[i]));
-        }
+    QStringList nameList;
+    nameList << "张三" << "李四" << "王五" << "赵六" << "孙七";
+    QStringList sexList;
+    sexList << "男" << "女" << "男" << "女" << "男";
+    QStringList ageList;
+    ageList << "22" << "30" << "12" << "55" << "90";
+    for (int i=0;i<5;i++)
+    {
+        ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
+        ui->tableWidget->setItem(i,1,new QTableWidgetItem(sexList[i]));
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(ageList[i]));
+    }
 }
 
 MainWindow::~MainWindow()

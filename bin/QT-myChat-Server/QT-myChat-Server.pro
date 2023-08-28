@@ -17,6 +17,7 @@ SOURCES += \
     Service/tcpservice.cpp \
     Thread/chatbusiness.cpp \
     Thread/chatthread.cpp \
+    Tools/handler.cpp \
     Tools/log.cpp \
     Tools/mymsg.cpp \
     main.cpp \
@@ -31,10 +32,10 @@ HEADERS += \
     Service/tcpservice.h \
     Thread/chatbusiness.h \
     Thread/chatthread.h \
+    Tools/handler.h \
     Tools/log.h \
     Tools/mymsg.h \
     mainwindow.h
-
 
 FORMS += \
     mainwindow.ui \
