@@ -14,7 +14,8 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">background-color: rgb(255, 255, 255);
+background-image: url(:/images/line.jpg);</string>
   </property>
   <widget class="QWidget" name="mewidget" native="true">
    <property name="geometry">
@@ -110,7 +111,7 @@
       <x>0</x>
       <y>0</y>
       <width>450</width>
-      <height>429</height>
+      <height>421</height>
      </rect>
     </property>
     <attribute name="label">
@@ -124,7 +125,7 @@
       <x>0</x>
       <y>0</y>
       <width>450</width>
-      <height>429</height>
+      <height>421</height>
      </rect>
     </property>
     <attribute name="label">

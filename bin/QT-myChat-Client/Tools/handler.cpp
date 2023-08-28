@@ -16,7 +16,7 @@ void Handler::groupMsgHandler(MyMsg *msg)
 
 }
 
-void Handler::getMsg()
-{
+//void Handler::getMsg()
+//{
 
-}
+//}

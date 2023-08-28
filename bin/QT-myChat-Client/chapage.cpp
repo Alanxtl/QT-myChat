@@ -2,6 +2,12 @@
 #include "ui_chapage.h"
 #include <QDateTime>
 #include <QDebug>
+#include <QTcpSocket>
+#include <QHostAddress>
+#include <Tools/mymsg.h>
+#include <Tools/socket.h>
+#include <QFileDialog>
+#include <QFileInfo>
 
 chapage::chapage(QWidget *parent) :
     QMainWindow(parent),
@@ -42,6 +48,11 @@ void chapage::on_sendbtn_clicked()
     QString time = QString::number(QDateTime::currentDateTime().toTime_t()); //时间戳
 
     bool isSending = true; // 发送中
+
+        MyMsg *msge = MyMsg::defaultMsg(100, 0, msg);
+        qDebug() << msg;
+        QByteArray data = msge->msgToArray();
+        Socket::getObj()->socket.write(data);
 
     qDebug()<<"addMessage" << msg << time << ui->listWidget->count();
     if(ui->listWidget->count()%2) {
@@ -155,3 +166,16 @@ void chapage::resizeEvent(QResizeEvent *event)
     }
 }
 
+
+void chapage::on_pushButton_5_clicked()
+{
+    static QString s_strPath;
+//    static QString s_strPath = myapp::m_strAppPath;
+    QString strFileName = QFileDialog::getOpenFileName(this,
+                                                       tr("选择文件"),
+                                                       s_strPath,
+                                                       tr("文件(*)"));
+
+    if (strFileName.isEmpty()) return;
+    s_strPath = strFileName;
+}

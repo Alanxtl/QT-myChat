@@ -45,7 +45,9 @@ void login::on_loginbth_clicked()
         return;
     }
 
-
+    MainWindow *m=new MainWindow();
+    m->show();
+    this->hide();
 
 
 }
