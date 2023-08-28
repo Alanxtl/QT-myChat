@@ -22,7 +22,7 @@ public:
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
 
     void on_sendbtn_clicked();
 

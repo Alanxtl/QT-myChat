@@ -43,7 +43,12 @@ void login::on_regbtn_clicked()
 //close
 void login::on_exitbtn_clicked()
 {
- this->close();
+    this->close();
+}
+
+void login::on_checkBox_clicked()
+{
+
 }
 
 

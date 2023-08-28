@@ -36,4 +36,9 @@ void regis::on_exitbtn_clicked()
     this->close();
 }
 
+void regis::on_checkBox_clicked()
+{
+
+}
+
 
