@@ -3,18 +3,10 @@
 
 #include <QObject>
 #include <QDataStream>
-#include <QTime>
-#include "Tools/log.h"
 #define IDENTIFY 0xAA112233
 
 /*
  * 标准QByteArray信息格式|32header|?body|
- *
- * 生成简易QBypteArray：
- * MyMsg::defaultMsg("内容")->msgToArray();
- *
- * 生成简易MyMsg*：
- * MyMsg::defaultMsg("内容");
  *
  *
  *
@@ -28,7 +20,7 @@
  *  不一定做 sliceCount  : 占 4 个字节, quint32, 用以指示该切片信息是第几个切片
  *          senderID    : 占 4 个字节, quint32, 用于表示发送者的id
  *          receiverID  : 占 4 个字节, quint32, 用于表示接收者的id
- *          time        : 占 4 个字节, QTime, 用于表示发送的时间
+ *          time        : 占 4 个字节, quint32, 用于表示发送的时间
  *
  *
  *
@@ -60,7 +52,7 @@ public:
     quint32 sliceCount;
     quint32 senderID;
     quint32 receiverID;
-    QTime time;
+    quint32 time;
     QByteArray content;
 
     explicit MyMsg(QObject *parent = nullptr);
@@ -69,15 +61,13 @@ public:
     }
 
     MyMsg* setMsg(quint8 type, quint8 slice, quint32 sliceTotal, quint32 sliceCount,
-          quint32 senderID, quint32 receiverID, QTime time, const QByteArray & content);
+          quint32 senderID, quint32 receiverID, quint32 time, const QByteArray & content);
 
     static MyMsg* arrayToMsg(const QByteArray & full_received);  //array转msg
     //example: MsgHandler()->parse( myMsg::arrayToMsg(type_and_content) );
 
     QByteArray msgToArray();   //msg转array
     //example: clientConnection->write( myMsg(type, content).msgToArray() );
-
-    static MyMsg* defaultMsg(QString str);
 
 
     quint32 getDataSize();
@@ -87,7 +77,7 @@ public:
     quint32 getSliceCount();
     quint32 getSenderID();
     quint32 getReceiverID();
-    QTime getTime();
+    quint32 getTime();
     QByteArray & getContent();
 
 signals:

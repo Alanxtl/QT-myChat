@@ -1,9 +1,10 @@
 #include "mainwindow.h"
-
+#include "login.h"
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
-
+#include "regis.h"
+#include "chapage.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -18,6 +19,10 @@ int main(int argc, char *argv[])
         }
     }
     MainWindow w;
-    w.show();
+   w.show();
+    login log;
+    log.show();
+ chapage chat;
+ chat.show();
     return a.exec();
 }

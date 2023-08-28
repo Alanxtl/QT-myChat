@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMainWindow>
+#include <QMenu>
 
 
 
@@ -18,6 +19,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+private slots:
+    void on_fdsbtn_customContextMenuRequested(const QPoint &pos);
+    void deletefds();
+    void addfds();
 private:
     Ui::MainWindow *ui;
 };
