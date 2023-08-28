@@ -5,8 +5,16 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
 
+    ui->setupUi(this);
+    ui->profilebtn->setIcon(QPixmap(QString(":/images/a (17).jpg")));
+    ui->profilebtn->setIconSize(QSize(150,150));
+    ui->fdsbtn->setText("好友");
+    ui->fdsbtn->setIcon(QPixmap(QString(":/images/ic_user.png")));
+    ui->groupbtn->setText("群组");
+    ui->groupbtn->setIcon(QPixmap(QString(":/images/ic_group.png")));
+    ui->fdsbtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    ui->groupbtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     QVector<QToolButton*> vector;
     this->setWindowIcon(QIcon(":/images/a (1).jpg"));
     this->setWindowTitle("Linpop");
@@ -37,3 +45,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::addfds(){
+
+}
+
+void MainWindow::deletefds(){
+
+}
+
+void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
+{
+    QMenu *fdsmenu=new QMenu(ui->fdsbtn);
+    QAction *addfdsact=new QAction(tr("添加好友"),this);
+    QAction *defdsact=new QAction(tr("删除好友"),this);
+    fdsmenu->addAction(addfdsact);
+    fdsmenu->addAction(defdsact);
+    connect(addfdsact,SIGNAL(triggred(bool)),this,SLOT(addfds()));
+    connect(addfdsact,SIGNAL(triggred(bool)),this,SLOT(deletefds()));
+    fdsmenu->exec(QCursor::pos());
+}

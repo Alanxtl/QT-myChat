@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>600</height>
+    <width>450</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,80 +19,70 @@
   <widget class="QWidget" name="mewidget" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>156</width>
-     <height>91</height>
+     <x>20</x>
+     <y>10</y>
+     <width>161</width>
+     <height>141</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="spacing">
-     <number>0</number>
+   <widget class="QToolButton" name="profilebtn">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>158</width>
+      <height>122</height>
+     </rect>
     </property>
-    <property name="leftMargin">
-     <number>0</number>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
-    <property name="topMargin">
-     <number>0</number>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
     </property>
-    <property name="rightMargin">
-     <number>0</number>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
-    <property name="bottomMargin">
-     <number>0</number>
+    <property name="iconSize">
+     <size>
+      <width>150</width>
+      <height>150</height>
+     </size>
     </property>
-    <item>
-     <widget class="QToolButton" name="profilebtn">
-      <property name="styleSheet">
-       <string notr="true">image: url(:/images/a (17).jpg);</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>:/images/a (17).jpg</normaloff>:/images/a (17).jpg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>80</width>
-        <height>80</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QToolButton" name="namebtn">
-      <property name="text">
-       <string>name</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   </widget>
   </widget>
-  <widget class="QToolButton" name="friendsbtn">
+  <widget class="QToolButton" name="fdsbtn">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>90</y>
-     <width>221</width>
-     <height>20</height>
+     <y>170</y>
+     <width>291</width>
+     <height>21</height>
     </rect>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>好友</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>16</height>
+    </size>
    </property>
   </widget>
   <widget class="QToolButton" name="groupbtn">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>90</y>
-     <width>131</width>
-     <height>20</height>
+     <x>290</x>
+     <y>170</y>
+     <width>161</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -103,25 +93,28 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>110</y>
-     <width>350</width>
-     <height>470</height>
+     <y>219</y>
+     <width>450</width>
+     <height>481</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="group1">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>350</width>
-      <height>408</height>
+      <width>450</width>
+      <height>429</height>
      </rect>
     </property>
     <attribute name="label">
-     <string>1group</string>
+     <string>我的好友</string>
     </attribute>
     <layout class="QVBoxLayout" name="vlayout"/>
    </widget>
@@ -130,15 +123,37 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>350</width>
-      <height>408</height>
+      <width>450</width>
+      <height>429</height>
      </rect>
     </property>
     <attribute name="label">
-     <string>2group</string>
+     <string>黑名单</string>
     </attribute>
     <layout class="QVBoxLayout" name="vlayout_2"/>
    </widget>
+  </widget>
+  <widget class="QToolButton" name="namebtn">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>140</y>
+     <width>44</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string>name</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
   </widget>
  </widget>
  <resources/>

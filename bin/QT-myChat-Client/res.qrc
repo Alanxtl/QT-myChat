@@ -17,5 +17,13 @@
         <file>images/a (15).jpe</file>
         <file>images/a (16).jpeg</file>
         <file>images/a (17).jpg</file>
+        <file>images/ic_lock.png</file>
+        <file>images/ic_user.png</file>
+        <file>images/cat.jpg</file>
+        <file>images/ic_group.png</file>
+        <file>images/icon_cut.png</file>
+        <file>images/icon_emoji.png</file>
+        <file>images/icon_file.png</file>
+        <file>images/icon_pic.png</file>
     </qresource>
 </RCC>

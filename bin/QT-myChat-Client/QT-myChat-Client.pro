@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,18 +9,28 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Tools/log.cpp \
     Tools/mymsg.cpp \
+    chapage.cpp \
+    login.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qnchatmessage.cpp \
+    regis.cpp
 
 HEADERS += \
-    Tools/log.h \
     Tools/mymsg.h \
-    mainwindow.h
+    chapage.h \
+    login.h \
+    mainwindow.h \
+    qnchatmessage.h \
+    regis.h
 
 FORMS += \
-    mainwindow.ui
+    chapage.ui \
+    login.ui \
+    mainwindow.ui \
+    qnchatmessage.ui \
+    regis.ui
 
 TRANSLATIONS += \
     QT-myChat-Client_zh_CN.ts
