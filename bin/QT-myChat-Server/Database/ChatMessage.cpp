@@ -27,7 +27,7 @@ QString ChatMessage::getTimeStamp(){
 }
 ChatMessage ChatMessage::fromQByteArray(QByteArray chat_msg){
     QDataStream in(chat_msg);
-    in.setVersion(QDataStream::Qt_5_12);
+    in.setVersion(QDataStream::Qt_5_9);
     ChatMessage recvChatMsg(0,0,"");
     //写入发送者 接收者
     in >> recvChatMsg._sender;
@@ -54,7 +54,7 @@ QByteArray ChatMessage::toQByteArray(){
     QByteArray block;
 
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_12);
+    out.setVersion(QDataStream::Qt_5_9);
     out << quint32(_sender);
     out << quint32(_receiver);
     //输出时间戳

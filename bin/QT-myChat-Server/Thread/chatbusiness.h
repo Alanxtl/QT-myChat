@@ -9,6 +9,7 @@
 #include <Tools/mymsg.h>
 #include <Database/DBHelper.h>
 
+
 class ChatBusiness : public QObject
 {
     Q_OBJECT
@@ -19,9 +20,13 @@ public:
     void mainBusiness();
     qintptr socketDescriptor;
     QTcpSocket socket;
+    QString ip;
+    quint32 id;
 
 signals:
+    void receiveSignal(MyMsg *msg);
     void startSignal();
+    void updateSignal();
 };
 
 #endif // CHATBUSINESS_H

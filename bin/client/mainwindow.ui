@@ -24,18 +24,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QLabel" name="label_IP">
-             <property name="text">
-              <string>服务器IP</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_IP"/>
-           </item>
-          </layout>
+          <layout class="QHBoxLayout" name="horizontalLayout"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -95,7 +84,7 @@
      <x>0</x>
      <y>0</y>
      <width>888</width>
-     <height>28</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>

@@ -49,11 +49,10 @@ void MainWindow::updateClinetMonitor()
     //ui->clientBrowser->append()
 }
 
-
 //显示全部在线用户
 void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
 
-    if(onlineUserMap.contains(user.getID())) {
+    if(tcpservice.onlineUserMap.contains(user.getID())) {
         Log::getLogObj()->writeLog("用户" + QString::number(user.getID()) + "已链接过");
         return;
     }
@@ -65,7 +64,7 @@ void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
     query.prepare("insert into OnlineUser values(:Id, :Username)");
     query.bindValue(":Id", user.getID());
     query.bindValue(":Username", user.getName());
-    onlineUserMap[user.getID()] = user.getName();
+    tcpservice.onlineUserMap[user.getID()] = user.getName();
 
     if(!query.exec())
     {
@@ -102,3 +101,4 @@ void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
 
     ui->tableWidget->resizeColumnsToContents();
 }
+
