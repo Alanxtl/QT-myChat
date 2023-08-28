@@ -1,21 +1,12 @@
-#include <QMessageBox>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QVariant>
-#include <QtDebug>
-#include <QObject>
-#include <QtNetwork>
-
 #include "DBHelper.h"
-#include "UserInfo.h"
-#include "GroupInfo.h"
-#include "Tools/log.h"
 
 //静态成员变量的类外初始化
 DBHelper* DBHelper::db = NULL;
 
 //构造函数
-DBHelper::DBHelper(){
+DBHelper::DBHelper(QObject *parent)
+    : QObject{parent}
+{
     //连接数据库操作
     sqldb = QSqlDatabase::addDatabase("QSQLITE");
     sqldb.setDatabaseName("server.db");
@@ -75,21 +66,18 @@ DBHelper::DBHelper(){
           "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))");
 
     //在线用户表
-    query.exec("CREATE TABLE OnlineUser("
-        "Id INTEGER PRIMARY KEY, "
-        "Username VARCHAR(40) NOT NULL, "
-        "Pwd VARCHAR(40) NOT NULL, "
-        "Ip VARCHAR(40), "
-        "Avatar VARCHAR(512) )");
+
+    query.exec("drop TABLE OnlineUser");
+
+    if(!query.exec("CREATE TABLE if not exists OnlineUser("
+        "Id int PRIMARY KEY, "
+        "Username varchar NOT NULL) ")) {
+        qDebug()<<query.lastError();
+    }
 	//建表完成
 }//构造函数
 
-//析构函数
-DBHelper::~DBHelper(){
-	if (db != NULL) {
-		delete db;
-	}
-}
+
 
 //单例模式
 DBHelper* DBHelper::GetInstance(){
@@ -116,22 +104,30 @@ QList<QByteArray> DBHelper::selectAllFriendsUserInfo(quint32 UserId){
 	return ListUserInfo;
 }
 
-//注册信息(没有实现验证功能，如果重复数据库会报错)
+//注册信息（注册检验）
 void DBHelper::registerUserInfo(const UserInfo& user){
-	QSqlQuery query;
-    query.prepare("insert into UserInfo values(:Id,:Username,:pwd,:avatar)");
-	query.bindValue(":Id", user.getID());
-	query.bindValue(":Username", user.getName());
-    query.bindValue(":pwd", user.getPwd());
-    query.bindValue(":avatar", user.getAvatarName());
-	query.exec();
+    QSqlQuery query;
+    query.prepare("select Username from UserInfo where username = :Username");
+    query.bindValue(":Username", user.getName());
+    query.exec();
+    if(query.next()){
+        QMessageBox::warning(NULL, "错误", "该用户名已存在", QMessageBox::Yes);
+    }else{
+        query.clear();
+        query.prepare("insert into UserInfo values(:Id,:Username,:pwd,:avatar)");
+        query.bindValue(":Id", user.getID());
+        query.bindValue(":Username", user.getName());
+        query.bindValue(":pwd", user.getPwd());
+        query.bindValue(":avatar", user.getAvatarName());
+        query.exec();
+    }
 }
 
 //登录验证(返回true/false)
-bool DBHelper::selectUserByIdAndPwd(const quint32 Id, const QString pwd){
+bool DBHelper::selectUserByIdAndPwd(const QString username, const QString pwd){
 	QSqlQuery query;
-	query.prepare("select * from UserInfo where Id =:Id and pwd =:pwd");
-	query.bindValue(":Id", QVariant(Id));
+    query.prepare("select * from UserInfo where Username =:Username and pwd =:pwd");
+    query.bindValue(":Username", QVariant(username));
 	query.bindValue(":pwd", QVariant(pwd));
 	query.exec();
 	bool flag = query.next();
@@ -355,24 +351,5 @@ QList<quint32> DBHelper::selectAllGroupMember(quint32 ID){
 }
 
 //增加在线用户信息
-void DBHelper::addOnlineUserInfo(const UserInfo& user){
-    QSqlQuery query;
-    query.prepare("insert into OnlineUser values(:Id,:Username,:Ip)");
-    query.bindValue(":Id", user.getID());
-    query.bindValue(":Username", user.getName());
-    query.bindValue(":Ip", user.getIp());
-    query.exec();
-}
 
-//显示全部在线用户
-QList<QByteArray> DBHelper::showAllOnlineUserInfo(){
-    QSqlQuery query;
-    query.exec("select Id, Username, Ip from OnlineUser");
-    QList<QByteArray> ListUserInfo;
-    ListUserInfo.clear();
-    while (query.next()){
-        ListUserInfo.append(UserInfo(query.value("Id").toInt(), query.value("Username").toString(),"","", query.value("Ip").toString()).toQByteArray());
-    }
-    return ListUserInfo;
-}
 //end对外功能接口

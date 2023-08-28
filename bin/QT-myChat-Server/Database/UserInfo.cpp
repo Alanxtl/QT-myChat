@@ -1,5 +1,4 @@
 #include "UserInfo.h"
-
 #include <QtNetwork>
 
 //构造函数
@@ -7,7 +6,9 @@ UserInfo::UserInfo(quint32 id,
             QString name,
             QString pwd,
             QString avatar_name
-        ): id(id), name(name), pwd(pwd), avatar_name(avatar_name){}
+        ): id(id), name(name), pwd(pwd), avatar_name(avatar_name) {
+    qRegisterMetaType<UserInfo>("UserInfo");
+}
 
 // | quint32 id | quint32 name size | name | quint32 pwd size | pwd |
 
@@ -101,3 +102,5 @@ QByteArray UserInfo::toQByteArray(){
 
     return block;
 }
+
+

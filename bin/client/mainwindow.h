@@ -7,6 +7,8 @@
 #include <QString>
 #include <QHostAddress>
 #include <QDebug>
+#include <QMessageBox>
+#include <Tools/mymsg.h>
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +21,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QTcpSocket socket;
+    int if_connect = 0;
 
 private slots:
 

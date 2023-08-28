@@ -66,6 +66,7 @@ MyMsg* MyMsg::arrayToMsg(const QByteArray &full_received)
     in >> dataSize;
     //假如数据不完整, 停止读取
     if(full_received.size() - sizeof(quint32) < dataSize){
+
         return res->setMsg( 6, 0, 0, 0, 0, 0, QTime::currentTime(), QByteArray() );
     }
 
@@ -131,14 +132,18 @@ QByteArray MyMsg::msgToArray()
     out.device()->seek(0);
     out << (quint32)(block.size()-sizeof(quint32));
 
+
+
+
+
     return block;
 }
 
-MyMsg* MyMsg::defaultMsg(QString str)
+MyMsg* MyMsg::defaultMsg(quint32 fromID, quint32 toID, QString str)
 {
     MyMsg * res = new MyMsg();
     QByteArray bytes = str.toUtf8();
-    res->setMsg(1,0,0,0,1,2,QTime::currentTime(),bytes);
+    res->setMsg(1,0,0,0,fromID,toID,QTime::currentTime(),bytes);
     return res;
 }
 

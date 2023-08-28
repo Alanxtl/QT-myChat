@@ -4,10 +4,12 @@
 #include <QMainWindow>
 #include <QTime>
 #include <Tools/log.h>
+#include <Tools/mymsg.h>
 #include <Thread/chatbusiness.h>
 #include <Thread/chatthread.h>
 #include <Service/tcpservice.h>
 #include <QHostAddress>
+#include <Database/DBHelper.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,12 +24,13 @@ public:
     ~MainWindow();
     quint32 clientCount;
     TcpService tcpservice;
-
+    QMap<quint32, QString> onlineUserMap;
 
 public slots:
     void showLog(QString str);
     void autoScroll();
     void updateClinetMonitor();
+    void showAllOnlineUserInfo(const UserInfo&);
 
 private:
     Ui::MainWindow *ui;

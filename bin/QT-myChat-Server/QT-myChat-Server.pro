@@ -10,6 +10,10 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Database/ChatMessage.cpp \
+    Database/DBHelper.cpp \
+    Database/GroupInfo.cpp \
+    Database/UserInfo.cpp \
     Service/tcpservice.cpp \
     Thread/chatbusiness.cpp \
     Thread/chatthread.cpp \
@@ -18,15 +22,18 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp
 
-
 HEADERS += \
+    Database/ChatMessage.h \
+    Database/DBHelper.h \
+    Database/GroupInfo.h \
+    Database/UserInfo.h \
+    Database/standarddatetimeutilities.h \
     Service/tcpservice.h \
     Thread/chatbusiness.h \
     Thread/chatthread.h \
     Tools/log.h \
     Tools/mymsg.h \
     mainwindow.h
-
 
 
 FORMS += \

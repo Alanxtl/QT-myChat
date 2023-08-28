@@ -14,13 +14,13 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>GroupBox</string>
+         <string>用户端测试窗口</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
@@ -28,7 +28,7 @@
            <item>
             <widget class="QLabel" name="label_IP">
              <property name="text">
-              <string>IP</string>
+              <string>服务器IP</string>
              </property>
             </widget>
            </item>
@@ -40,14 +40,28 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QLabel" name="label_Port">
+            <widget class="QLabel" name="label_TargetIP">
              <property name="text">
-              <string>Port</string>
+              <string>目标ID</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_Port"/>
+            <widget class="QLineEdit" name="lineEdit_TargetIP"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_SelfID">
+             <property name="text">
+              <string>自身ID</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_SelfID"/>
            </item>
           </layout>
          </item>
@@ -60,14 +74,14 @@
       <item>
        <widget class="QPushButton" name="pushButton_test">
         <property name="text">
-         <string>TestConnection</string>
+         <string>测试连接</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_Send">
         <property name="text">
-         <string>Send</string>
+         <string>发送信息</string>
         </property>
        </widget>
       </item>
@@ -81,7 +95,7 @@
      <x>0</x>
      <y>0</y>
      <width>888</width>
-     <height>29</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>
