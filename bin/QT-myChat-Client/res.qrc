@@ -25,5 +25,7 @@
         <file>images/icon_emoji.png</file>
         <file>images/icon_file.png</file>
         <file>images/icon_pic.png</file>
+        <file>images/Customer Copy.png</file>
+        <file>images/CustomerService.png</file>
     </qresource>
 </RCC>

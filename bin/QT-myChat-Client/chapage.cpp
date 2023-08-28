@@ -35,7 +35,7 @@ chapage::~chapage()
 }
 
 
-void chapage::on_pushButton_clicked()
+void chapage::on_sendbtn_clicked()
 {
     QString msg = ui->textEdit->toPlainText();
     ui->textEdit->setText("");
@@ -135,3 +135,4 @@ void chapage::resizeEvent(QResizeEvent *event)
         dealMessage(messageW, item, messageW->text(), messageW->time(), messageW->userType());
     }
 }
+
