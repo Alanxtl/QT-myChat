@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QStringList nameList;
         nameList << "张三" << "李四" << "王五" << "赵六" << "孙七";
         QStringList sexList;
-        sexList << "男" << "女" << "男" << "女" << "男";
+        sexList << "zhangsan123" << "lisi123" << "wangwu123" << "zhaoliu123" << "sunqi123";
         QStringList ageList;
         ageList << "22" << "30" << "12" << "55" << "90";
         for (int i=0;i<5;i++)
@@ -133,7 +133,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     ui->textEdit->resize(this->width() - 220, ui->widget->height() - 20);
     ui->textEdit->move(10, 10);
 
-//    ui->pushButton->move(ui->textEdit->width()+ui->textEdit->x() - ui->pushButton->width() - 10,
+//   ui->pushButton->move(ui->textEdit->width()+ui->textEdit->x() - ui->pushButton->width() - 10,
 //                         ui->textEdit->height()+ui->textEdit->y() - ui->pushButton->height() - 10);
 
 
