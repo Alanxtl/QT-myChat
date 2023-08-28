@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(&socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
         QByteArray originMessage = socket.readAll();
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
-        QMessageBox(this, "消息", QString::fromUtf8(msg->getContent()));
+        QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
 
     });
 }
