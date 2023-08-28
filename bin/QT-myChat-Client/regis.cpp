@@ -42,5 +42,5 @@ void regis::on_checkBox_clicked()
     return;
 }
 
-}
+
 

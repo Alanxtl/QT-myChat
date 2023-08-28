@@ -52,12 +52,6 @@ void login::on_exitbtn_clicked()
     this->close();
 }
 
-void login::on_checkBox_clicked()
-{
-
-}
-
-
 void login::on_checkBox_clicked(bool checked)
 {
     if(checked)

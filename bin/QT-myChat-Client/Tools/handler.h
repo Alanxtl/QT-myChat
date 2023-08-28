@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <Tools/mymsg.h>
+#include <Database/DBHelper.h>
+#include <Database/UserInfo.h>
 
 class Handler : public QObject
 {
@@ -12,6 +14,10 @@ public:
     bool loginHandler();
     void check(MyMsg* msg);
     static Handler* getObj(); //单例模式
+    void registerHandler(MyMsg *msg);
+    void loginHandler(MyMsg *msg);
+    void defaultMsgHandler(MyMsg *msg);
+    void groupMsgHandler(MyMsg *msg);
 signals:
 
 private:
