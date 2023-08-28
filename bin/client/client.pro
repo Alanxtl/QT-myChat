@@ -26,12 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    Tools/handler.cpp \
         main.cpp \
         mainwindow.cpp \
     Tools/log.cpp \
     Tools/mymsg.cpp
 
 HEADERS += \
+    Tools/handler.h \
         mainwindow.h \
     Tools/log.h \
     Tools/mymsg.h
