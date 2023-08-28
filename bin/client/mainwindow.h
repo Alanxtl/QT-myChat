@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <Tools/mymsg.h>
+#include "Tools/handler.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,9 @@ private slots:
     void on_pushButton_test_clicked();
 
     void on_pushButton_Send_clicked();
+
+    void logHandler(MyMsg* msg);
+    void loginHandler();
 
 private:
     Ui::MainWindow *ui;

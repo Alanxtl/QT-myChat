@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(Handler::getObj(), &Handler::getLogMsg, this, &MainWindow::logHandler);
+    connect(Handler::getObj(), &Handler::loginMsg, this, &MainWindow::loginHandler);
+
 }
 
 MainWindow::~MainWindow()
@@ -28,6 +31,7 @@ void MainWindow::on_pushButton_test_clicked()
     }
     else {
         qDebug() << "Failed to connect ip=" << ip << "   port=" << port;
+
     }
 }
 
@@ -51,4 +55,14 @@ void MainWindow::on_pushButton_Send_clicked()
         }
 
     }
+}
+
+void MainWindow::logHandler(MyMsg *msg)
+{
+    QMessageBox::about(this, "注意", QString::fromUtf8(msg->content));
+}
+
+void MainWindow::loginHandler()
+{
+    //登录成功页面跳转
 }
