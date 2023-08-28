@@ -6,22 +6,10 @@ Handler::Handler(QObject *parent)
 
 }
 
-Handler * Handler::globeHandler = nullptr;
-
-Handler* Handler::getObj(){
-    if(globeHandler == nullptr){
-        globeHandler = new Handler();
-    }
-    return globeHandler;
-}
-
-void Handler::check(MyMsg *msg)
+bool Handler::loginHandler()
 {
 
 }
-
-
-
 
 
 void Handler::registerHandler(MyMsg* msg)

@@ -16,7 +16,10 @@ public:
     void groupMsgHandler(MyMsg* msg);
     void fileHandler();
     void picHandler();
-
+    void check(MyMsg* msg);
+    static Handler* getObj(); //单例模式
+private:
+    static Handler* globeHandler;
 signals:
 
 };

@@ -22,7 +22,7 @@ private slots:
 
     void on_exitbtn_clicked();
 
-    void on_checkBox_clicked();
+    //void on_checkBox_clicked();
 
     void on_checkBox_clicked(bool checked);
 

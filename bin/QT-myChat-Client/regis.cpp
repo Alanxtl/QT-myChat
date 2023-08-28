@@ -30,6 +30,7 @@ void regis::on_regbtn_clicked()
     log->show();
     this->hide();
 }
+
 //close
 void regis::on_exitbtn_clicked()
 {
@@ -38,7 +39,8 @@ void regis::on_exitbtn_clicked()
 
 void regis::on_checkBox_clicked()
 {
-
+    return;
 }
 
+}
 
