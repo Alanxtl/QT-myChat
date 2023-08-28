@@ -120,6 +120,20 @@ background-image: url(:/images/cat.jpg);</string>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>服务器ip</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="iptxt"/>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLabel" name="namel">
@@ -163,7 +177,7 @@ background-image: url(:/images/cat.jpg);</string>
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>21</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>

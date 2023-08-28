@@ -79,6 +79,8 @@ public:
 
     static MyMsg* defaultMsg(quint32 fromID, quint32 toID, QString str);
     static MyMsg* logMsg(quint32 fromID, quint32 toID, QString str);
+    static MyMsg* loginMsg(quint32 id, quint32 pwd, QString name = " ");
+    static MyMsg* registerMsg(quint32 id, quint32 pwd, QString name);
 
     quint32 getDataSize();
     quint8 getType();

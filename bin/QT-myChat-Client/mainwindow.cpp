@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "chapage.h"
 
+#include <QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -49,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
             chatp->show();
          });
     }
+
+
 }
 
 MainWindow::~MainWindow()
@@ -60,9 +64,16 @@ void MainWindow::addfds(){
 
 }
 
+void MainWindow::logHandler(MyMsg *msg)
+{
+
+}
+
 void MainWindow::deletefds(){
 
 }
+
+
 
 void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
 {

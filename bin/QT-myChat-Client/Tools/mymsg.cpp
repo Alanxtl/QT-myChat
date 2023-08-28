@@ -157,6 +157,22 @@ MyMsg* MyMsg::logMsg(quint32 fromID, quint32 toID, QString str)
     return res;
 }
 
+MyMsg *MyMsg::loginMsg(quint32 id, quint32 pwd, QString str)
+{
+    MyMsg * res = new MyMsg();
+    QByteArray bytes = str.toUtf8();
+    res->setMsg(0,0,0,0,id,pwd,QTime::currentTime(),bytes);
+    return res;
+}
+
+MyMsg *MyMsg::registerMsg(quint32 id, quint32 pwd, QString str)
+{
+    MyMsg * res = new MyMsg();
+    QByteArray bytes = str.toUtf8();
+    res->setMsg(1,0,0,0,id,pwd,QTime::currentTime(),bytes);
+    return res;
+}
+
 quint32 MyMsg::getDataSize()
 {
     return this->dataSize;

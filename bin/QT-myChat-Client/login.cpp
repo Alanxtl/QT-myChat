@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <Tools/handler.h>
 
 login::login(QWidget *parent) :
     QMainWindow(parent),
@@ -15,13 +16,15 @@ login::login(QWidget *parent) :
     this->setWindowTitle("用户登录");
     ui->pwdtxt->setEchoMode(QLineEdit::Password);
 
-    QTcpSocket socket;
-    QString ip = "192.168.34.129";
-    quint16 port = 6666;
-    socket.connectToHost(QHostAddress(ip), port);
-    if (socket.waitForConnected(5000)) {
-        QMessageBox::about(this, "警告", "网络连接不成功");
-    }
+    //    QTcpSocket socket;
+    //    QString ip = "192.168.34.129";
+    //    quint16 port = 6666;
+    //    socket.connectToHost(QHostAddress(ip), port);
+    //    if (socket.waitForConnected(5000)) {
+    //        QMessageBox::about(this, "警告", "网络连接不成功");
+    //    }
+    connect(Handler::getObj(), &Handler::loginHandler, this, &login::login_success);
+    connect(Handler::getObj(), &Handler::getLogMsg, this, &login::logHandler);
 }
 
 login::~login()
@@ -29,10 +32,28 @@ login::~login()
     delete ui;
 }
 
+void login::logHandler(MyMsg *msg)
+{
+    QMessageBox::about(this, "注意", QString::fromUtf8(msg->content));
+}
 
 //go to mainwindow
 void login::on_loginbth_clicked()
 {
+//    QTcpSocket socket;
+    QString ip = ui->iptxt->text();
+    quint16 port = 6666;
+    Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
+    if (Socket::getObj()->socket.waitForConnected(3000)) {
+
+    }
+    else {
+        QMessageBox::about(this,"警告","服务器连接失败");
+        return;
+
+    }
+
+
     QString str=ui->pwdtxt->text();
     QString str2=ui->nametxt->text();
     if(str2.length()<1){
@@ -45,11 +66,14 @@ void login::on_loginbth_clicked()
         return;
     }
 
+    MyMsg *msge = MyMsg::loginMsg(ui->nametxt->text().toUInt(), ui->pwdtxt->text().toUInt());
+    QByteArray data = msge->msgToArray();
+    Socket::getObj()->socket.write(data);
+
+
     MainWindow *m=new MainWindow();
     m->show();
     this->hide();
-
-
 }
 
 void login::login_success()

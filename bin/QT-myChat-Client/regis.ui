@@ -62,7 +62,7 @@ background-image: url(:/images/cat.jpg);</string>
        <item>
         <widget class="QLabel" name="namel">
          <property name="text">
-          <string>输入名称</string>
+          <string>输入用户名</string>
          </property>
         </widget>
        </item>
@@ -76,7 +76,7 @@ background-image: url(:/images/cat.jpg);</string>
        <item>
         <widget class="QLabel" name="pwdl">
          <property name="text">
-          <string>输入密码</string>
+          <string>输入帐号</string>
          </property>
         </widget>
        </item>
@@ -108,7 +108,7 @@ background-image: url(:/images/cat.jpg);</string>
      <x>0</x>
      <y>0</y>
      <width>560</width>
-     <height>21</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>

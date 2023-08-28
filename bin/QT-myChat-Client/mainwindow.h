@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QMenu>
-
+#include <Tools/mymsg.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -24,6 +24,8 @@ private slots:
     void on_fdsbtn_customContextMenuRequested(const QPoint &pos);
     void deletefds();
     void addfds();
+    void logHandler(MyMsg* msg);
+
 private:
     Ui::MainWindow *ui;
 };

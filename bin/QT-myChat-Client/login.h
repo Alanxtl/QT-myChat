@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <Tools/mymsg.h>
+#include <Tools/socket.h>
 
 namespace Ui {
 class login;
@@ -16,10 +17,11 @@ public:
     explicit login(QWidget *parent = nullptr);
     ~login();
 
+public slots:
+    void logHandler(MyMsg *msg);
 private slots:
     void on_loginbth_clicked();
     void login_success();
-
     void on_regbtn_clicked();
     void on_exitbtn_clicked();
     //void on_checkBox_clicked();

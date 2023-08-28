@@ -24,20 +24,14 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    QString ip = "172.20.10.9";
-    quint16 port = 6666;
-    Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
-    if (Socket::getObj()->socket.waitForConnected(3000)) {
 
-    }
-    else {
-        qDebug() << "ddd";
-    }
 //    MainWindow w;
 //   w.show();
     login log;
     log.show();
 // chapage chat;
 // chat.show();
+
+
     return a.exec();
 }

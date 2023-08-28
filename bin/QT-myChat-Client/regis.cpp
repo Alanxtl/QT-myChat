@@ -26,6 +26,11 @@ void regis::on_regbtn_clicked()
         QMessageBox::about(this,"警告","请输入密码");
         return;
     }
+
+    MyMsg *msge = MyMsg::loginMsg(ui->pwdtxt1->text().toUInt(), ui->pwdtxt2->text().toUInt(), ui->nametxt1->text());
+    QByteArray data = msge->msgToArray();
+    Socket::getObj()->socket.write(data);
+
     login *log=new login();
     log->show();
     this->hide();

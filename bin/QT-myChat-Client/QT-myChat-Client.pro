@@ -68,11 +68,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     images/Customer Copy.png \
     images/Customer Copy.png \
+    images/Customer Copy.png \
     images/CustomerService.png \
     images/a (1).jpg \
     images/a (1).jpg \
     images/a (1).jpg \
     images/a (1).jpg \
+    images/a (1).jpg \
+    images/a (1).png \
     images/a (1).png \
     images/a (1).png \
     images/a (1).png \
@@ -81,6 +84,8 @@ DISTFILES += \
     images/a (10).jpg \
     images/a (10).jpg \
     images/a (10).jpg \
+    images/a (10).jpg \
+    images/a (11).jpeg \
     images/a (11).jpeg \
     images/a (11).jpeg \
     images/a (11).jpeg \
@@ -89,6 +94,8 @@ DISTFILES += \
     images/a (12).jpeg \
     images/a (12).jpeg \
     images/a (12).jpeg \
+    images/a (12).jpeg \
+    images/a (13).jpg \
     images/a (13).jpg \
     images/a (13).jpg \
     images/a (13).jpg \
@@ -97,6 +104,8 @@ DISTFILES += \
     images/a (14).jpe \
     images/a (14).jpe \
     images/a (14).jpe \
+    images/a (14).jpe \
+    images/a (15).jpe \
     images/a (15).jpe \
     images/a (15).jpe \
     images/a (15).jpe \
@@ -105,6 +114,8 @@ DISTFILES += \
     images/a (16).jpeg \
     images/a (16).jpeg \
     images/a (16).jpeg \
+    images/a (16).jpeg \
+    images/a (17).jpg \
     images/a (17).jpg \
     images/a (17).jpg \
     images/a (17).jpg \
@@ -113,6 +124,8 @@ DISTFILES += \
     images/a (2).jpg \
     images/a (2).jpg \
     images/a (2).jpg \
+    images/a (2).jpg \
+    images/a (3).jpg \
     images/a (3).jpg \
     images/a (3).jpg \
     images/a (3).jpg \
@@ -121,6 +134,8 @@ DISTFILES += \
     images/a (4).jpg \
     images/a (4).jpg \
     images/a (4).jpg \
+    images/a (4).jpg \
+    images/a (5).jpg \
     images/a (5).jpg \
     images/a (5).jpg \
     images/a (5).jpg \
@@ -129,6 +144,8 @@ DISTFILES += \
     images/a (6).jpg \
     images/a (6).jpg \
     images/a (6).jpg \
+    images/a (6).jpg \
+    images/a (7).jpg \
     images/a (7).jpg \
     images/a (7).jpg \
     images/a (7).jpg \
@@ -137,6 +154,8 @@ DISTFILES += \
     images/a (8).jpg \
     images/a (8).jpg \
     images/a (8).jpg \
+    images/a (8).jpg \
+    images/a (9).jpg \
     images/a (9).jpg \
     images/a (9).jpg \
     images/a (9).jpg \
@@ -152,6 +171,7 @@ DISTFILES += \
     images/loading4.gif
 
 RESOURCES += \
+    res.qrc \
     res.qrc \
     res.qrc \
     res.qrc
