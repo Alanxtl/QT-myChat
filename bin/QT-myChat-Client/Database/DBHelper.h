@@ -10,8 +10,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 
-#include "ChatMessage.h"
-#include "GroupInfo.h"
+
 #include "UserInfo.h"
 #include "Tools/mymsg.h"
 #include "Tools/log.h"
