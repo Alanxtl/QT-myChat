@@ -24,6 +24,18 @@ DBHelper::DBHelper(QObject *parent)
         qDebug()<<query.lastError();
     }
 	//建表完成
+
+     //初始化好友列表
+    if(!query.exec("INSERT INTO FriendInfo VALUES "
+                  "(10001, 'xiaoming', ''), "
+                  "(10002, 'xiaoli', ''), "
+                  "(10003, 'xiaozhang', ''), "
+                  "(10004, 'xiaohong', ''), "
+                  "(10005, 'xiaohua', ''), "
+                  "(10006, 'xiaosong', '')")){
+        qDebug()<<query.lastError();
+
+    }
 }//构造函数
 
 //析构函数
