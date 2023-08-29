@@ -20,8 +20,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);
-background-image: url(:/images/cat.jpg);</string>
+   <string notr="true">background-image: url(:/images/ab (1).jpg);</string>
   </property>
   <widget class="QWidget" name="zhhao">
    <property name="maximumSize">
@@ -194,7 +193,7 @@ background-image: url(:/images/cat.jpg);</string>
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>26</height>
+     <height>28</height>
     </rect>
    </property>
   </widget>

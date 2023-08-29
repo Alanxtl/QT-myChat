@@ -203,3 +203,8 @@ void chapage::on_pushButton_5_clicked()
     if (strFileName.isEmpty()) return;
     s_strPath = strFileName;
 }
+
+void chapage::on_cancelbt_clicked()
+{
+    this->hide();
+}
