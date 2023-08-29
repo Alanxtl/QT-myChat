@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <Tools/mymsg.h>
+#include <QToolButton>
 
 
 QT_BEGIN_NAMESPACE
