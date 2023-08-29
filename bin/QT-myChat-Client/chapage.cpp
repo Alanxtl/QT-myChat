@@ -73,6 +73,7 @@ void chapage::on_sendbtn_clicked()
 
     bool isSending = true; // 发送中
 
+    //将信息发送给服务端
         MyMsg *msge = MyMsg::defaultMsg(100, 0, msg);
         qDebug() << msg;
         QByteArray data = msge->msgToArray();
@@ -120,8 +121,7 @@ void chapage::on_sendbtn_clicked()
     } else {
         if(msg != "") {
             dealMessageTime(time);
-
-            //显示群聊信息的用户名(右侧)
+            //显示群聊信息的用户名（右侧）
             QListWidgetItem *iditem = new QListWidgetItem;
             iditem->setText(this->myid);
             iditem->setTextAlignment(Qt::AlignRight);
