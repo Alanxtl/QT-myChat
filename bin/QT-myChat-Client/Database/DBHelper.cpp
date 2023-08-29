@@ -26,17 +26,7 @@ DBHelper::DBHelper()
     }
 	//建表完成
 
-     //初始化好友列表
-    if(!query.exec("INSERT INTO FriendInfo VALUES "
-                  "(10001, 'xiaoming', ''), "
-                  "(10002, 'xiaoli', ''), "
-                  "(10003, 'xiaozhang', ''), "
-                  "(10004, 'xiaohong', ''), "
-                  "(10005, 'xiaohua', ''), "
-                  "(10006, 'xiaosong', '')")){
-        qDebug()<<query.lastError();
 
-    }
 }//构造函数
 
 //析构函数
@@ -89,12 +79,13 @@ UserInfo DBHelper::selectUserInfoById(const quint32 id){
 //添加好友
 bool DBHelper::addFriendship(quint32 Id, QString name){
 	QSqlQuery query;
-    query.prepare("insert into FriendInfo values(:Id, :Username)");
+    query.prepare("insert into FriendInfo values(:Id, :Username, \"\")");
     query.bindValue(":Id", QVariant(Id));
     query.bindValue(":Username", QVariant(name));
     if(query.exec()){
         return true;
     }else{
+        qDebug()<<query.lastError();
         return false;
     }
 }

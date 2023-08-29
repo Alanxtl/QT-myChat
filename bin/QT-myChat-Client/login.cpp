@@ -57,7 +57,13 @@ login::login(QWidget *parent) :
         } else if (msg->type == 9 && msg->slice == 1) {
             QString str = "添加好友成功";
             QMessageBox::about(this,"注意",str);
-            DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content));
+            if(DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content))) {
+                qDebug() << "success";
+            } else {
+
+                qDebug() << "add fail";
+            }
+
             addFriendSignal();
         } else if (msg->type == 9 && msg->slice == 0) {
             QString str = QString::fromUtf8(msg->content) + "请求添加您好友";

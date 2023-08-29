@@ -40,7 +40,9 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
             updateMap(id, chatbusiness->ip);
             send_msg->setMsg(0, 0, 0, 0, 0, msg->getSenderID(), QTime::currentTime(), byte);
             TcpService::sendMessage(send_msg);
+            //UserInfo user(text,ip,"","");
             DBHelper::GetInstance()->addOnlineUserInfo(user);
+
         }
         break;
 

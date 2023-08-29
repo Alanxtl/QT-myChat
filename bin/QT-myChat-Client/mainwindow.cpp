@@ -91,10 +91,16 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
 
 void MainWindow::showAllFriendship(){
     QVector<QToolButton*> vector;
-    //好友列表
-    QList<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
-    //图片资源列表
-    QStringList listIcon;
+    //qDeleteAll(list.begin(), list.end());
+    //qDeleteAll(listIcon.begin(), listIcon.end());
+    for(auto a : list) {
+        list.removeOne(a);
+    }
+    list.clear();
+    listIcon.clear();
+    list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
+
+
     QString str1_avatar = "a (";
     QString str2_avatar = ")";
     for(int i=0;i<list.size();i++){

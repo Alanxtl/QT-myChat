@@ -197,6 +197,7 @@ bool DBHelper::addFriendship(quint32 Id1, quint32 Id2){
     if(query.exec()){
         return true;
     }else{
+        qDebug()<<query.lastError();
         return false;
     }
 }

@@ -18,6 +18,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    QList<QByteArray> list;
+    QStringList listIcon;
+
     QString myid;
 public slots:
     void receivemyid(QString s);
