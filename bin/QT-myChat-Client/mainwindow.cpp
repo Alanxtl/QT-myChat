@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
     //图片资源列表
     QStringList listIcon;
-    listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)";
+    listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)"<<"a（6）";
 
     for(int i=0;i<list.size();i++){
        QToolButton *btn=new QToolButton(this);
