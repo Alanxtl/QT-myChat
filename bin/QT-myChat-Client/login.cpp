@@ -8,6 +8,9 @@
 #include <QHostAddress>
 #include <Tools/handler.h>
 #include <qdebug.h>
+#include <Database/UserInfo.h>
+#include <QTime>
+#include <QMessageBox>
 
 //静态成员变量的类外初始化
 login* login::log = NULL;
@@ -31,13 +34,16 @@ login::login(QWidget *parent) :
     connect(Handler::getObj(), &Handler::getLogMsg, this, &login::logHandler);
 
 
-
     QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
         QString time = QString::number(QDateTime::currentDateTime().toTime_t());
         QByteArray originMessage = Socket::getObj()->socket.readAll();
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
 
         if (msg->type == 0) {
+            QString str=ui->nametxt->text();
+            QString str2=ui->pwdtxt->text();
+            UserInfo user(str.toUInt(),QString::fromUtf8(msg->content),str2," ");
+            Handler::getObj()->my = user;
             qDebug() << "return 0";
             login_success();
         } else if (msg->type == 8) {
@@ -101,16 +107,9 @@ void login::logHandler(MyMsg *msg)
 //go to mainwindow
 void login::on_loginbth_clicked()
 {
-//    QTcpSocket socket;
-    QString str=ui->pwdtxt->text();
-    QString str2=ui->nametxt->text();
-    MainWindow *m=new MainWindow();
-
-    connect(this,&login::sendmyid,m,&MainWindow::receivemyid);
-    emit this->sendmyid(str2);
-
-    m->show();
-    this->hide();
+//        MainWindow *m=new MainWindow();
+//        m->show();
+//        this->hide();
     QString ip = ui->iptxt->text();
 
     Socket::getObj()->socket.connectToHost(QHostAddress(ip), 6666);
@@ -124,6 +123,10 @@ void login::on_loginbth_clicked()
         return;
 
     }
+
+
+    QString str=ui->pwdtxt->text();
+    QString str2=ui->nametxt->text();
     if(str2.length()<1){
         QMessageBox::about(this,"警告","请输入用户名");
         return;
@@ -141,7 +144,6 @@ void login::on_loginbth_clicked()
 //    MainWindow *m=new MainWindow();
 //    m->show();
 //    this->hide();
-
 }
 
 void login::login_success()
@@ -170,6 +172,9 @@ void login::on_regbtn_clicked()
     }
 
     regis *re=new regis();
+
+    connect(this, &login::toBeContinued, re, &regis::register_success);
+
     re->show();
     this->hide();
 }

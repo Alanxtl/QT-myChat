@@ -20,6 +20,7 @@ signals:
 
 public slots:
     void logHandler(MyMsg *msg);
+    void register_success();
 
     void on_regbtn_clicked();
 

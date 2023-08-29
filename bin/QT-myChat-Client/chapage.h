@@ -19,8 +19,6 @@ public:
     ~chapage();
     void dealMessage(QNChatMessage *messageW, QListWidgetItem *item, QString text, QString time, QNChatMessage::User_Type type);
     void dealMessageTime(QString curMsgTime);
-    QString myid;
-    QString othersid;
 
 
     void sendFile(QString filename);

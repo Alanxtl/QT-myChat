@@ -58,13 +58,13 @@ DBHelper* DBHelper::GetInstance(){
 
 //下面是该数据库对外提供的功能接口
 //查询好友列表
-QStringList DBHelper::selectAllFriendsUserInfo(){
+QList<QByteArray> DBHelper::selectAllFriendsUserInfo(){
     QSqlQuery query;
-    query.exec("SELECT Id, Username FROM FriendInfo");
-    QStringList list;
+    query.exec("SELECT * FROM FriendInfo");
+    QList<QByteArray> list;
     list.clear();
-    while(query.next()){
-        list.append(QString(query.value("Id").toString())+QString(query.value("Username").toString()));
+    while (query.next()) {
+        list.append(UserInfo(query.value("Id").toInt(), query.value("Username").toString(), "", query.value("Avatar").toString()).toQByteArray());
     }
     return list;
 }

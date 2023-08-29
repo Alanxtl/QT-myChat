@@ -22,8 +22,6 @@ public:
 
 public slots:
     void logHandler(MyMsg *msg);
-signals:
-    void sendmyid(QString s);
 private slots:
     void on_loginbth_clicked();
     void login_success();

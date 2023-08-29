@@ -34,7 +34,7 @@
      <rect>
       <x>150</x>
       <y>230</y>
-      <width>311</width>
+      <width>272</width>
       <height>41</height>
      </rect>
     </property>
@@ -141,7 +141,7 @@
          <item>
           <widget class="QLabel" name="namel">
            <property name="text">
-            <string> I D</string>
+            <string>ID</string>
            </property>
           </widget>
          </item>

@@ -17,7 +17,6 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QString *string);
     ~MainWindow();
     QString myid;
 public slots:
@@ -29,13 +28,12 @@ signals:
 private slots:
     void on_fdsbtn_customContextMenuRequested(const QPoint &pos);
     void deletefds();
-    void addfds();
+    void addfds(QString addid);
     void logHandler(MyMsg* msg);
 
     void on_groupbtn_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QString *string;
 };
 #endif // MAINWINDOW_H
