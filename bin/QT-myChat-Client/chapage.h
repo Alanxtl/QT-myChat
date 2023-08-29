@@ -18,8 +18,11 @@ public:
     ~chapage();
     void dealMessage(QNChatMessage *messageW, QListWidgetItem *item, QString text, QString time, QNChatMessage::User_Type type);
     void dealMessageTime(QString curMsgTime);
+    QString myid;
+    QString othersid;
 
-
+public slots:
+    void receivedoubleid(QString myid,QString othersid);
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:

@@ -25,7 +25,7 @@ public:
     //查找好友
     UserInfo selectUserInfoById(const quint32 id);//存在返回true，不存在返回false
     //查询好友列表
-    QList<QByteArray> selectAllFriendsUserInfo();
+    QStringList selectAllFriendsUserInfo();
     //添加好友
     bool addFriendship(quint32 Id, QString name);//两个好友的Id
     //删除好友
@@ -35,7 +35,6 @@ public:
     static DBHelper* GetInstance();
 
 
-    QList<QByteArray> selectall();
 private:
     QSqlDatabase sqldb;
     static DBHelper* db;

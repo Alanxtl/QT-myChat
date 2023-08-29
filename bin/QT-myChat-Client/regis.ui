@@ -14,7 +14,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-image: url(:/images/ab (1).jpg);</string>
+   <string notr="true">background-color: rgb(255, 255, 255);
+background-image: url(:/images/cat.jpg);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="layoutWidget_2">
@@ -75,7 +76,7 @@
        <item>
         <widget class="QLabel" name="pwdl">
          <property name="text">
-          <string>输入ID</string>
+          <string>输入帐号</string>
          </property>
         </widget>
        </item>

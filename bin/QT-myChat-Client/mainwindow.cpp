@@ -3,16 +3,12 @@
 #include "chapage.h"
 #include <QInputDialog>
 #include <QMessageBox>
-#include <qdebug.h>
-#include <Tools/socket.h>
-#include <Tools/handler.h>
 #include "Database/DBHelper.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     ui->profilebtn->setIcon(QPixmap(QString(":/images/a (17).jpg")));
     ui->profilebtn->setIconSize(QSize(150,150));
@@ -23,43 +19,44 @@ MainWindow::MainWindow(QWidget *parent)
     ui->fdsbtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     ui->groupbtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     QVector<QToolButton*> vector;
-    this->setWindowIcon(QIcon(":/images/ab (1).jpg"));
+    this->setWindowIcon(QIcon(":/images/a (1).jpg"));
     this->setWindowTitle("Linpop");
     //好友列表
-    QList<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
+    QStringList list;
+    list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
     //图片资源列表
     QStringList listIcon;
-    QString str1_avatar = "a (";
-    QString str2_avatar = ")";
+    listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)"<<"a (6)";
 
     for(int i=0;i<list.size();i++){
-        listIcon.append(str1_avatar + QString::number(i+1) + str2_avatar);
-        QToolButton *btn=new QToolButton(this);
-        btn->setIcon(QPixmap(QString(":/images/%1.jpg").arg(listIcon[i])));
-        btn->setIconSize(QSize(80,80));
-        //透明
-        btn->setAutoRaise(true);
-        //设置网名
-        QString str1 = " ";
-        QString str2 = "\r\nip：xxx.xx.xxx";
-        btn->setText(QString::number(UserInfo::fromQByteArray(list[i]).getID()) + str1 + UserInfo::fromQByteArray(list[i]).getName() + str2);
+       QToolButton *btn=new QToolButton(this);
+       btn->setIcon(QPixmap(QString(":/images/%1.jpg").arg(listIcon[i])));
+       btn->setIconSize(QSize(80,80));
+       //透明
+       btn->setAutoRaise(true);
+       //设置网名
+       QString str1 = " ";
+       QString str2 = "\r\n ip：xxx.xx.xxx";
+       btn->setText(list[i].left(5) + str1 + list[i].mid(5) + str2);
 
-        //设置显示格式
-        btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        ui->vlayout->addWidget(btn);
-        vector.push_back(btn);
+       //设置显示格式
+       btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+       ui->vlayout->addWidget(btn);
+       vector.push_back(btn);
     }
 
     for(int i=0;i<list.size();i++){
         connect(vector[i],&QToolButton::clicked,[=](){
             chapage *chatp=new chapage();
+            connect(this,&MainWindow::senddoubleid,chatp,&chapage::receivedoubleid);
+            emit(senddoubleid(this->myid,list[i].left(5)));
             chatp->setWindowIcon(vector[i]->icon());
-            chatp->setWindowTitle(vector[i]->text());
+            //chatp->setWindowTitle(vector[i]->text());
             chatp->show();
          });
     }
 
-    ui->namebtn->setText(Handler::getObj()->my.getName());
+
 }
 
 MainWindow::~MainWindow()
@@ -67,11 +64,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::addfds(){
 
-void MainWindow::addfds(QString addid){
-    MyMsg *msge = MyMsg::addFriendMsg(addid.toUInt());
-    QByteArray data = msge->msgToArray();
-    Socket::getObj()->socket.write(data);
 }
 
 void MainWindow::logHandler(MyMsg *msg)
@@ -81,9 +75,14 @@ void MainWindow::logHandler(MyMsg *msg)
 
 void MainWindow::deletefds(){
 
-
 }
 
+void MainWindow::receivemyid(QString s){
+
+    //ui->groupbtn->setText(s);
+    this->myid =s;
+    //ui->groupbtn->setText(this->myid);
+}
 
 
 void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
@@ -102,8 +101,6 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
                                              "11",
                                              &bOk
                                              );
-        addfds(addid);
-
     });
     connect(defdsact,&QAction::triggered, [=]{
         bool bOk = false;
@@ -114,7 +111,16 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
                                              "11",
                                              &bOk
                                              );
-        deletefds();
     });
     fdsmenu->exec(QCursor::pos());
+}
+
+void MainWindow::on_groupbtn_clicked()
+{
+    chapage *chatp=new chapage();
+    connect(this,&MainWindow::senddoubleid,chatp,&chapage::receivedoubleid);
+    emit(senddoubleid(this->myid,NULL));
+    //chatp->setWindowIcon(vector[i]->icon());
+    chatp->setWindowTitle("群组聊天室");
+    chatp->show();
 }

@@ -18,7 +18,6 @@ public:
     void groupMsgHandler(MyMsg *msg);
     void getMsg(MyMsg *msg);
     static Handler* getObj(); //单例模式
-    UserInfo my;
 signals:
     void loginHandler();
     void getLogMsg(MyMsg* msg);

@@ -32,7 +32,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-image: url(:/images/ab (1).jpg);</string>
+   <string notr="true">background-image: url(:/images/line.jpg);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="widget" native="true">
@@ -323,7 +323,15 @@
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">QListWidget{background-color: rgb(247,247,247); color:rgb(51,51,51); border: 1px solid  rgb(247, 247, 247);outline:0px;}
+QListWidget::Item{background-color: rgb(247, 247, 247);}
+QListWidget::Item:hover{background-color: rgb(247, 247, 247); }
+QListWidget::item:selected{
+	background-color: rgb(247, 247, 247);
+	color:black; 
+    border: 1px solid  rgb(247, 247, 247);
+}
+QListWidget::item:selected:!active{border: 1px solid  rgb(247, 247, 247); background-color: rgb(247, 247, 247); color:rgb(51,51,51); } </string>
        </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAsNeeded</enum>

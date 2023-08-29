@@ -8,9 +8,6 @@
 #include <QHostAddress>
 #include <Tools/handler.h>
 #include <qdebug.h>
-#include <Database/UserInfo.h>
-#include <QTime>
-#include <QMessageBox>
 
 login::login(QWidget *parent) :
     QMainWindow(parent),
@@ -31,51 +28,18 @@ login::login(QWidget *parent) :
     connect(Handler::getObj(), &Handler::getLogMsg, this, &login::logHandler);
 
 
+
     QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
         QString time = QString::number(QDateTime::currentDateTime().toTime_t());
         QByteArray originMessage = Socket::getObj()->socket.readAll();
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
 
         if (msg->type == 0) {
-            QString str=ui->nametxt->text();
-            QString str2=ui->pwdtxt->text();
-            UserInfo user(str.toUInt(),QString::fromUtf8(msg->content),str2," ");
-            Handler::getObj()->my = user;
             qDebug() << "return 0";
             login_success();
         } else if (msg->type == 8) {
             qDebug() << "return 8";
             logHandler(msg);
-        } else if (msg->type == 1) {
-            emit toBeContinued();
-        } else if (msg->type == 9 && msg->slice == 2) {
-            QString str = "添加好友失败";
-            QMessageBox::about(this,"注意",str);
-        } else if (msg->type == 9 && msg->slice == 1) {
-            QString str = "添加好友成功";
-            QMessageBox::about(this,"注意",str);
-            DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content));
-            DBHelper::GetInstance()->selectAllFriendsUserInfo();
-        } else if (msg->type == 9 && msg->slice == 0) {
-            QString str = QString::fromUtf8(msg->content) + "请求添加您好友";
-            QMessageBox::about(this,"注意",str);
-            if (true/*弹出窗口确认*/) {
-                QString str = " ";
-                MyMsg * msge = new MyMsg();
-                QByteArray bytes = str.toUtf8();
-                msge->setMsg(9,1,0,0,msg->receiverID,msg->senderID,QTime::currentTime(),bytes);
-
-                QByteArray data = msge->msgToArray();
-                Socket::getObj()->socket.write(data);
-            } else {
-                QString str = " ";
-                MyMsg * msge = new MyMsg();
-                QByteArray bytes = str.toUtf8();
-                msge->setMsg(9,2,0,0,msg->receiverID,msg->senderID,QTime::currentTime(),bytes);
-
-                QByteArray data = msge->msgToArray();
-                Socket::getObj()->socket.write(data);
-            }
         }
     });
 
@@ -96,9 +60,16 @@ void login::logHandler(MyMsg *msg)
 //go to mainwindow
 void login::on_loginbth_clicked()
 {
-//        MainWindow *m=new MainWindow();
-//        m->show();
-//        this->hide();
+//    QTcpSocket socket;
+    QString str=ui->pwdtxt->text();
+    QString str2=ui->nametxt->text();
+    MainWindow *m=new MainWindow();
+
+    connect(this,&login::sendmyid,m,&MainWindow::receivemyid);
+    emit this->sendmyid(str2);
+
+    m->show();
+    this->hide();
     QString ip = ui->iptxt->text();
     quint16 port = 6666;
     Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
@@ -110,10 +81,6 @@ void login::on_loginbth_clicked()
         return;
 
     }
-
-
-    QString str=ui->pwdtxt->text();
-    QString str2=ui->nametxt->text();
     if(str2.length()<1){
         QMessageBox::about(this,"警告","请输入用户名");
         return;
@@ -131,6 +98,7 @@ void login::on_loginbth_clicked()
 //    MainWindow *m=new MainWindow();
 //    m->show();
 //    this->hide();
+
 }
 
 void login::login_success()
@@ -155,9 +123,6 @@ void login::on_regbtn_clicked()
     }
 
     regis *re=new regis();
-
-    connect(this, &login::toBeContinued, re, &regis::register_success);
-
     re->show();
     this->hide();
 }

@@ -17,8 +17,11 @@ public:
     explicit login(QWidget *parent = nullptr);
     ~login();
 
+
 public slots:
     void logHandler(MyMsg *msg);
+signals:
+    void sendmyid(QString s);
 private slots:
     void on_loginbth_clicked();
     void login_success();
@@ -27,11 +30,10 @@ private slots:
     void on_jump_clicked();
     //void on_checkBox_clicked();
     void on_checkBox_clicked(bool checked);
-signals:
-    void toBeContinued();
 
 private:
     Ui::login *ui;
+
 };
 
 #endif // LOGIN_H

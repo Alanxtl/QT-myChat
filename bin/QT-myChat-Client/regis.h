@@ -15,11 +15,10 @@ class regis : public QMainWindow
 public:
     explicit regis(QWidget *parent = nullptr);
     ~regis();
-
+    void register_success();
 
 public slots:
     void logHandler(MyMsg *msg);
-    void register_success();
 
     void on_regbtn_clicked();
 

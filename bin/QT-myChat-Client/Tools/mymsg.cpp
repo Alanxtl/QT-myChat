@@ -1,5 +1,5 @@
 #include "mymsg.h"
-#include "handler.h"
+
 
 /*
  * 标准QByteArray信息格式|32header|?body|
@@ -170,15 +170,6 @@ MyMsg *MyMsg::registerMsg(quint32 id, quint32 pwd, QString str)
     MyMsg * res = new MyMsg();
     QByteArray bytes = str.toUtf8();
     res->setMsg(1,0,0,0,id,pwd,QTime::currentTime(),bytes);
-    return res;
-}
-
-MyMsg *MyMsg::addFriendMsg(quint32 toid)
-{
-    MyMsg * res = new MyMsg();
-    QString str = " ";
-    QByteArray bytes = str.toUtf8();
-    res->setMsg(9,0,0,0,Handler::getObj()->my.getID(),toid,QTime::currentTime(),bytes);
     return res;
 }
 

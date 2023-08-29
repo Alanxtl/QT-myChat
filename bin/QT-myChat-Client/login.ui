@@ -20,7 +20,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-image: url(:/images/ab (1).jpg);</string>
+   <string notr="true">background-color: rgb(255, 255, 255);
+background-image: url(:/images/cat.jpg);</string>
   </property>
   <widget class="QWidget" name="zhhao">
    <property name="maximumSize">
@@ -34,7 +35,7 @@
      <rect>
       <x>150</x>
       <y>230</y>
-      <width>272</width>
+      <width>311</width>
       <height>41</height>
      </rect>
     </property>
@@ -141,7 +142,7 @@
          <item>
           <widget class="QLabel" name="namel">
            <property name="text">
-            <string>ID</string>
+            <string> I D</string>
            </property>
           </widget>
          </item>
@@ -193,7 +194,7 @@
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

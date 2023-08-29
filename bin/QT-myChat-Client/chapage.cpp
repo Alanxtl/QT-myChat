@@ -16,21 +16,21 @@ chapage::chapage(QWidget *parent) :
 {
     ui->setupUi(this);
     resize(600, 800);
-    ui->tableWidget->setColumnCount(3);
+        ui->tableWidget->setColumnCount(3);
         ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Nickname" << "ID" << "IP");
         ui->tableWidget->setRowCount(5);
 
         QStringList nameList;
         nameList << "张三" << "李四" << "王五" << "赵六" << "孙七";
-        QStringList sexList;
-        sexList << "zhangsan123" << "lisi123" << "wangwu123" << "zhaoliu123" << "sunqi123";
-        QStringList ageList;
-        ageList << "22" << "30" << "12" << "55" << "90";
+        QStringList idList;
+        idList << "zhangsan123" << "lisi123" << "wangwu123" << "zhaoliu123" << "sunqi123";
+        QStringList ipList;
+        ipList << "22" << "30" << "12" << "55" << "90";
         for (int i=0;i<5;i++)
         {
             ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sexList[i]));
-            ui->tableWidget->setItem(i,2,new QTableWidgetItem(ageList[i]));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem(idList[i]));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem(ipList[i]));
         }
         QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
             QString time = QString::number(QDateTime::currentDateTime().toTime_t());
@@ -40,6 +40,7 @@ chapage::chapage(QWidget *parent) :
             quint32 id = msg->getSenderID();
 //            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
 
+            if(this->othersid==NULL||this->othersid.toUInt()==id){//接受消息隔离
             QListWidgetItem *iditem = new QListWidgetItem;
             iditem->setText(QString::number(id));
             iditem->setTextAlignment(Qt::AlignLeft);
@@ -48,7 +49,7 @@ chapage::chapage(QWidget *parent) :
             QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
             dealMessage(messageW, item, QString::fromUtf8(msg->getContent()), time, QNChatMessage::User_She);
-            ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+            ui->listWidget->setCurrentRow(ui->listWidget->count()-1);}
         });
 
 
@@ -59,7 +60,11 @@ chapage::~chapage()
     delete ui;
 }
 
-
+void chapage::receivedoubleid(QString myid,QString othersid){
+     this->myid = myid;
+     this->othersid = othersid;
+     this->setWindowTitle(myid + "  " + othersid);
+}
 void chapage::on_sendbtn_clicked()
 {
     QString msg = ui->textEdit->toPlainText();
@@ -80,7 +85,7 @@ void chapage::on_sendbtn_clicked()
 
             //显示群聊信息的用户名（右侧）
             QListWidgetItem *iditem = new QListWidgetItem;
-            iditem->setText("YourID");
+            iditem->setText(this->myid);
             iditem->setTextAlignment(Qt::AlignRight);
             ui->listWidget->addItem(iditem);
 
@@ -102,7 +107,7 @@ void chapage::on_sendbtn_clicked()
 
                 //显示群聊信息的用户名（右侧）
                 QListWidgetItem *iditem = new QListWidgetItem;
-                iditem->setText("YourID");
+                iditem->setText(this->myid);
                 iditem->setTextAlignment(Qt::AlignRight);
                 ui->listWidget->addItem(iditem);
 
@@ -118,7 +123,7 @@ void chapage::on_sendbtn_clicked()
 
             //显示群聊信息的用户名(右侧)
             QListWidgetItem *iditem = new QListWidgetItem;
-            iditem->setText("");
+            iditem->setText(this->myid);
             iditem->setTextAlignment(Qt::AlignRight);
             ui->listWidget->addItem(iditem);
 
