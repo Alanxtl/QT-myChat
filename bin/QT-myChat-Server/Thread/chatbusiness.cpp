@@ -22,9 +22,10 @@ void ChatBusiness::mainBusiness()
 
     QObject::connect(&socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
         QByteArray originMessage = socket.readAll();
-        MyMsg* msg = MyMsg::arrayToMsg(originMessage);
-        emit receiveSignal(msg);
-
+        MyMsg* msg = MyMsg::arrayToMsg(originMessage);      //接受信息
+        quint8 type = msg->getType();
+        emit receiveSignal(msg, this);
+        Log::getLogObj()->writeLog("ID为"+QString::number(id)+"的用户向发送了type为"+QString::number(type)+"的内容为："+QString::fromUtf8(msg->getContent()));
     });
 
 

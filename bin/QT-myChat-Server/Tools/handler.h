@@ -14,7 +14,7 @@ public:
 
     void check(MyMsg* msg);
     static Handler* getObj(); //单例模式
-    void registerHandler(MyMsg *msg);
+    bool registerHandler(MyMsg *msg);
     bool loginHandler(MyMsg *msg);
     void defaultMsgHandler(MyMsg *msg);
     void groupMsgHandler(MyMsg *msg);

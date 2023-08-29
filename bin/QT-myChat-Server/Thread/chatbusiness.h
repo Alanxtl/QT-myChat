@@ -24,9 +24,9 @@ public:
     quint32 id;
 
 signals:
-    void receiveSignal(MyMsg *msg);
+    void receiveSignal(MyMsg *msg, ChatBusiness *chatbusiness);
     void startSignal();
-    void updateSignal();
+    void updateSignal(quint32 id, QString ip);
 };
 
 #endif // CHATBUSINESS_H

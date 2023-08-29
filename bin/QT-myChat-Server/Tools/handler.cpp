@@ -6,45 +6,46 @@ Handler::Handler(QObject *parent)
 
 }
 
+Handler * Handler::globeHandler = nullptr;
+
+Handler* Handler::getObj(){
+    if(globeHandler == nullptr){
+        globeHandler = new Handler();
+    }
+    return globeHandler;
+}
+
 bool Handler::loginHandler(MyMsg *msg)
 {
-    QByteArray content = msg->content;
-    QDataStream in(content);
-    in.setVersion(QDataStream::Qt_5_9);
-
-    quint32 id;
-    in >> id;
-
-    quint32 pwd;
-    in >> pwd;
+    quint32 id = msg->getSenderID();
+    quint32 pwd = msg->getReceiverID();
 
     if(!DBHelper::GetInstance()->selectUserByIdAndPwd(QString::number(id),QString::number(pwd))) {
         //返回给客户端不成功
+        return false;
 
     } else {
         //返回给客户端成功
+        return true;
     }
 }
 
 
-void Handler::registerHandler(MyMsg* msg)
+bool Handler::registerHandler(MyMsg* msg)
 {
     QByteArray content = msg->content;
-    QDataStream in(content);
-    in.setVersion(QDataStream::Qt_5_9);
+    quint32 id = msg->getSenderID();
+    quint32 pwd = msg->getReceiverID();
+    QString name = QString::fromUtf8(content);
 
-    quint32 id;
-    in >> id;
-
-    quint32 pwd;
-    in >> pwd;
-
-    UserInfo user(id,QString::number(id),QString::number(pwd),"");
+    UserInfo user(id, name,QString::number(pwd),"");
 
     if(!DBHelper::GetInstance()->registerUserInfo(user)) {
-        //返回给客户端不成功
+        return false;
+        //返回给客户端注册不成功
     } else {
-        //返回给客户端成功
+        return true;
+        //返回给客户端注册成功
     }
 }
 

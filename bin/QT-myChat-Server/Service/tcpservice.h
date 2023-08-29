@@ -8,6 +8,7 @@
 #include "Thread/chatthread.h"
 #include <QList>
 #include <Tools/mymsg.h>
+#include <Tools/handler.h>
 
 class TcpService : public QTcpServer
 {
@@ -20,6 +21,8 @@ public:
     void updateMap(quint32 id, QString ip);
     QString searchOnMap(quint32 id);
     void sendMessage(MyMsg *msg) ;
+    void judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness);
+    QString getPeerIP (MyMsg *msg, QTcpSocket socket);
 
 
 protected:

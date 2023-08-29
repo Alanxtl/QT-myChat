@@ -23,7 +23,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_test_clicked()
 {
-    QString ip = "192.168.34.129";
+    QString ip = "172.20.10.9";
     quint16 port = 6666;
     socket.connectToHost(QHostAddress(ip), port);
     if (socket.waitForConnected(3000)) {
@@ -48,7 +48,9 @@ void MainWindow::on_pushButton_Send_clicked()
     }
     else {
         QString message = ui->textEdit_Message->toPlainText();
-        MyMsg *msg = MyMsg::defaultMsg(ui->lineEdit_SelfID->text().toUInt(), ui->lineEdit_TargetIP->text().toUInt(), message);
+        QByteArray byte = message.toUtf8();
+        MyMsg *msg;
+        msg->setMsg(2, 0, 0, 0, ui->lineEdit_SelfID->text().toUInt(), ui->lineEdit_TargetIP->text().toUInt(), QTime::currentTime(), byte);
         QByteArray data = msg->msgToArray();
         if (socket.waitForConnected(2000)){
             socket.write(data);

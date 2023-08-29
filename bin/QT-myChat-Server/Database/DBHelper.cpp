@@ -120,11 +120,11 @@ QList<QByteArray> DBHelper::selectAllFriendsUserInfo(quint32 UserId){
 //注册信息（注册检验）
 bool DBHelper::registerUserInfo(const UserInfo& user){
     QSqlQuery query;
-    query.prepare("select Username from UserInfo where username = :Username");
+    query.prepare("select Username from UserInfo where Username = :Username");
     query.bindValue(":Username", user.getName());
     query.exec();
     if(query.next()){
-        QMessageBox::warning(NULL, "错误", "该用户名已存在", QMessageBox::Yes);
+        //QMessageBox::warning(NULL, "错误", "该用户名已存在", QMessageBox::Yes);
         return false;
     }else{
         query.clear();
@@ -134,8 +134,10 @@ bool DBHelper::registerUserInfo(const UserInfo& user){
         query.bindValue(":pwd", user.getPwd());
         query.bindValue(":avatar", user.getAvatarName());
         if(query.exec()){
+            //qDebug()<<query.lastError();
             return true;
         }else{
+            qDebug()<<query.lastError();
             return false;
         }
     }
