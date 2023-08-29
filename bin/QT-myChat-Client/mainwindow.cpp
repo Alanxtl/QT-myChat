@@ -52,7 +52,6 @@ void MainWindow::logHandler(MyMsg *msg)
 
 void MainWindow::deletefds(){
 
-
 }
 
 
@@ -139,11 +138,23 @@ void MainWindow::showAllFriendship(){
             emit(senddoubleid(this->myid,QString::number(UserInfo::fromQByteArray(list[i]).getID())));
             chatp->setWindowIcon(vector[i]->icon());
             //chatp->setWindowTitle(vector[i]->text());
+
+            iAmOnline(UserInfo::fromQByteArray(list[i]).getID());
+
             chatp->showRightFriendInfo();
             chatp->show();
          });
     }
 }
+
+void MainWindow::iAmOnline(quint32 toID) {
+    MyMsg *msge = new MyMsg();
+    QString str = " ";
+    msge->setMsg(10,0,0,0,Handler::getObj()->my.getID(),toID,QTime::currentTime(),str.toUtf8());
+    QByteArray data = msge->msgToArray();
+    Socket::getObj()->socket.write(data);
+}
+
 void MainWindow::receivemyid(QString s){
 
     //ui->groupbtn->setText(s);

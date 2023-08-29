@@ -23,12 +23,13 @@ DBHelper::DBHelper()
                   "Avatar VARCHAR(512) )")){
         qDebug()<<query.lastError();
     }
-	//建表完成
 
-    query.exec("INSERT INTO FriendInfo VALUES "
-               "(10001, 'abab', '1'), "
-               "(10002, 'asdfg', '2'), "
-               "(10003, 'yui', '3')");
+//	//建表完成
+
+//    query.exec("INSERT INTO FriendInfo VALUES "
+//               "(10001, 'abab', '1'), "
+//               "(10002, 'asdfg', '2'), "
+//               "(10003, 'yui', '3')");
 
 
 }//构造函数

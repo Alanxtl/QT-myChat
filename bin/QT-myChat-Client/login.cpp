@@ -85,6 +85,18 @@ login::login(QWidget *parent) :
                 QByteArray data = msge->msgToArray();
                 Socket::getObj()->socket.write(data);
             }
+        } else if (msg->type == 4) {
+            QString filename = QString::fromUtf8(msg->content);
+            filename = "ClientData/" + filename;
+            QFile *localFile = new QFile(filename);
+            if(!localFile->open(QFile::WriteOnly))
+            {
+                qDebug()<<"Server::open file error!";
+                return;
+            }
+            localFile->write("123");
+        } else if (msg->type == 2) {
+            emit receiveTwo(msg);
         }
     });
 

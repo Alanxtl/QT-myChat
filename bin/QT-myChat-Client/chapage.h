@@ -5,6 +5,7 @@
 #include "qnchatmessage.h"
 #include <QListWidgetItem>
 #include <QFile>
+#include <Tools/mymsg.h>
 
 namespace Ui {
 class chapage;
@@ -19,8 +20,6 @@ public:
     ~chapage();
     void dealMessage(QNChatMessage *messageW, QListWidgetItem *item, QString text, QString time, QNChatMessage::User_Type type);
     void dealMessageTime(QString curMsgTime);
-
-
     void sendFile(QString filename);
     void updateSendedFileProgress(qint64 numBytes);
     void updateReceivedFileProgress();
@@ -29,6 +28,7 @@ public:
     void showRightFriendInfo();
 public slots:
     void receivedoubleid(QString myid,QString othersid);
+    void receiveTypeTwoMsg(MyMsg *msg);
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:

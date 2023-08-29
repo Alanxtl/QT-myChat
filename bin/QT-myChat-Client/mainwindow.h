@@ -19,15 +19,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
     QList<QByteArray> list;
     QStringList listIcon;
     QVector<QToolButton*> vector;
 
     QString myid;
+
+    void iAmOnline(quint32 toID);
 public slots:
     void receivemyid(QString s);
     void showAllFriendship();
+
 signals:
     void senddoubleid(QString myid,QString othersid);
 
@@ -36,7 +38,6 @@ private slots:
     void deletefds();
     void addfds(QString addid);
     void logHandler(MyMsg* msg);
-
     void on_groupbtn_clicked();
 
 private:

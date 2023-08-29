@@ -34,6 +34,8 @@ signals:
     void toBeContinued();
     void addFriendSignal();
     void sendmyid(QString s);
+    void receiveTwo(MyMsg* msg);
+
 
 private:
     Ui::login *ui;

@@ -13,6 +13,7 @@
 #include <QFile>
 #include "Database/DBHelper.h"
 #include "Database/UserInfo.h"
+#include <login.h>
 
 chapage::chapage(QWidget *parent) :
     QMainWindow(parent),
@@ -20,7 +21,7 @@ chapage::chapage(QWidget *parent) :
 {
     ui->setupUi(this);
     resize(600, 800);
-    perDataSize = 64*1024;
+    perDataSize = 64*1024 - 32;
     totalBytes = 0;
     bytestoWrite = 0;
     bytesWritten = 0;
@@ -38,20 +39,14 @@ chapage::chapage(QWidget *parent) :
         quint32 id = msg->getSenderID();
 //            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
 
-        QListWidgetItem *iditem = new QListWidgetItem;
-        iditem->setText(QString::number(id));
-        iditem->setTextAlignment(Qt::AlignLeft);
-        ui->listWidget->addItem(iditem);//显示ID
-
-        if(this->othersid==NULL||this->othersid.toUInt()==id){//接受消息隔离
-        QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
-        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-        dealMessage(messageW, item, QString::fromUtf8(msg->getContent()), time, QNChatMessage::User_She);
-        ui->listWidget->setCurrentRow(ui->listWidget->count()-1);}
     });
+
+    connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
+    connect(login::GetInstance(), &login::receiveTwo, this, &chapage::receiveTypeTwoMsg);
 
     //connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
 }
+
 
 chapage::~chapage()
 {
@@ -73,7 +68,7 @@ void chapage::on_sendbtn_clicked()
 
     bool isSending = true; // 发送中
 
-        MyMsg *msge = MyMsg::defaultMsg(Handler::getObj()->my.getID(), 0, msg);
+        MyMsg *msge = MyMsg::defaultMsg(Handler::getObj()->my.getID(), othersid.toUInt(), msg);
         qDebug() << msg;
         QByteArray data = msge->msgToArray();
         Socket::getObj()->socket.write(data);
@@ -133,6 +128,38 @@ void chapage::on_sendbtn_clicked()
         }
     }
     ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+}
+
+void chapage::receiveTypeTwoMsg(MyMsg* msg)
+{
+    QString time = QString::number(QDateTime::currentDateTime().toTime_t());
+    dealMessageTime(time);
+    QByteArray originMessage = Socket::getObj()->socket.readAll();
+
+    QString str_sid = QString::number(msg->getSenderID());
+    QString str_rid = QString::number(msg->getReceiverID());
+    QString str_type = QString::number(msg->getType());
+    QString str_slice = QString::number(msg->getSlice());
+    QString content = QString::fromUtf8(msg->getContent());
+
+    qDebug() << str_sid + "向" + str_rid + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content;
+    quint32 id = msg->getSenderID();
+//            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
+
+    QListWidgetItem *iditem = new QListWidgetItem;
+    iditem->setText(QString::number(id));
+    iditem->setTextAlignment(Qt::AlignLeft);
+    ui->listWidget->addItem(iditem);//显示ID
+
+    if(msg->type == 2) {
+        if(this->othersid==NULL||this->othersid.toUInt()==id)
+        {//接受消息隔离
+            QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
+            QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+            dealMessage(messageW, item, QString::fromUtf8(msg->getContent()), time, QNChatMessage::User_She);
+            ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+        }
+    }
 }
 
 void chapage::dealMessage(QNChatMessage *messageW, QListWidgetItem *item, QString text, QString time,  QNChatMessage::User_Type type)
@@ -227,7 +254,10 @@ void chapage::sendFile(QString filename)
     sendout.device()->seek(0);
     sendout<<totalBytes<<qint64((outBlock.size()-sizeof(qint64)*2));
 
-    bytestoWrite = Socket::getObj()->socket.write(outBlock);
+    MyMsg* msg = new MyMsg;
+    msg->setMsg(4,0,0,0,Handler::getObj()->my.getID(),this->othersid.toUInt(),QTime::currentTime(),filename.toUtf8());
+
+    bytestoWrite = totalBytes - Socket::getObj()->socket.write(msg->msgToArray());
     outBlock.resize(0);
 }
 
@@ -262,7 +292,7 @@ void chapage::updateSendedFileProgress(qint64 numBytes)
 
 void chapage::updateReceivedFileProgress()
 {
-    QDataStream inFile(Socket::getFileObj());
+    QDataStream inFile(&Socket::getObj()->socket);
     inFile.setVersion(QDataStream::Qt_4_8);
 
     ///如果接收到的数据小于16个字节，保存到来的文件头结构
