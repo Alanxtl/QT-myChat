@@ -26,11 +26,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowIcon(QIcon(":/images/a (1).jpg"));
     this->setWindowTitle("Linpop");
     //好友列表
-    QStringList list;
-    list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
+    List<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
     //图片资源列表
     QStringList listIcon;
-    listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)"<<"a（6）";
+    listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)"<<"a (6)";
 
     for(int i=0;i<list.size();i++){
        QToolButton *btn=new QToolButton(this);
@@ -41,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
        //设置网名
        QString str1 = " ";
        QString str2 = "\r\nip：xxx.xx.xxx";
-       btn->setText(list[i].left(5) + str1 + list[i].mid(5) + str2);
+       btn->setText(QString::number(UserInfo::fromQByteArray(list[i]).getID()) + str1 + UserInfo::fromQByteArray(list[i]).getName() + str2);
 
        //设置显示格式
        btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
