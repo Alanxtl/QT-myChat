@@ -178,7 +178,7 @@ MyMsg *MyMsg::addFriendMsg(quint32 toid)
     MyMsg * res = new MyMsg();
     QString str = " ";
     QByteArray bytes = str.toUtf8();
-    res->setMsg(1,0,0,0,Handler::getObj()->my.getID(),toid,QTime::currentTime(),bytes);
+    res->setMsg(9,0,0,0,Handler::getObj()->my.getID(),toid,QTime::currentTime(),bytes);
     return res;
 }
 
