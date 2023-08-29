@@ -100,9 +100,11 @@ void login::on_loginbth_clicked()
 //        m->show();
 //        this->hide();
     QString ip = ui->iptxt->text();
-    quint16 port = 6666;
-    Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
-    if (Socket::getObj()->socket.waitForConnected(3000)) {
+
+    Socket::getObj()->socket.connectToHost(QHostAddress(ip), 6666);
+    Socket::getFileObj()->connectToHost(QHostAddress(ip),6667);
+
+    if (Socket::getObj()->socket.waitForConnected(3000)/* && Socket::getFileObj()->waitForConnected(1000)*/) {
 
     }
     else {

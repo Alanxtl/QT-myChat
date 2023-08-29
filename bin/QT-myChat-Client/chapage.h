@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "qnchatmessage.h"
 #include <QListWidgetItem>
+#include <QFile>
 
 namespace Ui {
 class chapage;
@@ -20,6 +21,9 @@ public:
     void dealMessageTime(QString curMsgTime);
 
 
+    void sendFile(QString filename);
+    void updateSendedFileProgress(qint64 numBytes);
+    void updateReceivedFileProgress();
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:
@@ -31,6 +35,20 @@ private slots:
 
 private:
     Ui::chapage *ui;
+    QFile *localFile;
+    ///文件大小
+    qint64 totalBytes;      //文件总字节数
+    qint64 bytesWritten;    //已发送的字节数
+    qint64 bytestoWrite;    //尚未发送的字节数
+    qint64 filenameSize;    //文件名字的字节数
+    qint64 bytesReceived;   //接收的字节数
+    ///每次发送数据大小
+    qint64 perDataSize;
+    QString filename;
+    ///数据缓冲区
+    QByteArray inBlock;
+    QByteArray outBlock;
+
 };
 
 #endif // CHAPAGE_H
