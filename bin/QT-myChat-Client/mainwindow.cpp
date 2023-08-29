@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "chapage.h"
+#include "addfriend.h"
 
 #include <QMessageBox>
 
@@ -67,6 +68,12 @@ void MainWindow::addfds(){
 void MainWindow::logHandler(MyMsg *msg)
 {
 
+}
+
+void MainWindow::on_addFriend_clicked()
+{
+    addFriend *f=new addFriend();
+    f->show();
 }
 
 void MainWindow::deletefds(){

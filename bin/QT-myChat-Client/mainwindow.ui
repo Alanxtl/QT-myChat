@@ -111,7 +111,7 @@ background-image: url(:/images/line.jpg);</string>
       <x>0</x>
       <y>0</y>
       <width>450</width>
-      <height>421</height>
+      <height>407</height>
      </rect>
     </property>
     <attribute name="label">
@@ -125,7 +125,7 @@ background-image: url(:/images/line.jpg);</string>
       <x>0</x>
       <y>0</y>
       <width>450</width>
-      <height>421</height>
+      <height>407</height>
      </rect>
     </property>
     <attribute name="label">
@@ -154,6 +154,19 @@ background-image: url(:/images/line.jpg);</string>
      <width>20</width>
      <height>20</height>
     </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addFriend">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>130</y>
+     <width>89</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>添加好友</string>
    </property>
   </widget>
  </widget>

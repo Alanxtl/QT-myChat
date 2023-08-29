@@ -19,6 +19,7 @@ SOURCES += \
     Tools/handler.cpp \
     Tools/log.cpp \
     Tools/mymsg.cpp \
+    addfriend.cpp \
     chapage.cpp \
     login.cpp \
     main.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     Tools/handler.h \
     Tools/log.h \
     Tools/mymsg.h \
+    addfriend.h \
     chapage.h \
     login.h \
     mainwindow.h \
@@ -48,6 +50,7 @@ HEADERS += \
 
 FORMS += \
     Tools/filesend.ui \
+    addfriend.ui \
     chapage.ui \
     login.ui \
     mainwindow.ui \

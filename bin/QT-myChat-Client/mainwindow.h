@@ -25,6 +25,7 @@ private slots:
     void deletefds();
     void addfds();
     void logHandler(MyMsg* msg);
+    void on_addFriend_clicked();
 
 private:
     Ui::MainWindow *ui;
