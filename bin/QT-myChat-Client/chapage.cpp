@@ -119,7 +119,7 @@ void chapage::on_sendbtn_clicked()
             //显示群聊信息的用户名(左侧)
             QListWidgetItem *iditem = new QListWidgetItem;
             iditem->setText("OthersID");
-            iditem->setTextAlignment(Qt::AlignLeft);
+            iditem->setTextAlignment(Qt::AlignRight);
             ui->listWidget->addItem(iditem);
 
             QNChatMessage* messageW = new QNChatMessage(ui->listWidget->parentWidget());
