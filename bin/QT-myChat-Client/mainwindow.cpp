@@ -90,16 +90,27 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
 }
 
 void MainWindow::showAllFriendship(){
-    QVector<QToolButton*> vector;
-    //qDeleteAll(list.begin(), list.end());
-    //qDeleteAll(listIcon.begin(), listIcon.end());
-    for(auto a : list) {
-        list.removeOne(a);
+    for(int i = 0; i < list.size() ; ++i){
+        list.removeLast();
     }
+    for(int i = 0; i < vector.size(); ++i){
+        vector.removeLast();
+    }
+    for(int i = 0; i < listIcon.size(); ++i){
+        listIcon.removeLast();
+    }
+    vector.clear();
     list.clear();
     listIcon.clear();
-    list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
 
+    QLayoutItem* child;
+    while((child = ui->vlayout->takeAt(0)) != 0){
+        //必须将parent置为nullpptr，否则不消失
+        child->widget()->setParent(NULL);
+        delete child;
+    }
+
+    list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
 
     QString str1_avatar = "a (";
     QString str2_avatar = ")";
@@ -111,9 +122,8 @@ void MainWindow::showAllFriendship(){
         //透明
         btn->setAutoRaise(true);
         //设置网名
-        QString str1 = " ";
-        QString str2 = "\r\nip：xxx.xx.xxx";
-        btn->setText(QString::number(UserInfo::fromQByteArray(list[i]).getID()) + str1 + UserInfo::fromQByteArray(list[i]).getName() + str2);
+        QString str1 = "\n";
+        btn->setText(QString::number(UserInfo::fromQByteArray(list[i]).getID()) + str1 + UserInfo::fromQByteArray(list[i]).getName());
 
         //设置显示格式
         btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);

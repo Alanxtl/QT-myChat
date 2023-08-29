@@ -21,6 +21,7 @@ public:
 
     QList<QByteArray> list;
     QStringList listIcon;
+    QVector<QToolButton*> vector;
 
     QString myid;
 public slots:
