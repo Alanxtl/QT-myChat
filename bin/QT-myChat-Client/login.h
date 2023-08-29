@@ -27,6 +27,8 @@ private slots:
     void on_jump_clicked();
     //void on_checkBox_clicked();
     void on_checkBox_clicked(bool checked);
+signals:
+    void toBeContinued();
 
 private:
     Ui::login *ui;

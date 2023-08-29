@@ -3,6 +3,9 @@
 #include "login.h"
 #include <QString>
 #include <QMessageBox>
+#include <Database/UserInfo.h>
+#include <Tools/handler.h>
+
 regis::regis(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::regis)
@@ -14,7 +17,7 @@ regis::regis(QWidget *parent) :
         QByteArray originMessage = Socket::getObj()->socket.readAll();
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
 
-        if (msg->type == 0) {
+        if (msg->type == 1) {
             register_success();
         } else if (msg->type == 8) {
             logHandler(msg);
@@ -31,6 +34,12 @@ regis::~regis()
 
 void regis::register_success()
 {
+    QString nickname=ui->nametxt1->text();
+    QString id=ui->pwdtxt1->text();
+    QString pwd=ui->pwdtxt2->text();
+    UserInfo user(id.toUInt(),nickname,pwd," ");
+    Handler::getObj()->my = user;
+
     QMessageBox::about(this,"成功","注册成功已自动登录");
     login *log=new login();
     log->show();
@@ -53,11 +62,9 @@ void regis::on_regbtn_clicked()
         return;
     }
 
-    MyMsg *msge = MyMsg::loginMsg(ui->pwdtxt1->text().toUInt(), ui->pwdtxt2->text().toUInt(), ui->nametxt1->text());
+    MyMsg *msge = MyMsg::registerMsg(ui->pwdtxt1->text().toUInt(), ui->pwdtxt2->text().toUInt(), ui->nametxt1->text());
     QByteArray data = msge->msgToArray();
     Socket::getObj()->socket.write(data);
-
-
 }
 
 //close

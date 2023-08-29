@@ -20,10 +20,11 @@ public:
     ~MainWindow();
 
 
+
 private slots:
     void on_fdsbtn_customContextMenuRequested(const QPoint &pos);
     void deletefds();
-    void addfds();
+    void addfds(QString addid);
     void logHandler(MyMsg* msg);
 
 private:

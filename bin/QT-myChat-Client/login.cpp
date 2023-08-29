@@ -8,6 +8,8 @@
 #include <QHostAddress>
 #include <Tools/handler.h>
 #include <qdebug.h>
+#include <Database/UserInfo.h>
+#include <QTime>
 
 login::login(QWidget *parent) :
     QMainWindow(parent),
@@ -34,11 +36,53 @@ login::login(QWidget *parent) :
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
 
         if (msg->type == 0) {
+            QString str=ui->nametxt->text();
+            QString str2=ui->pwdtxt->text();
+            UserInfo user(str.toUInt(),QString::fromUtf8(msg->content),str2," ");
+            Handler::getObj()->my = user;
             qDebug() << "return 0";
             login_success();
         } else if (msg->type == 8) {
             qDebug() << "return 8";
             logHandler(msg);
+        } else if (msg->type == 1) {
+            emit toBeContinued();
+        } else if (msg->type == 9 && msg->slice == 2) {
+            QString str = "添加好友失败";
+            MyMsg * res = new MyMsg();
+            QByteArray bytes = str.toUtf8();
+            res->setMsg(8,0,0,0,0,0,QTime::currentTime(),bytes);
+            logHandler(res);
+        } else if (msg->type == 9 && msg->slice == 1) {
+            QString str = "添加好友成功";
+            MyMsg * res = new MyMsg();
+            QByteArray bytes = str.toUtf8();
+            res->setMsg(8,0,0,0,0,0,QTime::currentTime(),bytes);
+            logHandler(res);
+            DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content));
+        } else if (msg->type == 9 && msg->slice == 0) {
+            QString str = QString::fromUtf8(msg->content) + "请求添加您好友";
+            MyMsg * res = new MyMsg();
+            QByteArray bytes = str.toUtf8();
+            res->setMsg(8,0,0,0,0,0,QTime::currentTime(),bytes);
+            logHandler(res);
+            if (true/*弹出窗口确认*/) {
+                QString str = " ";
+                MyMsg * msge = new MyMsg();
+                QByteArray bytes = str.toUtf8();
+                msge->setMsg(9,1,0,0,msg->receiverID,msg->senderID,QTime::currentTime(),bytes);
+
+                QByteArray data = msge->msgToArray();
+                Socket::getObj()->socket.write(data);
+            } else {
+                QString str = " ";
+                MyMsg * msge = new MyMsg();
+                QByteArray bytes = str.toUtf8();
+                msge->setMsg(9,2,0,0,msg->receiverID,msg->senderID,QTime::currentTime(),bytes);
+
+                QByteArray data = msge->msgToArray();
+                Socket::getObj()->socket.write(data);
+            }
         }
     });
 
@@ -99,6 +143,7 @@ void login::on_loginbth_clicked()
 
 void login::login_success()
 {
+
     MainWindow *m=new MainWindow();
     m->show();
     this->hide();
@@ -119,6 +164,9 @@ void login::on_regbtn_clicked()
     }
 
     regis *re=new regis();
+
+    connect(this, &login::toBeContinued, re, &regis::register_success);
+
     re->show();
     this->hide();
 }

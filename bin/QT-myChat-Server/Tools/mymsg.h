@@ -45,7 +45,6 @@
  *
  *      文件信息的body定义： todo
  *
- *
  */
 
 class MyMsg : public QObject

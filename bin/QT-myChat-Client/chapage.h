@@ -19,6 +19,7 @@ public:
     void dealMessage(QNChatMessage *messageW, QListWidgetItem *item, QString text, QString time, QNChatMessage::User_Type type);
     void dealMessageTime(QString curMsgTime);
 
+
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:

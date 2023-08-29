@@ -3,6 +3,9 @@
 #include "chapage.h"
 #include <QInputDialog>
 #include <QMessageBox>
+#include <qdebug.h>
+#include <Tools/socket.h>
+#include <Tools/handler.h>
 #include "Database/DBHelper.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -55,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
          });
     }
 
-
+    ui->namebtn->setText(Handler::getObj()->my.getName());
 }
 
 MainWindow::~MainWindow()
@@ -63,8 +66,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::addfds(){
 
+void MainWindow::addfds(QString addid){
+    MyMsg *msge = MyMsg::addFriendMsg(addid.toUInt());
+    QByteArray data = msge->msgToArray();
+    Socket::getObj()->socket.write(data);
 }
 
 void MainWindow::logHandler(MyMsg *msg)
@@ -73,6 +79,7 @@ void MainWindow::logHandler(MyMsg *msg)
 }
 
 void MainWindow::deletefds(){
+
 
 }
 
@@ -94,6 +101,8 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
                                              "11",
                                              &bOk
                                              );
+        addfds(addid);
+
     });
     connect(defdsact,&QAction::triggered, [=]{
         bool bOk = false;
@@ -104,6 +113,7 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
                                              "11",
                                              &bOk
                                              );
+        deletefds();
     });
     fdsmenu->exec(QCursor::pos());
 }

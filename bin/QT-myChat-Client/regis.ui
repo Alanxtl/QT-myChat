@@ -76,7 +76,7 @@ background-image: url(:/images/cat.jpg);</string>
        <item>
         <widget class="QLabel" name="pwdl">
          <property name="text">
-          <string>输入帐号</string>
+          <string>输入ID</string>
          </property>
         </widget>
        </item>

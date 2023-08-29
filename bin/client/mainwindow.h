@@ -28,9 +28,7 @@ public:
 private slots:
 
     void on_pushButton_test_clicked();
-
     void on_pushButton_Send_clicked();
-
     void logHandler(MyMsg* msg);
     void loginHandler();
 
