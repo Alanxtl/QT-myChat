@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowIcon(QIcon(":/images/a (1).jpg"));
     this->setWindowTitle("Linpop");
     //好友列表
-    List<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
+    QList<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
     //图片资源列表
     QStringList listIcon;
     listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)"<<"a (6)";
