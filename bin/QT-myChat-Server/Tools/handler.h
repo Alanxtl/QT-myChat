@@ -5,6 +5,7 @@
 #include <Tools/mymsg.h>
 #include <Database/UserInfo.h>
 #include <Database/DBHelper.h>
+#include <QDebug>
 
 class Handler : public QObject
 {
@@ -18,6 +19,7 @@ public:
     bool loginHandler(MyMsg *msg);
     void defaultMsgHandler(MyMsg *msg);
     void groupMsgHandler(MyMsg *msg);
+    bool addFriend(MyMsg* msg);
 signals:
 
 private:

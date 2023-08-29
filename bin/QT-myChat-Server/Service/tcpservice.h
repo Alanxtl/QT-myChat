@@ -9,6 +9,8 @@
 #include <QList>
 #include <Tools/mymsg.h>
 #include <Tools/handler.h>
+#include <Database/UserInfo.h>
+#include <Database/DBHelper.h>
 
 class TcpService : public QTcpServer
 {

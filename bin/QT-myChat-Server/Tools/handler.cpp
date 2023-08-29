@@ -59,3 +59,14 @@ void Handler::groupMsgHandler(MyMsg *msg)
 {
 
 }
+
+bool Handler::addFriend(MyMsg *msg) {
+    bool b1, b2;
+    b1 = DBHelper::GetInstance()->addFriendship(msg->getSenderID(), msg->getReceiverID());
+    b2 = DBHelper::GetInstance()->addFriendship(msg->getSenderID(), msg->getReceiverID());
+    if (!b1 || !b2) {
+        qDebug() << "添加失败";
+        return false;
+    }
+    else return true;
+}
