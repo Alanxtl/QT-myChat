@@ -20,8 +20,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);
-background-image: url(:/images/cat.jpg);</string>
+   <string notr="true">background-image: url(:/images/ab (1).jpg);</string>
   </property>
   <widget class="QWidget" name="zhhao">
    <property name="maximumSize">
@@ -142,7 +141,7 @@ background-image: url(:/images/cat.jpg);</string>
          <item>
           <widget class="QLabel" name="namel">
            <property name="text">
-            <string>昵称</string>
+            <string>ID</string>
            </property>
           </widget>
          </item>

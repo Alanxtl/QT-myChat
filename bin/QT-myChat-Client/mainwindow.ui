@@ -14,8 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);
-background-image: url(:/images/line.jpg);</string>
+   <string notr="true">background-image: url(:/images/ab (2).jpg);</string>
   </property>
   <widget class="QWidget" name="mewidget" native="true">
    <property name="geometry">
@@ -102,6 +101,9 @@ background-image: url(:/images/line.jpg);</string>
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/images/ab (1).jpg);</string>
+   </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
@@ -111,7 +113,7 @@ background-image: url(:/images/line.jpg);</string>
       <x>0</x>
       <y>0</y>
       <width>450</width>
-      <height>421</height>
+      <height>407</height>
      </rect>
     </property>
     <attribute name="label">
@@ -125,7 +127,7 @@ background-image: url(:/images/line.jpg);</string>
       <x>0</x>
       <y>0</y>
       <width>450</width>
-      <height>421</height>
+      <height>407</height>
      </rect>
     </property>
     <attribute name="label">

@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->fdsbtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     ui->groupbtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     QVector<QToolButton*> vector;
-    this->setWindowIcon(QIcon(":/images/a (1).jpg"));
+    this->setWindowIcon(QIcon(":/images/ab (1).jpg"));
     this->setWindowTitle("Linpop");
     //好友列表
     QList<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();

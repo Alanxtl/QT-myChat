@@ -179,7 +179,7 @@ void QNChatMessage::paintEvent(QPaintEvent *event)
         painter.drawPixmap(m_iconLeftRect, m_leftPixmap);
 
         //框加边
-        QColor col_KuangB(234, 234, 234);
+        QColor col_KuangB(255, 255, 255);
         painter.setBrush(QBrush(col_KuangB));
         painter.drawRoundedRect(m_kuangLeftRect.x()-1,m_kuangLeftRect.y()-1,m_kuangLeftRect.width()+2,m_kuangLeftRect.height()+2,4,4);
         //框
@@ -244,7 +244,7 @@ void QNChatMessage::paintEvent(QPaintEvent *event)
         painter.drawText(m_textRightRect,m_msg,option);
     }  else if(m_userType == User_Type::User_Time) { // 时间
         QPen penText;
-        penText.setColor(QColor(153,153,153));
+        penText.setColor(QColor(255,255,255));
         painter.setPen(penText);
         QTextOption option(Qt::AlignCenter);
         option.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
