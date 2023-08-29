@@ -10,6 +10,7 @@
 #include <qdebug.h>
 #include <Database/UserInfo.h>
 #include <QTime>
+#include <QMessageBox>
 
 login::login(QWidget *parent) :
     QMainWindow(parent),
@@ -49,23 +50,15 @@ login::login(QWidget *parent) :
             emit toBeContinued();
         } else if (msg->type == 9 && msg->slice == 2) {
             QString str = "添加好友失败";
-            MyMsg * res = new MyMsg();
-            QByteArray bytes = str.toUtf8();
-            res->setMsg(8,0,0,0,0,0,QTime::currentTime(),bytes);
-            logHandler(res);
+            QMessageBox::about(this,"注意",str);
         } else if (msg->type == 9 && msg->slice == 1) {
             QString str = "添加好友成功";
-            MyMsg * res = new MyMsg();
-            QByteArray bytes = str.toUtf8();
-            res->setMsg(8,0,0,0,0,0,QTime::currentTime(),bytes);
-            logHandler(res);
+            QMessageBox::about(this,"注意",str);
             DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content));
+            DBHelper::GetInstance()->selectAllFriendsUserInfo();
         } else if (msg->type == 9 && msg->slice == 0) {
             QString str = QString::fromUtf8(msg->content) + "请求添加您好友";
-            MyMsg * res = new MyMsg();
-            QByteArray bytes = str.toUtf8();
-            res->setMsg(8,0,0,0,0,0,QTime::currentTime(),bytes);
-            logHandler(res);
+            QMessageBox::about(this,"注意",str);
             if (true/*弹出窗口确认*/) {
                 QString str = " ";
                 MyMsg * msge = new MyMsg();
@@ -143,7 +136,6 @@ void login::on_loginbth_clicked()
 
 void login::login_success()
 {
-
     MainWindow *m=new MainWindow();
     m->show();
     this->hide();

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <Database/UserInfo.h>
 #include <Tools/handler.h>
+#include <mainwindow.h>
 
 regis::regis(QWidget *parent) :
     QMainWindow(parent),
@@ -41,8 +42,8 @@ void regis::register_success()
     Handler::getObj()->my = user;
 
     QMessageBox::about(this,"成功","注册成功已自动登录");
-    login *log=new login();
-    log->show();
+    MainWindow *m=new MainWindow();
+    m->show();
     this->hide();
 }
 
