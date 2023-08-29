@@ -1,8 +1,8 @@
 #include "tcpservice.h"
 
 TcpService::TcpService(QObject *parent) : QTcpServer(parent){
-    onlineUserMap.insert(1, "172.20.10.10");
-    onlineUserMap.insert(0, "172.20.10.9");
+
+
 }
 
 void TcpService::incomingConnection(qintptr socketDescriptor){
@@ -40,6 +40,7 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
             updateMap(id, chatbusiness->ip);
             send_msg->setMsg(0, 0, 0, 0, 0, msg->getSenderID(), QTime::currentTime(), byte);
             TcpService::sendMessage(send_msg);
+            DBHelper::GetInstance()->addOnlineUserInfo(user);
         }
         break;
 
@@ -53,6 +54,7 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
             chatbusiness->socket.write(data);
         }
         else {
+            UserInfo user = DBHelper::GetInstance()->selectUserInfoById(msg->getSenderID());
             QString text = "注册成功";
             QByteArray byte = text.toUtf8();
             MyMsg *send_msg = new MyMsg();
@@ -61,6 +63,7 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
             chatbusiness->id = msg->getSenderID();
             TcpService::updateMap(chatbusiness->id, chatbusiness->ip);
             chatbusiness->socket.write(data);
+            DBHelper::GetInstance()->addOnlineUserInfo(user);
         }
         break;
 
@@ -95,12 +98,13 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
                 UserInfo user = DBHelper::GetInstance()->selectUserInfoById(msg->getReceiverID());
                 QString name = user.getName();
                 QByteArray byte = name.toUtf8();
-                send_msg->setMsg(9, 1, 0, 0, 0, msg->getSenderID(), QTime::currentTime(), byte);
+                send_msg->setMsg(9, 1, 0, 0, msg->getReceiverID(), msg->getSenderID(), QTime::currentTime(), byte);
                 TcpService::sendMessage(send_msg);
-                user = DBHelper::GetInstance()->selectUserInfoById(msg->getReceiverID());
+
+                user = DBHelper::GetInstance()->selectUserInfoById(msg->getSenderID());
                 name = user.getName();
                 byte = name.toUtf8();
-                send_msg->setMsg(9, 1, 0, 0, 0, msg->getReceiverID(), QTime::currentTime(), byte);
+                send_msg->setMsg(9, 1, 0, 0, msg->getSenderID(), msg->getReceiverID(), QTime::currentTime(), byte);
                 TcpService::sendMessage(send_msg);
                 break;
             }

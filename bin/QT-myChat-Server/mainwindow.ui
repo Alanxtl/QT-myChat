@@ -76,6 +76,19 @@
      <bool>false</bool>
     </attribute>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>410</y>
+      <width>97</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>显示键值对</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
@@ -84,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>28</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>

@@ -23,7 +23,7 @@ DBHelper::DBHelper(QObject *parent)
                   "Username VARCHAR(40) NOT NULL, "
                   "Pwd VARCHAR(40) NOT NULL, "
                   "Avatar VARCHAR(512) )")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "UserInfo";
     }
 
 	//好友关系表
@@ -33,7 +33,7 @@ DBHelper::DBHelper(QObject *parent)
                   "FriendId INTEGER, "
                   "FOREIGN KEY (MyId) REFERENCES UserInfo(Id),"
                   "FOREIGN KEY (FriendId) REFERENCES UserInfo(Id))")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "Friendship";
     }
 
 	//离线消息列表（添加Group）
@@ -41,12 +41,11 @@ DBHelper::DBHelper(QObject *parent)
     if(!query.exec("CREATE TABLE IF NOT EXISTS OfflineMsg ("
                   "Sender INTEGER, "
                   "Reciever INTEGER, "
-                  "Group INTEGER, "
                   "Msg VARCHAR(512),"
                   "DT datetime NOT NULL,"
                   "FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
                   "FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "OfflineMsg";
     }
 
     //消息表（添加Group）
@@ -54,12 +53,11 @@ DBHelper::DBHelper(QObject *parent)
     if(!query.exec("CREATE TABLE IF NOT EXISTS Msg ("
                   "Sender INTEGER,"
                   "Reciever INTEGER,"
-                  "Group INTEGER, "
                   "Msg VARCHAR(512),"
                   "DT datetime NOT NULL,"
                   "FOREIGN KEY (Sender) REFERENCES UserInfo(Id),"
                   "FOREIGN KEY (Reciever) REFERENCES UserInfo(Id))")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "Msg";
     }
 
     //群聊信息表（Id设置为7位）
@@ -68,7 +66,7 @@ DBHelper::DBHelper(QObject *parent)
                   "ID INTEGER PRIMARY KEY,"
                   "GroupName VARCHAR(40),"
                   "GroupAvatar VARCHAR(512))")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "GroupInfo";
     }
 
     //群聊成员表，包含用户权限：0代表普通群员，1代表管理员，2代表群主
@@ -79,7 +77,7 @@ DBHelper::DBHelper(QObject *parent)
                   "UserPermission INTEGER NOT NULL,"
                   "FOREIGN KEY (UserID) REFERENCES UserInfo(Id),"
                   "FOREIGN KEY (GroupID) REFERENCES GroupInfo(ID))")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "Groupship";
     }
 
     //在线用户表
@@ -87,9 +85,21 @@ DBHelper::DBHelper(QObject *parent)
     if(!query.exec("CREATE TABLE IF NOT EXISTS OnlineUser("
         "Id int PRIMARY KEY, "
         "Username varchar NOT NULL) ")){
-        qDebug()<<query.lastError();
+        qDebug()<<query.lastError() << "OnlineUser";
     }
 	//建表完成
+
+    //初始用户表
+    if(!query.exec("INSERT INTO UserInfo VALUES "
+                      "(10001, 'xiaoming', 10001, ''), "
+                      "(10002, 'xiaoli', 10002, ''), "
+                      "(10003, 'xiaozhang', 10003, ''), "
+                      "(10004, 'xiaohong', 10004, ''), "
+                      "(10005, 'xiaohua', 10005, ''), "
+                      "(10006, 'xiaosong', 10006, '')")){
+            qDebug()<<query.lastError();
+
+    }
 }//构造函数
 
 //析构函数
@@ -151,10 +161,10 @@ bool DBHelper::registerUserInfo(const UserInfo& user){
 }
 
 //登录验证(返回true/false)
-bool DBHelper::selectUserByIdAndPwd(const QString username, const QString pwd){
+bool DBHelper::selectUserByIdAndPwd(const QString id, const QString pwd){
 	QSqlQuery query;
-    query.prepare("select * from UserInfo where Username =:Username and pwd =:pwd");
-    query.bindValue(":Username", QVariant(username));
+    query.prepare("select * from UserInfo where Id =:Id and pwd =:pwd");
+    query.bindValue(":Id", QVariant(id));
 	query.bindValue(":pwd", QVariant(pwd));
 	query.exec();
 	bool flag = query.next();

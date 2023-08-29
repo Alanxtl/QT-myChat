@@ -102,3 +102,13 @@ void MainWindow::showAllOnlineUserInfo(const UserInfo& user){
     ui->tableWidget->resizeColumnsToContents();
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    QList<quint32> id = tcpservice.onlineUserMap.keys();
+    Log::getLogObj()->writeLog("现有键值对为:");
+    for (quint32 i : id) {
+
+        Log::getLogObj()->writeLog(QString::number(i) + ":" + tcpservice.onlineUserMap.value(i));
+    }
+}

@@ -31,6 +31,9 @@ public slots:
     void updateClinetMonitor();
     void showAllOnlineUserInfo(const UserInfo&);
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
