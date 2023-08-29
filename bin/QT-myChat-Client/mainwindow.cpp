@@ -29,23 +29,25 @@ MainWindow::MainWindow(QWidget *parent)
     QList<QByteArray> list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
     //图片资源列表
     QStringList listIcon;
-    listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)"<<"a (6)";
+    QString str1_avatar = "a (";
+    QString str2_avatar = ")";
 
     for(int i=0;i<list.size();i++){
-       QToolButton *btn=new QToolButton(this);
-       btn->setIcon(QPixmap(QString(":/images/%1.jpg").arg(listIcon[i])));
-       btn->setIconSize(QSize(80,80));
-       //透明
-       btn->setAutoRaise(true);
-       //设置网名
-       QString str1 = " ";
-       QString str2 = "\r\nip：xxx.xx.xxx";
-       btn->setText(QString::number(UserInfo::fromQByteArray(list[i]).getID()) + str1 + UserInfo::fromQByteArray(list[i]).getName() + str2);
+        listIcon.append(str1_avatar + QString::number(i+1) + str2_avatar);
+        QToolButton *btn=new QToolButton(this);
+        btn->setIcon(QPixmap(QString(":/images/%1.jpg").arg(listIcon[i])));
+        btn->setIconSize(QSize(80,80));
+        //透明
+        btn->setAutoRaise(true);
+        //设置网名
+        QString str1 = " ";
+        QString str2 = "\r\nip：xxx.xx.xxx";
+        btn->setText(QString::number(UserInfo::fromQByteArray(list[i]).getID()) + str1 + UserInfo::fromQByteArray(list[i]).getName() + str2);
 
-       //设置显示格式
-       btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-       ui->vlayout->addWidget(btn);
-       vector.push_back(btn);
+        //设置显示格式
+        btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        ui->vlayout->addWidget(btn);
+        vector.push_back(btn);
     }
 
     for(int i=0;i<list.size();i++){
