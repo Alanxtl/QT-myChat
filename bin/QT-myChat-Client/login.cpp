@@ -149,6 +149,10 @@ void login::on_loginbth_clicked()
 void login::login_success()
 {
     MainWindow *m=new MainWindow();
+    connect(this,&login::sendmyid,m,&MainWindow::receivemyid);
+    QString str=ui->pwdtxt->text();
+    QString str2=ui->nametxt->text();
+    emit this->sendmyid(str2);
     m->show();
     this->hide();
 }

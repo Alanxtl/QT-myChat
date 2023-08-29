@@ -43,6 +43,8 @@ void regis::register_success()
 
     QMessageBox::about(this,"成功","注册成功已自动登录");
     MainWindow *m=new MainWindow();
+    connect(this,&regis::sendmyid,m,&MainWindow::receivemyid);
+    emit this->sendmyid(id);
     m->show();
     this->hide();
 }
@@ -66,6 +68,7 @@ void regis::on_regbtn_clicked()
     MyMsg *msge = MyMsg::registerMsg(ui->pwdtxt1->text().toUInt(), ui->pwdtxt2->text().toUInt(), ui->nametxt1->text());
     QByteArray data = msge->msgToArray();
     Socket::getObj()->socket.write(data);
+
 }
 
 //close

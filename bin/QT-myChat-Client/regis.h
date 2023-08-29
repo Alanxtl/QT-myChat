@@ -15,7 +15,8 @@ class regis : public QMainWindow
 public:
     explicit regis(QWidget *parent = nullptr);
     ~regis();
-
+signals:
+    void sendmyid(QString s);
 
 public slots:
     void logHandler(MyMsg *msg);

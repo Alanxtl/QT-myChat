@@ -118,9 +118,27 @@ void MainWindow::showAllFriendship(){
     for(int i=0;i<list.size();i++){
         connect(vector[i],&QToolButton::clicked,[=](){
             chapage *chatp=new chapage();
+            connect(this,&MainWindow::senddoubleid,chatp,&chapage::receivedoubleid);
+            emit(senddoubleid(this->myid,QString::number(UserInfo::fromQByteArray(list[i]).getID())));
             chatp->setWindowIcon(vector[i]->icon());
-            chatp->setWindowTitle(vector[i]->text());
+            //chatp->setWindowTitle(vector[i]->text());
             chatp->show();
          });
     }
+}
+void MainWindow::receivemyid(QString s){
+
+    //ui->groupbtn->setText(s);
+    this->myid =s;
+    //ui->groupbtn->setText(this->myid);
+}
+
+void MainWindow::on_groupbtn_clicked()
+{
+        chapage *chatp=new chapage();
+        connect(this,&MainWindow::senddoubleid,chatp,&chapage::receivedoubleid);
+        emit(senddoubleid(this->myid,NULL));
+        //chatp->setWindowIcon(vector[i]->icon());
+        chatp->setWindowTitle("群组聊天室");
+        chatp->show();
 }

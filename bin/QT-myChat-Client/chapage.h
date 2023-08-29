@@ -24,6 +24,10 @@ public:
     void sendFile(QString filename);
     void updateSendedFileProgress(qint64 numBytes);
     void updateReceivedFileProgress();
+    QString myid;
+    QString othersid;
+public slots:
+    void receivedoubleid(QString myid,QString othersid);
 protected:
     void resizeEvent(QResizeEvent *event);
 private slots:
@@ -32,6 +36,8 @@ private slots:
     void on_sendbtn_clicked();
 
     void on_pushButton_5_clicked();
+
+    void on_cancelbt_clicked();
 
 private:
     Ui::chapage *ui;

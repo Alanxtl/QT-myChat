@@ -33,6 +33,7 @@ private slots:
 signals:
     void toBeContinued();
     void addFriendSignal();
+    void sendmyid(QString s);
 
 private:
     Ui::login *ui;
