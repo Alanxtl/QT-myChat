@@ -17,7 +17,6 @@ DBHelper::DBHelper()
 	//初始化建表
 	QSqlQuery query;
     //好友信息表(Id设置为5位)
-    query.exec("DROP TABLE FriendInfo");
     if(!query.exec("CREATE TABLE IF NOT EXISTS FriendInfo ("
                   "Id INTEGER PRIMARY KEY, "
                   "Username VARCHAR(40) NOT NULL, "
