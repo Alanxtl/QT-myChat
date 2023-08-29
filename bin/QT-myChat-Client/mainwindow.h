@@ -19,7 +19,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-
+public slots:
+    void showAllFriendship();
 
 private slots:
     void on_fdsbtn_customContextMenuRequested(const QPoint &pos);

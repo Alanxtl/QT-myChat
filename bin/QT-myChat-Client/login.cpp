@@ -12,6 +12,9 @@
 #include <QTime>
 #include <QMessageBox>
 
+//静态成员变量的类外初始化
+login* login::log = NULL;
+
 login::login(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::login)
@@ -55,7 +58,7 @@ login::login(QWidget *parent) :
             QString str = "添加好友成功";
             QMessageBox::about(this,"注意",str);
             DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content));
-            DBHelper::GetInstance()->selectAllFriendsUserInfo();
+            addFriendSignal();
         } else if (msg->type == 9 && msg->slice == 0) {
             QString str = QString::fromUtf8(msg->content) + "请求添加您好友";
             QMessageBox::about(this,"注意",str);
@@ -81,6 +84,14 @@ login::login(QWidget *parent) :
 
 
 
+}
+
+//单例模式
+login* login::GetInstance(){
+    if (log == NULL) {
+        log = new login;
+    }
+    return log;
 }
 
 login::~login()
