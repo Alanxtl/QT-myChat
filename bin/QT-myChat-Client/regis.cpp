@@ -3,7 +3,6 @@
 #include "login.h"
 #include <QString>
 #include <QMessageBox>
-#include "mainwindow.h"
 regis::regis(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::regis)
@@ -33,7 +32,7 @@ regis::~regis()
 void regis::register_success()
 {
     QMessageBox::about(this,"成功","注册成功已自动登录");
-    MainWindow *log=new MainWindow();
+    login *log=new login();
     log->show();
     this->hide();
 }
@@ -47,10 +46,6 @@ void regis::logHandler(MyMsg *msg)
 //go to login
 void regis::on_regbtn_clicked()
 {
-
-    register_success();
-    return;
-
     QString str=ui->pwdtxt2->text();
     if(str.length()<1)
     {
@@ -61,6 +56,7 @@ void regis::on_regbtn_clicked()
     MyMsg *msge = MyMsg::loginMsg(ui->pwdtxt1->text().toUInt(), ui->pwdtxt2->text().toUInt(), ui->nametxt1->text());
     QByteArray data = msge->msgToArray();
     Socket::getObj()->socket.write(data);
+
 
 }
 

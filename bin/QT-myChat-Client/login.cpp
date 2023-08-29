@@ -60,6 +60,9 @@ void login::logHandler(MyMsg *msg)
 void login::on_loginbth_clicked()
 {
 //    QTcpSocket socket;
+        MainWindow *m=new MainWindow();
+        m->show();
+        this->hide();
     QString ip = ui->iptxt->text();
     quint16 port = 6666;
     Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);

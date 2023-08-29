@@ -1,3 +1,14 @@
+/*-------------------------------------------------
+#
+# Project created by QtCreator
+# Author: 沙振宇
+# CreateTime: 2018-07-23
+# UpdateTime: 2019-12-27
+# Info: Qt5气泡式聊天框——QListWidget+QPainter实现
+# Url:https://shazhenyu.blog.csdn.net/article/details/81505832
+# Github:https://github.com/ShaShiDiZhuanLan/Demo_MessageChat_Qt
+#
+#-------------------------------------------------*/
 #include "qnchatmessage.h"
 #include <QFontMetrics>
 #include <QPaintEvent>
@@ -18,8 +29,8 @@ QNChatMessage::QNChatMessage(QWidget *parent) : QWidget(parent)
 //    te_font.setLetterSpacing(QFont::PercentageSpacing, 100);          //300%,100为默认  //设置字间距%
 //    te_font.setLetterSpacing(QFont::AbsoluteSpacing, 0);             //设置字间距为3像素 //设置字间距像素值
     this->setFont(te_font);
-    m_leftPixmap = QPixmap(":/images/Customer Copy.png");
-    m_rightPixmap = QPixmap(":/images/CustomerService.png");
+    m_leftPixmap = QPixmap(":/images/a (13).jpg");
+    m_rightPixmap = QPixmap(":/images/a18.jpg");
 
     m_loadingMovie = new QMovie(this);
     m_loadingMovie->setFileName(":/images/loading4.gif");

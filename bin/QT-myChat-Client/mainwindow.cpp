@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "chapage.h"
-#include "addfriend.h"
-
+#include <QInputDialog>
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -70,12 +69,6 @@ void MainWindow::logHandler(MyMsg *msg)
 
 }
 
-void MainWindow::on_addFriend_clicked()
-{
-    addFriend *f=new addFriend();
-    f->show();
-}
-
 void MainWindow::deletefds(){
 
 }
@@ -89,7 +82,25 @@ void MainWindow::on_fdsbtn_customContextMenuRequested(const QPoint &pos)
     QAction *defdsact=new QAction(tr("删除好友"),this);
     fdsmenu->addAction(addfdsact);
     fdsmenu->addAction(defdsact);
-    connect(addfdsact,SIGNAL(triggred(bool)),this,SLOT(addfds()));
-    connect(addfdsact,SIGNAL(triggred(bool)),this,SLOT(deletefds()));
+    connect(addfdsact,&QAction::triggered, [=]{
+        bool bOk = false;
+        QString addid = QInputDialog::getText(this,
+                                             "add_id",
+                                             "请输入账号",
+                                             QLineEdit::Normal,
+                                             "11",
+                                             &bOk
+                                             );
+    });
+    connect(defdsact,&QAction::triggered, [=]{
+        bool bOk = false;
+        QString deleid = QInputDialog::getText(this,
+                                             "delete_id",
+                                             "请输入账号",
+                                             QLineEdit::Normal,
+                                             "11",
+                                             &bOk
+                                             );
+    });
     fdsmenu->exec(QCursor::pos());
 }
