@@ -17,6 +17,7 @@ DBHelper::DBHelper(QObject *parent)
 	//初始化建表
 	QSqlQuery query;
     //用户信息表(Id设置为5位)
+    query.exec("DROP TABLE UserInfo");
     if(!query.exec("CREATE TABLE IF NOT EXISTS UserInfo ("
                   "Id INTEGER PRIMARY KEY, "
                   "Username VARCHAR(40) NOT NULL, "
@@ -26,6 +27,7 @@ DBHelper::DBHelper(QObject *parent)
     }
 
 	//好友关系表
+    query.exec("DROP TABLE Friendship");
     if(!query.exec("CREATE TABLE IF NOT EXISTS Friendship ("
                   "MyId INTEGER, "
                   "FriendId INTEGER, "
@@ -35,6 +37,7 @@ DBHelper::DBHelper(QObject *parent)
     }
 
 	//离线消息列表（添加Group）
+    query.exec("DROP TABLE OfflineMsg");
     if(!query.exec("CREATE TABLE IF NOT EXISTS OfflineMsg ("
                   "Sender INTEGER, "
                   "Reciever INTEGER, "
@@ -47,6 +50,7 @@ DBHelper::DBHelper(QObject *parent)
     }
 
     //消息表（添加Group）
+    query.exec("DROP TABLE Msg");
     if(!query.exec("CREATE TABLE IF NOT EXISTS Msg ("
                   "Sender INTEGER,"
                   "Reciever INTEGER,"
@@ -59,6 +63,7 @@ DBHelper::DBHelper(QObject *parent)
     }
 
     //群聊信息表（Id设置为7位）
+    query.exec("DROP TABLE GroupInfo");
     if(!query.exec("CREATE TABLE IF NOT EXISTS GroupInfo ("
                   "ID INTEGER PRIMARY KEY,"
                   "GroupName VARCHAR(40),"
@@ -67,6 +72,7 @@ DBHelper::DBHelper(QObject *parent)
     }
 
     //群聊成员表，包含用户权限：0代表普通群员，1代表管理员，2代表群主
+    query.exec("DROP TABLE Groupship");
     if(!query.exec("CREATE TABLE IF NOT EXISTS Groupship("
                   "UserID INTEGER,"
                   "GroupID INTEGER,"
@@ -77,6 +83,7 @@ DBHelper::DBHelper(QObject *parent)
     }
 
     //在线用户表
+    query.exec("DROP TABLE OnlineUser");
     if(!query.exec("CREATE TABLE IF NOT EXISTS OnlineUser("
         "Id int PRIMARY KEY, "
         "Username varchar NOT NULL) ")){
