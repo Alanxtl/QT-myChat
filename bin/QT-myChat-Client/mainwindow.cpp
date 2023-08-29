@@ -8,6 +8,7 @@
 #include <Tools/handler.h>
 #include "Database/DBHelper.h"
 #include "login.h"
+#include "chapage.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -138,6 +139,7 @@ void MainWindow::showAllFriendship(){
             emit(senddoubleid(this->myid,QString::number(UserInfo::fromQByteArray(list[i]).getID())));
             chatp->setWindowIcon(vector[i]->icon());
             //chatp->setWindowTitle(vector[i]->text());
+            chatp->showRightFriendInfo();
             chatp->show();
          });
     }
@@ -156,5 +158,6 @@ void MainWindow::on_groupbtn_clicked()
         emit(senddoubleid(this->myid,NULL));
         //chatp->setWindowIcon(vector[i]->icon());
         chatp->setWindowTitle("群组聊天室");
+        chatp->showRightFriendInfo();
         chatp->show();
 }

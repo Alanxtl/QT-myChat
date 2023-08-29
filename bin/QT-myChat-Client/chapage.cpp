@@ -11,6 +11,8 @@
 #include <Tools/handler.h>
 #include <QMessageBox>
 #include <QFile>
+#include "Database/DBHelper.h"
+#include "Database/UserInfo.h"
 
 chapage::chapage(QWidget *parent) :
     QMainWindow(parent),
@@ -28,18 +30,6 @@ chapage::chapage(QWidget *parent) :
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Nickname" << "ID" << "IP");
     ui->tableWidget->setRowCount(5);
 
-    QStringList nameList;
-    nameList << "张三" << "李四" << "王五" << "赵六" << "孙七";
-    QStringList sexList;
-    sexList << "zhangsan123" << "lisi123" << "wangwu123" << "zhaoliu123" << "sunqi123";
-    QStringList ageList;
-    ageList << "22" << "30" << "12" << "55" << "90";
-    for (int i=0;i<5;i++)
-    {
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(sexList[i]));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(ageList[i]));
-    }
     QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
         QString time = QString::number(QDateTime::currentDateTime().toTime_t());
         dealMessageTime(time);
@@ -60,7 +50,7 @@ chapage::chapage(QWidget *parent) :
         ui->listWidget->setCurrentRow(ui->listWidget->count()-1);}
     });
 
-    connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
+    //connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
 }
 
 chapage::~chapage()
@@ -323,4 +313,38 @@ void chapage::updateReceivedFileProgress()
 void chapage::on_cancelbt_clicked()
 {
     this->hide();
+}
+
+void chapage::showRightFriendInfo(){
+    if(this->othersid == NULL){
+        QList<QByteArray> list;
+        list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
+        QStringList nameList;
+        QStringList idList;
+        QStringList ipList;
+        for(int i = 0; i < list.size(); i++){
+            nameList.append(UserInfo::fromQByteArray(list[i]).getName());
+            idList.append(QString::number(UserInfo::fromQByteArray(list[i]).getID()));
+        }
+        ipList << "1" << "2" << "3" << "4" << "5";
+        for (int i = 0; i < list.size(); i++)
+        {
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem(idList[i]));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem(ipList[i]));
+        }
+    }else{
+        QStringList nameList;
+        QStringList idList;
+        QStringList ipList;
+        idList << this->myid << this->othersid;
+        nameList.append(Handler::getObj()->my.getName());
+        nameList.append(DBHelper::GetInstance()->selectUserInfoById(this->othersid.toUInt()).getName());
+        ipList << "1" << "2";
+        for(int i = 0; i < 2; i++){
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem(nameList[i]));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem(idList[i]));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem(ipList[i]));
+        }
+    }
 }
