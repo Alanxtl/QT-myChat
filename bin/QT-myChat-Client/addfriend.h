@@ -14,6 +14,7 @@ class addFriend : public QWidget
 public:
     explicit addFriend(QWidget *parent = nullptr);
     ~addFriend();
+    void on_add_clicked();
 
 private:
     Ui::addFriend *ui;

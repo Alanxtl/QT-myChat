@@ -27,8 +27,7 @@ int main(int argc, char *argv[])
 
 //    MainWindow w;
 //   w.show();
-    login log;
-    log.show();
+login::GetInstance()->show();
 // chapage chat;
 // chat.show();
 

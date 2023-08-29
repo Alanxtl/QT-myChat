@@ -9,6 +9,9 @@
 #include <Tools/handler.h>
 #include <qdebug.h>
 
+//静态成员变量的类外初始化
+login* login::log = NULL;
+
 login::login(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::login)
@@ -40,11 +43,49 @@ login::login(QWidget *parent) :
         } else if (msg->type == 8) {
             qDebug() << "return 8";
             logHandler(msg);
+        } else if (msg->type == 1) {
+            emit toBeContinued();
+        } else if (msg->type == 9 && msg->slice == 2) {
+            QString str = "添加好友失败";
+            QMessageBox::about(this,"注意",str);
+        } else if (msg->type == 9 && msg->slice == 1) {
+            QString str = "添加好友成功";
+            QMessageBox::about(this,"注意",str);
+            DBHelper::GetInstance()->addFriendship(msg->senderID, QString::fromUtf8(msg->content));
+            addFriendSignal();
+        } else if (msg->type == 9 && msg->slice == 0) {
+            QString str = QString::fromUtf8(msg->content) + "请求添加您好友";
+            QMessageBox::about(this,"注意",str);
+            if (true/*弹出窗口确认*/) {
+                QString str = " ";
+                MyMsg * msge = new MyMsg();
+                QByteArray bytes = str.toUtf8();
+                msge->setMsg(9,1,0,0,msg->receiverID,msg->senderID,QTime::currentTime(),bytes);
+
+                QByteArray data = msge->msgToArray();
+                Socket::getObj()->socket.write(data);
+            } else {
+                QString str = " ";
+                MyMsg * msge = new MyMsg();
+                QByteArray bytes = str.toUtf8();
+                msge->setMsg(9,2,0,0,msg->receiverID,msg->senderID,QTime::currentTime(),bytes);
+
+                QByteArray data = msge->msgToArray();
+                Socket::getObj()->socket.write(data);
+            }
         }
     });
 
 
 
+}
+
+//单例模式
+login* login::GetInstance(){
+    if (log == NULL) {
+        log = new login;
+    }
+    return log;
 }
 
 login::~login()
@@ -71,9 +112,11 @@ void login::on_loginbth_clicked()
     m->show();
     this->hide();
     QString ip = ui->iptxt->text();
-    quint16 port = 6666;
-    Socket::getObj()->socket.connectToHost(QHostAddress(ip), port);
-    if (Socket::getObj()->socket.waitForConnected(3000)) {
+
+    Socket::getObj()->socket.connectToHost(QHostAddress(ip), 6666);
+    Socket::getFileObj()->connectToHost(QHostAddress(ip),6667);
+
+    if (Socket::getObj()->socket.waitForConnected(3000)/* && Socket::getFileObj()->waitForConnected(1000)*/) {
 
     }
     else {
@@ -104,6 +147,10 @@ void login::on_loginbth_clicked()
 void login::login_success()
 {
     MainWindow *m=new MainWindow();
+    connect(this,&login::sendmyid,m,&MainWindow::receivemyid);
+    QString str=ui->pwdtxt->text();
+    QString str2=ui->nametxt->text();
+    emit this->sendmyid(str2);
     m->show();
     this->hide();
 }

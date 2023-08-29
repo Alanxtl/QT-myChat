@@ -22,16 +22,15 @@ public:
     QString myid;
 public slots:
     void receivemyid(QString s);
+    void showAllFriendship();
 signals:
     void senddoubleid(QString myid,QString othersid);
-
 
 private slots:
     void on_fdsbtn_customContextMenuRequested(const QPoint &pos);
     void deletefds();
     void addfds();
     void logHandler(MyMsg* msg);
-
 
     void on_groupbtn_clicked();
 
