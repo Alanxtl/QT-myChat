@@ -4,12 +4,12 @@
 DBHelper* DBHelper::db = NULL;
 
 //构造函数
-DBHelper::DBHelper(QObject *parent)
-    : QObject{parent}
+DBHelper::DBHelper()
+
 {
     //连接数据库操作
     sqldb = QSqlDatabase::addDatabase("QSQLITE");
-    sqldb.setDatabaseName("server.db");
+    sqldb.setDatabaseName("server");
 	if (!sqldb.open()) {
         QMessageBox::warning(NULL, "错误", "打开数据库时出现错误!", QMessageBox::Yes);
 	}
@@ -17,6 +17,7 @@ DBHelper::DBHelper(QObject *parent)
 	//初始化建表
 	QSqlQuery query;
     //好友信息表(Id设置为5位)
+    query.exec("DROP TABLE FriendInfo");
     if(!query.exec("CREATE TABLE IF NOT EXISTS FriendInfo ("
                   "Id INTEGER PRIMARY KEY, "
                   "Username VARCHAR(40) NOT NULL, "
@@ -56,17 +57,16 @@ DBHelper* DBHelper::GetInstance(){
 
 
 //下面是该数据库对外提供的功能接口
-//查询好友列表（返回一个包含User Info的QList）
-QList<QByteArray> DBHelper::selectAllFriendsUserInfo(){
+//查询好友列表
+QStringList DBHelper::selectAllFriendsUserInfo(){
     QSqlQuery query;
-    query.prepare("select Id, Username, Avatar from FriendInfo");
-    query.exec();
-    QList<QByteArray> ListFriendInfo;
-    ListFriendInfo.clear();
-    while (query.next()) {
-        ListFriendInfo.append(UserInfo(query.value("Id").toInt(), query.value("Username").toString(), "", query.value("Avatar").toString()).toQByteArray());
+    query.exec("SELECT Id, Username FROM FriendInfo");
+    QStringList list;
+    list.clear();
+    while(query.next()){
+        list.append(QString(query.value("Id").toString())+QString(query.value("Username").toString()));
     }
-    return ListFriendInfo;
+    return list;
 }
 
 //获得不含密码的基本信息（返回UserInfo类型）

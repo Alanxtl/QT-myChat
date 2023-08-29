@@ -3,6 +3,7 @@
 #include "chapage.h"
 #include <QInputDialog>
 #include <QMessageBox>
+#include "Database/DBHelper.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("Linpop");
     //好友列表
     QStringList list;
-    list<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)";
+    list = DBHelper::GetInstance()->selectAllFriendsUserInfo();
     //图片资源列表
     QStringList listIcon;
     listIcon<<"a (1)"<<"a (2)"<<"a (3)"<<"a (4)"<<"a (5)";
@@ -32,10 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
        QToolButton *btn=new QToolButton(this);
        btn->setIcon(QPixmap(QString(":/images/%1.jpg").arg(listIcon[i])));
        btn->setIconSize(QSize(80,80));
-      //透明
+       //透明
        btn->setAutoRaise(true);
-        //设置网名
-       btn->setText("好友 name\r\nip：xxx.xx.xxx");
+       //设置网名
+       QString str1 = " ";
+       QString str2 = "\r\nip：xxx.xx.xxx";
+       btn->setText(list[i].left(5) + str1 + list[i].mid(5) + str2);
 
        //设置显示格式
        btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);

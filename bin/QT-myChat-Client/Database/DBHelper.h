@@ -16,16 +16,16 @@
 #include "Tools/log.h"
 
 
-class DBHelper : public QObject
+class DBHelper
 {
-    Q_OBJECT
+
 public:
-    explicit DBHelper(QObject *parent = nullptr);
+    explicit DBHelper();
     ~DBHelper();
     //查找好友
     UserInfo selectUserInfoById(const quint32 id);//存在返回true，不存在返回false
     //查询好友列表
-    QList<QByteArray> selectAllFriendsUserInfo();
+    QStringList selectAllFriendsUserInfo();
     //添加好友
     bool addFriendship(quint32 Id, QString name);//两个好友的Id
     //删除好友
@@ -33,6 +33,7 @@ public:
 
     //单例设计模式--应对数据库的对象的内存使用
     static DBHelper* GetInstance();
+
 
 private:
     QSqlDatabase sqldb;
