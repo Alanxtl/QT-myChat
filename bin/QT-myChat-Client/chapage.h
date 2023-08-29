@@ -26,6 +26,7 @@ public:
     void updateReceivedFileProgress();
     QString myid;
     QString othersid;
+    void showRightFriendInfo();
 public slots:
     void receivedoubleid(QString myid,QString othersid);
 protected:
