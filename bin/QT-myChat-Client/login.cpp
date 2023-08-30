@@ -11,6 +11,8 @@
 #include <Database/UserInfo.h>
 #include <QTime>
 #include <QMessageBox>
+#include <QTextStream>
+#include <qtextstream.h>
 
 //静态成员变量的类外初始化
 login* login::log = NULL;
@@ -96,9 +98,14 @@ login::login(QWidget *parent) :
             }
         } else if (msg->type == 4) {
             QMessageBox::about(this,"文件","接收到传送文件请求");
+
             QString filename = QString::fromUtf8(msg->content);
-            filename = "ClientData/" + filename;
+            filename = filename.right(filename.size()-filename.lastIndexOf('/')-1);
+
+            filename = "/ClientData/" + filename;
             QFile *localFile = new QFile(filename);
+            qDebug()<<filename;
+            QMessageBox::about(this,"文件","文件已存储至\""+filename+"\"");
             if(!localFile->open(QFile::WriteOnly))
             {
                 qDebug()<<"Server::open file error!";

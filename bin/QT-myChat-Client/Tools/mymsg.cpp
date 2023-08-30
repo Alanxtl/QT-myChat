@@ -145,6 +145,14 @@ MyMsg* MyMsg::defaultMsg(quint32 fromID, quint32 toID, QString str)
     return res;
 }
 
+MyMsg* MyMsg::groupMsg(quint32 fromID, quint32 toID, QString str)
+{
+    MyMsg * res = new MyMsg();
+    QByteArray bytes = str.toUtf8();
+    res->setMsg(7,0,0,0,fromID,toID,QTime::currentTime(),bytes);
+    return res;
+}
+
 MyMsg* MyMsg::logMsg(quint32 fromID, quint32 toID, QString str)
 {
     MyMsg * res = new MyMsg();

@@ -68,10 +68,19 @@ void chapage::on_sendbtn_clicked()
 
     bool isSending = true; // 发送中
 
+    if (this->windowTitle() == "群组聊天室") {
+        MyMsg *msge = MyMsg::groupMsg(Handler::getObj()->my.getID(), 0, msg);
+        qDebug() << msg;
+        QByteArray data = msge->msgToArray();
+        Socket::getObj()->socket.write(data);
+    } else {
         MyMsg *msge = MyMsg::defaultMsg(Handler::getObj()->my.getID(), othersid.toUInt(), msg);
         qDebug() << msg;
         QByteArray data = msge->msgToArray();
         Socket::getObj()->socket.write(data);
+    }
+
+
 
     qDebug()<<"addMessage" << msg << time << ui->listWidget->count();
     if(ui->listWidget->count()%2) {
@@ -235,11 +244,11 @@ void chapage::on_pushButton_5_clicked()
 
 void chapage::sendFile(QString filename)
 {
-
+    QString currentFileName = filename.right(filename.size()-filename.lastIndexOf('/')-1);
 
     QStringList list = filename.split("/");
 
-    localFile = new QFile(list[list.size() - 1]);
+    localFile = new QFile(filename);
 
     if(!localFile->open(QFile::ReadOnly))
     {
@@ -250,10 +259,10 @@ void chapage::sendFile(QString filename)
     totalBytes = localFile->size();
     QDataStream sendout(&outBlock,QIODevice::WriteOnly);
     sendout.setVersion(QDataStream::Qt_5_9);
-    QString currentFileName = filename.right(filename.size()-filename.lastIndexOf('/')-1);
+
 
     qDebug()<<sizeof(currentFileName);
-    ////保留总代大小信息空间、文件名大小信息空间、文件名
+
     sendout<<qint64(0)<<qint64(0)<<currentFileName;
     totalBytes += outBlock.size();
     sendout.device()->seek(0);

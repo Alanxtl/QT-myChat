@@ -83,6 +83,7 @@ public:
     static MyMsg* loginMsg(quint32 id, quint32 pwd, QString name = " ");
     static MyMsg* registerMsg(quint32 id, quint32 pwd, QString name);
     static MyMsg* addFriendMsg(quint32 toid);
+    static MyMsg *groupMsg(quint32 fromID, quint32 toID, QString str);
 
     quint32 getDataSize();
     quint8 getType();
@@ -93,6 +94,7 @@ public:
     quint32 getReceiverID();
     QTime getTime();
     QByteArray & getContent();
+
 
 signals:
 
