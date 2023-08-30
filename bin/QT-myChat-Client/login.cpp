@@ -95,6 +95,7 @@ login::login(QWidget *parent) :
                 Socket::getObj()->socket.write(data);
             }
         } else if (msg->type == 4) {
+            QMessageBox::about(this,"文件","接收到传送文件请求");
             QString filename = QString::fromUtf8(msg->content);
             filename = "ClientData/" + filename;
             QFile *localFile = new QFile(filename);
