@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <Tools/socket.h>
 #include <qdebug.h>
+#include <screenwidget.h>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -28,9 +29,11 @@ int main(int argc, char *argv[])
 //    MainWindow w;
 //   w.show();
 login::GetInstance()->show();
-// chapage chat;
-// chat.show();
+ //chapage chat;
+ //chat.show();
 
+
+    //ScreenWidget::Instance()->showFullScreen();   //直接调用实例
 
     return a.exec();
 }

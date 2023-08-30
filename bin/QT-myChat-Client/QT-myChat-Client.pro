@@ -24,7 +24,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     qnchatmessage.cpp \
-    regis.cpp
+    regis.cpp \
+    screenwidget.cpp
 
 
 HEADERS += \
@@ -40,7 +41,8 @@ HEADERS += \
     login.h \
     mainwindow.h \
     qnchatmessage.h \
-    regis.h
+    regis.h \
+    screenwidget.h
 
 FORMS += \
     Tools/filesend.ui \

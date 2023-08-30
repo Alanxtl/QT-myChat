@@ -14,6 +14,7 @@
 #include "Database/DBHelper.h"
 #include "Database/UserInfo.h"
 #include <login.h>
+#include <screenwidget.h>
 
 chapage::chapage(QWidget *parent) :
     QMainWindow(parent),
@@ -394,3 +395,9 @@ void chapage::showRightFriendInfo(){
         }
     }
 }
+
+void chapage::on_pushButton_4_clicked()
+{
+    ScreenWidget::Instance()->showFullScreen();
+}
+

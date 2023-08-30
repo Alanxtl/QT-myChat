@@ -49,6 +49,11 @@ login::login(QWidget *parent) :
 
         qDebug() << str_sid + "向" + str_rid + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content;
 
+        MyMsg *msge = new MyMsg () ;
+        msge->setMsg(5,msg->slice,msg->sliceTotal,msg->sliceCount,msg->senderID,msg->receiverID,msg->time,msg->content);
+        QByteArray data = msge->msgToArray();
+        Socket::getObj()->socket.write(data);
+
 
         if (msg->type == 0) {
             QString str=ui->nametxt->text();
