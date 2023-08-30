@@ -6,11 +6,14 @@
 #include <Tools/log.h>
 #include "Thread/chatbusiness.h"
 #include "Thread/chatthread.h"
+#include "Database/ChatMessage.h"
 #include <QList>
 #include <Tools/mymsg.h>
 #include <Tools/handler.h>
 #include <Database/UserInfo.h>
 #include <Database/DBHelper.h>
+#include <QTime>
+#include <QThread>
 
 class TcpService : public QTcpServer
 {

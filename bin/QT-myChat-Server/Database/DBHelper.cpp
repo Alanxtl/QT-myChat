@@ -271,6 +271,12 @@ bool DBHelper::registerGroupInfo(const GroupInfo& GroupInfo){
     }
 }
 
+//是否有离线信息
+bool DBHelper::checkOfflineMsg(quint32 receiverID){
+    QSqlQuery query;
+
+}
+
 //添加离线消息
 bool DBHelper::addOfflineMsg(ChatMessage &msg){
     QSqlQuery query;
@@ -287,12 +293,13 @@ bool DBHelper::addOfflineMsg(ChatMessage &msg){
 }
 
 //获取离线消息
-QList<ChatMessage> DBHelper::getOfflineMsg(quint32 ID){
+QList<ChatMessage> DBHelper::getOfflineMsg(quint32 SenderID, quint32 ReceiverID){
     QList<ChatMessage> msg;
     msg.clear();
     QSqlQuery query;
-    query.prepare("select * from OfflineMsg where Reciever = :ID");
-    query.bindValue(":ID",QVariant(ID));
+    query.prepare("select * from OfflineMsg where Sender = :senderID and Reciever = :receiverID order by DT");
+    query.bindValue(":senderID",QVariant(SenderID));
+    query.bindValue(":receiverID",QVariant(ReceiverID));
     query.exec();
     while (query.next()) {
         ChatMessage nowmsg(query.value("Sender").toUInt(),query.value("Reciever").toUInt()
@@ -300,14 +307,16 @@ QList<ChatMessage> DBHelper::getOfflineMsg(quint32 ID){
         nowmsg.getTimeStamp() = query.value("DT").toString();
         msg.append(nowmsg);
     }
+    DBHelper::GetInstance()->dropOfflineMsg(SenderID, ReceiverID);
     return msg;
 }
 
 //删除离线消息
-bool DBHelper::dropOfflineMsg(quint32 ID){
+bool DBHelper::dropOfflineMsg(quint32 SenderID, quint32 ReceiverID){
     QSqlQuery query;
-    query.prepare("delete from OfflineMsg where Reciever = :ID");
-    query.bindValue(":ID",QVariant(ID));
+    query.prepare("delete from OfflineMsg where Sender = :sendid and Reciever = :receiveid");
+    query.bindValue(":sendid",QVariant(SenderID));
+    query.bindValue(":receiveid",QVariant(ReceiverID));
     if(query.exec()){
         return true;
     }else{

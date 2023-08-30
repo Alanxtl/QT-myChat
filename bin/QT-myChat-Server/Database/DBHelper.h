@@ -45,13 +45,14 @@ public:
     //单例设计模式--应对数据库的对象的内存使用
     static DBHelper* GetInstance();
 
-    //处理离线消息
+    //是否有离线消息
+    bool checkOfflineMsg(quint32 receiverID);
     //添加离线消息
     bool addOfflineMsg(ChatMessage &msg);
     //获取离线消息
-    QList<ChatMessage> getOfflineMsg(quint32 ID);
+    QList<ChatMessage> getOfflineMsg(quint32 SenderID, quint32 ReceiverID);
     //删除离线消息
-    bool dropOfflineMsg(quint32 ID);
+    bool dropOfflineMsg(quint32 SenderID, quint32 ReceiverID);
 
     //群组操作
     //添加群聊关系

@@ -19,6 +19,12 @@ void TcpService::incomingConnection(qintptr socketDescriptor){
 }
 
 void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
+    QString str_sid = QString::number(msg->getSenderID());
+    QString str_rid = QString::number(msg->getReceiverID());
+    QString str_type = QString::number(msg->getType());
+    QString str_slice = QString::number(msg->getSlice());
+    QString content = QString::fromUtf8(msg->getContent());
+    qDebug()  << "服务器接受信息" + str_sid + "向" + str_rid + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content;
     quint8 type = msg->getType();
     switch (type) {
     case 0:
@@ -69,10 +75,36 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
         }
         break;
 
-    case 2:
+    case 2:{
         updateMap(msg->getSenderID(), chatbusiness->ip);
         TcpService::sendMessage(msg);
+        ChatMessage message(msg->getSenderID(), msg->getReceiverID(), QString::fromUtf8(msg->getContent()));
+        if (!DBHelper::GetInstance()->addOfflineMsg(message)) {
+            quint32 SenderID = msg->getReceiverID();
+            quint32 ReceiverID = msg->getSenderID();
+            QString text = "离线信息存储失败";
+            msg->setMsg(8, 0, 0, 0, SenderID, ReceiverID, QTime::currentTime(), text.toUtf8());
+            TcpService::sendMessage(msg);
+        }
+
+
         break;
+    }
+    case 4:{
+        updateMap(msg->getSenderID(), chatbusiness->ip);
+        TcpService::sendMessage(msg);
+    }
+
+    case 7:{
+        for (ChatBusiness* chat : business) {
+            if (chat->id != msg->getSenderID()) {
+                MyMsg *newmsg = new MyMsg();
+                newmsg->setMsg(2, 0, 0, 0, msg->getSenderID(), chat->id, QTime::currentTime(), msg->getContent());
+                TcpService::sendMessage(newmsg);
+            }
+        }
+        break;
+    }
 
     case 9:{
         quint8 slice = msg->getSlice();
@@ -128,9 +160,28 @@ void TcpService::judgeMessage(MyMsg *msg, ChatBusiness *chatbusiness) {
             TcpService::sendMessage(msg);
             break;
         }
+
         break;
     }
-
+    case 10:{
+        QList <ChatMessage> chatList;
+        chatList = DBHelper::GetInstance()->getOfflineMsg(msg->getReceiverID(), msg->getSenderID());
+        for (ChatMessage chat : chatList) {
+            qDebug() << QString::number(chatList.size());
+            MyMsg *message = new MyMsg();
+//            QString fulltime = chat->getTimeStamp();
+//            qDebug() << fulltime;
+//            QString parttime = fulltime.mid(10, 8);
+//            qDebug() << parttime;
+//            QTime time = QTime::fromString(parttime, "hh:mm:ss");
+//            qDebug() << "time ok";
+            QString text = chat.getContent();
+            message->setMsg(2, 0, 0, 0, chat.getSender() , chat.getReceiver(), QTime::currentTime(), text.toUtf8());
+            TcpService::sendMessage(message);
+            qDebug() << "send ok";
+        }
+        break;
+    }
     default:
         break;
     }
@@ -151,8 +202,17 @@ void TcpService::sendMessage(MyMsg *msg) {
     else {
         for (ChatBusiness *chatbusiness : business){
             if (chatbusiness->ip == targetIP) {
+
                 QByteArray data = msg->msgToArray();
-                chatbusiness->socket.write(data);
+
+                quint64 check = chatbusiness->socket.write(data);
+                QString str_sid = QString::number(msg->getSenderID());
+                QString str_rid = QString::number(msg->getReceiverID());
+                QString str_type = QString::number(msg->getType());
+                QString str_slice = QString::number(msg->getSlice());
+                QString content = QString::fromUtf8(msg->getContent());
+                qDebug() << QString::number(check);
+                Log::getLogObj()->writeLog("服务器进行转发和发送" + str_sid + "向" + str_rid + chatbusiness->ip + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content);
             }
         }
     }
