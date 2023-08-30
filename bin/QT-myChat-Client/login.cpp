@@ -39,6 +39,15 @@ login::login(QWidget *parent) :
         QByteArray originMessage = Socket::getObj()->socket.readAll();
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
 
+        QString str_sid = QString::number(msg->getSenderID());
+        QString str_rid = QString::number(msg->getReceiverID());
+        QString str_type = QString::number(msg->getType());
+        QString str_slice = QString::number(msg->getSlice());
+        QString content = QString::fromUtf8(msg->getContent());
+
+        qDebug() << str_sid + "向" + str_rid + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content;
+
+
         if (msg->type == 0) {
             QString str=ui->nametxt->text();
             QString str2=ui->pwdtxt->text();

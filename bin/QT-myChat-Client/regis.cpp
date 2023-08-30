@@ -15,6 +15,7 @@ regis::regis(QWidget *parent) :
     this->setWindowTitle("用户注册");
 
     QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
+        qDebug() << "爱来自注册界面";
         QByteArray originMessage = Socket::getObj()->socket.readAll();
         MyMsg* msg = MyMsg::arrayToMsg(originMessage);
 

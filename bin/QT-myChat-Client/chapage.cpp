@@ -29,19 +29,19 @@ chapage::chapage(QWidget *parent) :
     filenameSize = 0;
     ui->tableWidget->setColumnCount(3);
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Nickname" << "ID" << "IP");
-    ui->tableWidget->setRowCount(5);
+    //ui->tableWidget->setRowCount(5);
 
-    QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
-        QString time = QString::number(QDateTime::currentDateTime().toTime_t());
-        dealMessageTime(time);
-        QByteArray originMessage = Socket::getObj()->socket.readAll();
-        MyMsg* msg = MyMsg::arrayToMsg(originMessage);
-        quint32 id = msg->getSenderID();
-//            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
+//    QObject::connect(&Socket::getObj()->socket, &QTcpSocket::readyRead, [&](){    //设置接受信息
+//        QString time = QString::number(QDateTime::currentDateTime().toTime_t());
+//        dealMessageTime(time);
+//        QByteArray originMessage = Socket::getObj()->socket.readAll();
+//        MyMsg* msg = MyMsg::arrayToMsg(originMessage);
+//        quint32 id = msg->getSenderID();
+////            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
 
-    });
+//    });
 
-    connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
+//    connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
     connect(login::GetInstance(), &login::receiveTwo, this, &chapage::receiveTypeTwoMsg);
 
     //connect(Socket::getFileObj(),SIGNAL(readyRead()),this,SLOT(receiveData()));
@@ -134,7 +134,7 @@ void chapage::receiveTypeTwoMsg(MyMsg* msg)
 {
     QString time = QString::number(QDateTime::currentDateTime().toTime_t());
     dealMessageTime(time);
-    QByteArray originMessage = Socket::getObj()->socket.readAll();
+
 
     QString str_sid = QString::number(msg->getSenderID());
     QString str_rid = QString::number(msg->getReceiverID());
@@ -142,7 +142,8 @@ void chapage::receiveTypeTwoMsg(MyMsg* msg)
     QString str_slice = QString::number(msg->getSlice());
     QString content = QString::fromUtf8(msg->getContent());
 
-    qDebug() << str_sid + "向" + str_rid + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content;
+    qDebug() << "2: " + str_sid + "向" + str_rid + "发送了type为" + str_type + "slice为" + str_slice + "内容为" + content;
+
     quint32 id = msg->getSenderID();
 //            QMessageBox::about(this, "消息", QString::fromUtf8(msg->getContent()));
 
@@ -234,7 +235,11 @@ void chapage::on_pushButton_5_clicked()
 
 void chapage::sendFile(QString filename)
 {
-    localFile = new QFile(filename);
+
+
+    QStringList list = filename.split("/");
+
+    localFile = new QFile(list[list.size() - 1]);
 
     if(!localFile->open(QFile::ReadOnly))
     {
@@ -352,6 +357,7 @@ void chapage::showRightFriendInfo(){
         QStringList nameList;
         QStringList idList;
         QStringList ipList;
+        ui->tableWidget->setRowCount(list.size());
         for(int i = 0; i < list.size(); i++){
             nameList.append(UserInfo::fromQByteArray(list[i]).getName());
             idList.append(QString::number(UserInfo::fromQByteArray(list[i]).getID()));
@@ -367,6 +373,7 @@ void chapage::showRightFriendInfo(){
         QStringList nameList;
         QStringList idList;
         QStringList ipList;
+        ui->tableWidget->setRowCount(2);
         idList << this->myid << this->othersid;
         nameList.append(Handler::getObj()->my.getName());
         nameList.append(DBHelper::GetInstance()->selectUserInfoById(this->othersid.toUInt()).getName());
